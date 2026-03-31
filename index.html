@@ -197,11 +197,18 @@
   margin-bottom: 25px;
 }
 
-#statsBlock h2 {
+#statsBlock h2,
+#armorBlock h2,
+#survivalBlock h2,
+#fightingArtsBlock h2,
+#disordersBlock h2,
+#abilitiesBlock h2,
+#injuriesBlock h2 {
   margin: 0 0 12px 0;
   font-size: 20px;
   font-weight: 600;
   color: #fff;
+  font-family: 'Baskerville BT', 'Baskerville', 'Georgia', serif;
 }
 
 #statsTable {
@@ -359,6 +366,20 @@
       grid-template-columns: repeat(3, 250px);
       grid-template-rows: repeat(3, 250px);
       gap: 8px;
+    }
+
+    .armor-set-bonus {
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto 10px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      background: #1f4f1f;
+      border: 1px solid #2f7f2f;
+      color: #b8fdb8;
+      font-weight: 600;
+      font-size: 15px;
+      display: none;
     }
 
     .cell {
@@ -707,6 +728,8 @@
   </div>
 </div>
 
+<div id="armorSetBonusText" class="armor-set-bonus" aria-live="polite"></div>
+
 <div class="grid" id="grid"></div>
 
 <div class="modal" id="modal">
@@ -722,6 +745,28 @@
 <script>
   const imageFolder = "/images/gear/";
   let images = window.imageList;
+
+  const ARMOR_SETS = [
+    {
+      id: 'rawhide',
+      name: 'Rawhide Armor',
+      pieces: [
+        'rawhide_boots.png',
+        'rawhide_gloves.png',
+        'rawhide_headband.png',
+        'rawhide_pants.png',
+        'rawhide_vest.png'
+      ],
+      description: 'All armor locations gain +1 when full set is equipped.',
+      bonus: {
+        stats: { move: 0, accuracy: 0, strength: 0, evasion: 0, luck: 0, speed: 0 },
+        armor: { brain: 1, head: 1, arms: 1, body: 1, legs: 1, waist: 1 }
+      }
+    }
+  ];
+
+  let activeArmorSetId = '';
+
   let activeCell = null;
   let draggedCell = null;
 
@@ -767,6 +812,93 @@
 
   function applyAffinities(cell, affinityData) {
     // no-op
+  }
+
+  function getActiveArmorSet() {
+    const equippedItems = Object.values(equipment);
+    for (const set of ARMOR_SETS) {
+      const hasAllPieces = set.pieces.every(piece => equippedItems.includes(piece));
+      if (hasAllPieces) return set;
+    }
+    return null;
+  }
+
+  function renderArmorSetBonusText(set) {
+    const bonusTextDiv = document.getElementById('armorSetBonusText');
+    if (!set) {
+      bonusTextDiv.style.display = 'none';
+      bonusTextDiv.textContent = '';
+      return;
+    }
+
+    bonusTextDiv.style.display = 'block';
+    bonusTextDiv.textContent = `Armor Set Active: ${set.name} — ${set.description}`;
+  }
+
+  function modifyArmorSetBonus(bonus, multiplier) {
+    if (!bonus) return;
+
+    // Stats
+    const eqRow = document.querySelector('tr[data-row="equipped"]');
+    const statInputs = eqRow.querySelectorAll('input');
+    const statOrder = ['move','accuracy','strength','evasion','luck','speed'];
+    statOrder.forEach((key, i) => {
+      const delta = (bonus.stats[key] || 0) * multiplier;
+      if (delta === 0) return;
+      const current = parseInt(statInputs[i].value || 0, 10);
+      statInputs[i].value = Math.max(0, current + delta);
+    });
+
+    // Armor
+    const slotMap = { brain: 'Brain', head: 'Head', arms: 'Arms', body: 'Body', legs: 'Legs', waist: 'Waist' };
+    Object.entries(bonus.armor).forEach(([slot, value]) => {
+      if (value === 0) return;
+      const row = Array.from(document.querySelectorAll('#armorTable tbody tr'))
+        .find(r => r.firstElementChild.textContent.trim().toLowerCase().includes(slotMap[slot].toLowerCase()));
+      if (!row) return;
+      const input = row.querySelector('input[type="number"]');
+      const current = parseInt(input.value || 0, 10);
+      if (multiplier === 1) {
+        input.value = current + value;
+      } else {
+        input.value = Math.max(0, current - value);
+      }
+    });
+
+    updateStatTotals();
+  }
+
+  function updateArmorSetBonusState() {
+    const previousSetId = characterData.activeArmorSet || '';
+    const activeSet = getActiveArmorSet();
+
+    if (!activeSet) {
+      if (previousSetId) {
+        const previousSet = ARMOR_SETS.find(s => s.id === previousSetId);
+        if (previousSet) modifyArmorSetBonus(previousSet.bonus, -1);
+      }
+      characterData.activeArmorSet = '';
+      activeArmorSetId = '';
+      renderArmorSetBonusText(null);
+      saveCharacter();
+      return;
+    }
+
+    if (activeSet.id === previousSetId) {
+      renderArmorSetBonusText(activeSet);
+      return;
+    }
+
+    if (previousSetId) {
+      const previousSet = ARMOR_SETS.find(s => s.id === previousSetId);
+      if (previousSet) modifyArmorSetBonus(previousSet.bonus, -1);
+    }
+
+    modifyArmorSetBonus(activeSet.bonus, 1);
+    characterData.activeArmorSet = activeSet.id;
+    activeArmorSetId = activeSet.id;
+    renderArmorSetBonusText(activeSet);
+    saveCharacter();
   }
 
   function recomputeMatches() {
@@ -834,6 +966,7 @@
     }
 
     recomputeMatches();
+    updateArmorSetBonusState();
   }
 
   function openPicker(cell) {
@@ -1010,6 +1143,8 @@ let characterData = {
     legs: { light: false, heavy: false },
     waist: { light: false, heavy: false }
   },
+  activeArmorSet: '',
+  activeArmorSet: '',
   fightingArts: [],
   disorders: [],
   abilities: [],
@@ -1082,6 +1217,8 @@ function applyCharacterDataToUI() {
   document.querySelectorAll('.cell').forEach((cell, index) => {
     updateCellImage(cell, characterData.gridImages[index] || "");
   });
+
+  updateArmorSetBonusState();
 
   // Selections
   applySavedSelections();
