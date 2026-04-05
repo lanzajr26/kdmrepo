@@ -415,6 +415,29 @@
       display: none;
     }
 
+    .affinity-bonus-list {
+      max-width: 100%;
+      width: 100%;
+      margin: 0 auto 10px;
+      padding: 10px 14px;
+      box-sizing: border-box;
+      border-radius: 6px;
+      background: #1f314f;
+      border: 1px solid #3d5f96;
+      color: #cfe3ff;
+      font-size: 14px;
+      display: none;
+    }
+
+    .affinity-bonus-list ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    .affinity-bonus-list li {
+      margin: 4px 0;
+    }
+
     .cell {
       position: relative;
       background: #222;
@@ -902,6 +925,7 @@ body.landscape-mode .grid {
 <div id="rightColumn">
 
 <div id="armorSetBonusText" class="armor-set-bonus" aria-live="polite"></div>
+<div id="affinityBonusText" class="affinity-bonus-list" aria-live="polite"></div>
 
 <div class="grid" id="grid"></div>
 
@@ -1014,6 +1038,7 @@ body.landscape-mode .grid {
   ];
 
   let activeArmorSetId = '';
+  let activeAffinityBonuses = [];
 
   let activeCell = null;
   let draggedCell = null;
@@ -1081,6 +1106,163 @@ body.landscape-mode .grid {
 
     bonusTextDiv.style.display = 'block';
     bonusTextDiv.innerHTML = `<strong>Armor Set Active:</strong> ${set.name} - ${parseDescription(set.description)}`;
+  }
+
+  function renderAffinityBonusText(bonuses) {
+    const affinityTextDiv = document.getElementById('affinityBonusText');
+    if (!bonuses.length) {
+      affinityTextDiv.style.display = 'none';
+      affinityTextDiv.innerHTML = '';
+      return;
+    }
+
+    const items = bonuses.map(({ filename, rule }) => {
+      const sourceName = rule.label || formatDisplayName(filename.replace(/\.[^.]+$/, ''));
+      const effectText = formatAffinityEffectText(rule.effects || {});
+      return `<li><strong>${sourceName}:</strong> ${parseDescription(effectText || 'Affinity bonus active.')}</li>`;
+    }).join('');
+
+    affinityTextDiv.style.display = 'block';
+    affinityTextDiv.innerHTML = `<strong>Active Affinity Bonuses:</strong><ul>${items}</ul>`;
+  }
+
+  function formatDisplayName(value) {
+    return value
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, letter => letter.toUpperCase());
+  }
+
+  function formatAffinityEffectText(effects = {}) {
+    const parts = [];
+
+    Object.entries(effects.stats || {}).forEach(([stat, value]) => {
+      if (!value) return;
+      parts.push(`${value > 0 ? '+' : ''}${value} ${formatDisplayName(stat)}`);
+    });
+
+    Object.entries(effects.armor || {}).forEach(([slot, value]) => {
+      if (!value) return;
+      parts.push(`${value > 0 ? '+' : ''}${value} ${formatDisplayName(slot)} Armor`);
+    });
+
+    if (effects.text) {
+      if (Array.isArray(effects.text)) {
+        parts.push(...effects.text);
+      } else {
+        parts.push(effects.text);
+      }
+    }
+
+    return parts.join(' ');
+  }
+
+  function getAffinityRulesForFile(filename) {
+    const data = getImageDataByFile(filename);
+    return Array.isArray(data?.affinityBonuses)
+      ? data.affinityBonuses.filter(rule => rule.enabled !== false)
+      : [];
+  }
+
+  function recordAffinityMatch(matchMap, cell, edge, color) {
+    const index = getCellIndex(cell);
+    if (!matchMap[index]) {
+      matchMap[index] = { colors: {}, edges: {} };
+    }
+
+    matchMap[index].colors[color] = (matchMap[index].colors[color] || 0) + 1;
+
+    if (!matchMap[index].edges[edge]) {
+      matchMap[index].edges[edge] = [];
+    }
+
+    matchMap[index].edges[edge].push(color);
+  }
+
+  function affinityRequirementsMet(requires = {}, matchedState = { colors: {}, edges: {} }) {
+    const requiredMatches = requires.matches || {};
+    for (const [color, count] of Object.entries(requiredMatches)) {
+      if ((matchedState.colors[color] || 0) < count) {
+        return false;
+      }
+    }
+
+    const requiredEdges = requires.edges || {};
+    for (const [edge, color] of Object.entries(requiredEdges)) {
+      const matchedColors = matchedState.edges[edge] || [];
+      if (Array.isArray(color)) {
+        if (!color.every(entry => matchedColors.includes(entry))) {
+          return false;
+        }
+      } else if (!matchedColors.includes(color)) {
+        return false;
+      }
+    }
+
+    if (typeof requires.totalMatches === 'number') {
+      const totalMatches = Object.values(matchedState.colors).reduce((sum, count) => sum + count, 0);
+      if (totalMatches < requires.totalMatches) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function hasNumericAffinityEffects(effects = {}) {
+    return Object.values(effects.stats || {}).some(Boolean) || Object.values(effects.armor || {}).some(Boolean);
+  }
+
+  function clearAffinityBonusState() {
+    if (!activeAffinityBonuses.length) {
+      renderAffinityBonusText([]);
+      return;
+    }
+
+    activeAffinityBonuses.forEach(({ rule }) => {
+      if (hasNumericAffinityEffects(rule.effects)) {
+        modifyArmorSetBonus({
+          stats: rule.effects.stats || {},
+          armor: rule.effects.armor || {}
+        }, -1);
+      }
+    });
+
+    activeAffinityBonuses = [];
+    renderAffinityBonusText([]);
+  }
+
+  function updateAffinityBonusState(matchMap) {
+    clearAffinityBonusState();
+
+    const bonuses = [];
+
+    Object.entries(matchMap).forEach(([cellIndex, matchedState]) => {
+      const cell = document.querySelector(`.cell[data-index="${cellIndex}"]`);
+      const filename = cell?.dataset.filename;
+      if (!filename) return;
+
+      getAffinityRulesForFile(filename).forEach(rule => {
+        if (affinityRequirementsMet(rule.requires, matchedState)) {
+          bonuses.push({
+            cellIndex: parseInt(cellIndex, 10),
+            filename,
+            rule
+          });
+        }
+      });
+    });
+
+    bonuses.forEach(({ rule }) => {
+      if (hasNumericAffinityEffects(rule.effects)) {
+        modifyArmorSetBonus({
+          stats: rule.effects.stats || {},
+          armor: rule.effects.armor || {}
+        }, 1);
+      }
+    });
+
+    activeAffinityBonuses = bonuses;
+    renderAffinityBonusText(bonuses);
   }
 
   function modifyArmorSetBonus(bonus, multiplier) {
@@ -1153,6 +1335,7 @@ body.landscape-mode .grid {
     clearAllMatches();
 
     const cells = Array.from(document.querySelectorAll(".cell"));
+    const matchMap = {};
 
     cells.forEach(cell => {
       const aff = getCellAffinities(cell);
@@ -1164,6 +1347,8 @@ body.landscape-mode .grid {
         const affN = getCellAffinities(neighbors.right);
         if (affN && aff.right && affN.left && aff.right === affN.left) {
           markMatch(cell, neighbors.right);
+          recordAffinityMatch(matchMap, cell, 'right', aff.right);
+          recordAffinityMatch(matchMap, neighbors.right, 'left', aff.right);
         }
       }
 
@@ -1171,9 +1356,13 @@ body.landscape-mode .grid {
         const affN = getCellAffinities(neighbors.bottom);
         if (affN && aff.bottom && affN.top && aff.bottom === affN.top) {
           markMatch(cell, neighbors.bottom);
+          recordAffinityMatch(matchMap, cell, 'bottom', aff.bottom);
+          recordAffinityMatch(matchMap, neighbors.bottom, 'top', aff.bottom);
         }
       }
     });
+
+    updateAffinityBonusState(matchMap);
   }
 
   function markMatch(cellA, cellB) {
