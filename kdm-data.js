@@ -3,6 +3,7 @@
 
 const GLOSSARY = {
   'bash': 'Causes survivors to be knocked down.',
+  'deaf': 'An impairment. You won\'t hear it coming. Suffer -1 permanent evasion. This injury is permanent and can be recorded once.',
   'guardless': 'You cannot ignore hits.',
   'heavy': 'This gear has substantial weight.',
   'paired': 'Paired weapons are two identical weapons that can be used as one. Add the speed of the second weapon when attacking with the first. These weapons must have the same name, and both must be in your gear grid.',
@@ -13,6 +14,7 @@ const GLOSSARY = {
   'evasion': 'Your ability to avoid incoming attacks.',
   'momentum': 'When you travel 4 or more spaces from movement or knockback without passing over the same space twice, gain +1 momentum token. When you successfully Tumble, gain +1 momentum token. When you are knocked down, lose all your momentum tokens.',
   'perfect hit': 'An attack dice roll result of a Lantern 10. This always results in a hit. When there are multiple Perfect Hits in a single attack, trigger any rules applying to Perfect Hits that many times. Perfect Hits are modified by the Perfection special rule.',
+  'provoke': 'When you wound with this weapon, gain the priority target token.',
   'slam': 'Spend activation and full move forward in a straight line. If you move 4+ spaces and stop adjacent to a monster, it suffers knockback 1 and -1 toughness until the end of the round.',
   'sharp': 'Add 1d10 strength to each wound attempt using this gear. This d10 is not a wound roll, and cannot cause critical wounds.',
   'surge': 'A type of survival action. When opportunity permits, a survivor may spend 1 survival to surge. Gain +1 Activation which must be spent immediately. This allows them to activate a weapon, interact with terrain, use gear, and anything else spending an activation allows them to do. Resolve the results of the surge (including any monster reactions) before resuming the turn. Each survivor may only surge once per round, and only if the settlement has the Inner Lantern innovation.'
@@ -152,7 +154,21 @@ const ABILITIES_LIST = [
 ];
 
 const SEVERE_INJURIES_LIST = [
-  { id: 'broken_arm', name: 'Broken Arm', description: 'Your arm is fractured and immobilized.', effect: '-2 Strength, cannot use two-handed weapons' },
-  { id: 'infected_wound', name: 'Infected Wound', description: 'Your wound has become infected.', effect: 'Lose 1 survival each round until healed' },
-  { id: 'concussion', name: 'Concussion', description: 'You have suffered a severe blow to the head.', effect: '-1 Accuracy' }
+  { id: 'blind', name: 'Blind', description: 'Lose an eye. Suffer -1 permanent accuracy. This injury is permanent and can be recorded twice. A survivor with two blind severe injuries suffers -4 permanent accuracy and retires at the end of the next showdown or settlement phase, having lost all sight.', effect: 'none' },
+  { id: 'broken_arm', name: 'Broken Arm', description: 'An ear-shattering crunch. Suffer -1 permanent accuracy and -1 permanent strength. This injury is permanent, and can be recorded twice.', effect: '-1 accuracy, -1 strength' },
+  { id: 'broken_hip', name: 'Broken Hip', description: 'Your hip is dislocated. You can no longer dodge. Suffer -1 permanent movement. This injury is permanent and can be recorded once. Gain 1 bleeding token.', effect: '-1 movement' },
+  { id: 'broken_rib', name: 'Broken Rib', description: 'It even hurts to breathe. Suffer -1 permanent speed. This injury is permanent, and can be recorded multiple times.', effect: '-1 speed' },
+  { id: 'contracture', name: 'Contracture', description: 'The arm will never be the same. Suffer -1 permanent accuracy. This injury is permanent and can be recorded multiple times.', effect: '-1 accuracy' },
+  { id: 'deaf', name: 'Deaf', description: 'You won\'t hear it coming. Suffer -1 permanent evasion. This injury is permanent and can be recorded once.', effect: '-1 evasion' },
+  { id: 'destroyed_back', name: 'Destroyed Back', description: 'A sharp crackling noise. Suffer -2 permanent movement. You can no longer activate any gear that has 2+ strength. This injury is permanent and can be recorded once.', effect: '-2 movement' },
+  { id: 'destroyed_genitals', name: 'Destroyed Genitals', description: 'You cannot be nominated for Story Event Intimacy. This injury is permanent and can be recorded once. Gain a random disorder. You are knocked down. Gazing upwards, you wonder at the futility of your struggle. Gain +3 insanity.', effect: '+3 insanity' },
+  { id: 'dismembered_arm', name: 'Dismembered Arm', description: 'Lose an arm. You can no longer activate two-handed weapons. This injury is permanent and can be recorded twice. A survivor with two dismembered arm severe injuries cannot activate any weapons.', effect: 'none' },
+  { id: 'dismembered_leg', name: 'Dismembered Leg', description: 'Lose a leg. You suffer -2 permanent movement and can no longer dash. This injury is permanent and can be recorded twice. A survivor with two dismembered leg severe injuries has lost both of their legs and must retire at the end of the next showdown or settlement phase.', effect: '-2 movement' },
+  { id: 'gaping_chest_wound', name: 'Gaping Chest Wound', description: 'Suffer -1 permanent strength. This injury is permanent, and can be recorded multiple times. ', effect: '-1 strength' },
+  { id: 'hamstrung', name: 'Hamstrung', description: 'A painful rip. The leg is unusable. You can no longer use any fighting arts or abilities. This injury is permanent and can be recorded once.', effect: 'none' },
+  { id: 'intestinal_prolapse', name: 'Intestinal Prolapse', description: 'Your gut is gravely injured. You can no longer equip any gear on your waist, as it is too painful to wear. This injury is permanent and can be recorded once.', effect: 'none' },
+  { id: 'intracranial_hemorrhage', name: 'Intracranial Hemorrhage', description: 'You can no longer use or gain any survival. This injury is permanent and can be recorded once.', effect: 'none' },
+  { id: 'ruptured_muscle', name: 'Ruptured Muscle', description: 'A painful rip. The arm hangs limp. You can no longer activate fighting arts. This injury is permanent and can be recorded once.', effect: 'none' },
+  { id: 'shattered_jaw', name: 'Shattered Jaw', description: 'You drink your meat through a straw. You can no longer consume or be affected by events requiring you to consume. You can no longer encourage. This injury is permanent and can be recorded once.', effect: 'none' },
+  { id: 'warped_pelvis', name: 'Warped Pelvis', description: 'Your pelvis is disfigured. Suffer -1 permanent luck. This injury is permanent and can be recorded multiple times.', effect: '-1 luck' }
 ];

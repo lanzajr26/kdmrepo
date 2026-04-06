@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KDM: SURVIVOR - Eres the Scarred</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&amp;family=Inter:wght@300;400;600&amp;family=Space+Grotesk:wght@300;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#e9c349",
+                        "secondary": "#c6c6c7",
+                        "on-secondary-fixed-variant": "#454747",
+                        "surface-variant": "#353534",
+                        "surface-dim": "#131313",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "primary": "#ffb4a8",
+                        "on-primary": "#690000",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "primary-container": "#990000",
+                        "outline": "#ab8983",
+                        "on-primary-fixed": "#410000",
+                        "secondary-fixed": "#e2e2e2",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-high": "#2a2a2a",
+                        "on-error": "#690005",
+                        "on-primary-container": "#ffa092",
+                        "outline-variant": "#5b403c",
+                        "surface-bright": "#3a3939",
+                        "on-tertiary-container": "#4f3e00",
+                        "on-surface-variant": "#e4beb8",
+                        "tertiary": "#e9c349",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-container": "#cca830",
+                        "surface-tint": "#ffb4a8",
+                        "on-secondary-container": "#b4b5b5",
+                        "inverse-surface": "#e5e2e1",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "secondary-container": "#454747",
+                        "on-background": "#e5e2e1",
+                        "surface-container": "#201f1f",
+                        "on-secondary": "#2f3131",
+                        "on-tertiary-fixed": "#241a00",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#353534",
+                        "background": "#131313",
+                        "surface-container-low": "#1c1b1b",
+                        "surface": "#131313",
+                        "tertiary-fixed": "#ffe088",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary": "#3c2f00",
+                        "on-surface": "#e5e2e1",
+                        "inverse-primary": "#b82014",
+                        "primary-fixed": "#ffdad4",
+                        "on-primary-fixed-variant": "#930000",
+                        "on-secondary-fixed": "#1a1c1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "notoSerif": ["Noto Serif", "serif"],
+                        "inter": ["Inter", "sans-serif"],
+                        "spaceGrotesk": ["Space Grotesk", "monospace"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .diamond-check {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            transform: rotate(45deg);
+            border: 1px solid #5b403c;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .diamond-check:checked {
+            background-color: #990000;
+            box-shadow: 0 0 8px #ffb4a8;
+            border-color: #ffb4a8;
+        }
+        .lantern-glow {
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 20px rgba(153, 0, 0, 0.05);
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131313; }
+        ::-webkit-scrollbar-thumb { background: #353534; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-inter selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#131313] shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
+<div class="text-2xl font-notoSerif font-bold italic text-[#990000] !italic-none uppercase tracking-widest">KDM: SURVIVOR</div>
+<nav class="hidden md:flex gap-8">
+<a class="font-notoSerif uppercase tracking-widest text-[#e9c349] border-b-2 border-[#e9c349] pb-1" href="#">Survivor 1</a>
+<a class="font-notoSerif uppercase tracking-widest text-neutral-500 hover:text-neutral-200 transition-colors" href="#">Survivor 2</a>
+<a class="font-notoSerif uppercase tracking-widest text-neutral-500 hover:text-neutral-200 transition-colors" href="#">Survivor 3</a>
+<a class="font-notoSerif uppercase tracking-widest text-neutral-500 hover:text-neutral-200 transition-colors" href="#">Survivor 4</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-neutral-400 cursor-pointer hover:text-white transition-all">account_circle</span>
+</div>
+<div class="absolute bottom-0 left-0 bg-gradient-to-r from-transparent via-red-900/30 to-transparent h-px w-full"></div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="flex flex-col h-screen pt-24 pb-8 w-64 fixed left-0 bg-[#0e0e0e] shadow-[20px_0_40px_rgba(0,0,0,0.5)] z-40 overflow-y-auto">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 bg-surface-container-high overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover grayscale opacity-80" data-alt="Dark moody charcoal sketch of a battle-worn fantasy warrior with visible scars and intense gaze" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBs62pZYUWhhmSCWwDwPAS6IlD3PzaAkK25sEPedKBLB3EsbDPqelFpDsdW4zaJKD4GFlkMHQSn1Vm4I15SxnP4u8z4jZCjAudZJ4l_ZLvV9UNTmkUeOdzqj1t0YY-ryLnEPYgw0Iyj-E1qFmXtwvVYnYdLTsT-qMWRDbdo3bUBg9f1Rj6GDbsuK5toB6L7JWHCXFf1iMdNC73vY0LLn21toZLGCyi96p_MuZlj1z30moOlPoI-_EN5fOqCyhq2eC0V2Mn8C2DOH8Aj"/>
+</div>
+<div>
+<h2 class="font-notoSerif text-neutral-100 text-sm font-bold leading-tight">The Archive</h2>
+<p class="font-spaceGrotesk text-[10px] text-red-700 uppercase tracking-tighter">Year 20 of Darkness</p>
+</div>
+</div>
+<div class="py-4 border-y border-outline-variant/10">
+<h1 class="font-notoSerif text-xl uppercase tracking-tighter mb-1 text-[#e9c349]">ERES THE SCARRED</h1>
+<p class="font-spaceGrotesk text-xs text-secondary/60">FEMALE</p>
+</div>
+</div>
+<!-- Reorganized Left Column Sections -->
+<div class="px-6 space-y-6 mt-4">
+<!-- Bleeding Tokens -->
+<div class="bg-surface-container-low/40 p-3">
+<h4 class="font-spaceGrotesk text-[9px] text-red-600 uppercase tracking-[0.2em] mb-2">Bleeding Tokens</h4>
+<div class="flex gap-3">
+<input checked="" class="diamond-check" type="checkbox"/>
+<input class="diamond-check" type="checkbox"/>
+<input class="diamond-check" type="checkbox"/>
+<input class="diamond-check" type="checkbox"/>
+<input class="diamond-check" type="checkbox"/>
+</div>
+</div>
+<!-- Attributes -->
+<div class="grid grid-cols-3 gap-1">
+<div class="bg-surface-container-high/60 p-2 text-center">
+<p class="font-spaceGrotesk text-[8px] text-secondary/50 uppercase">MOV</p>
+<p class="font-notoSerif text-lg">5</p>
+</div>
+<div class="bg-surface-container-high/60 p-2 text-center">
+<p class="font-spaceGrotesk text-[8px] text-secondary/50 uppercase">ACC</p>
+<p class="font-notoSerif text-lg">0</p>
+</div>
+<div class="bg-surface-container-high/60 p-2 text-center">
+<p class="font-spaceGrotesk text-[8px] text-secondary/50 uppercase">STR</p>
+<p class="font-notoSerif text-lg">+2</p>
+</div>
+<div class="bg-surface-container-high/60 p-2 text-center">
+<p class="font-spaceGrotesk text-[8px] text-secondary/50 uppercase">EVA</p>
+<p class="font-notoSerif text-lg">+1</p>
+</div>
+<div class="bg-surface-container-high/60 p-2 text-center">
+<p class="font-spaceGrotesk text-[8px] text-secondary/50 uppercase">LCK</p>
+<p class="font-notoSerif text-lg">0</p>
+</div>
+<div class="bg-surface-container-high/60 p-2 text-center">
+<p class="font-spaceGrotesk text-[8px] text-secondary/50 uppercase">SPD</p>
+<p class="font-notoSerif text-lg">0</p>
+</div>
+</div>
+<!-- Armor & Body -->
+<div class="bg-surface-container-low/40 p-3 space-y-2">
+<h4 class="font-notoSerif text-[10px] border-b border-outline-variant/30 pb-1 italic uppercase tracking-wider text-secondary">Armor &amp; Body</h4>
+<div class="space-y-1.5">
+<div class="flex justify-between items-center">
+<span class="font-spaceGrotesk text-[9px] uppercase text-neutral-400">Brain</span>
+<div class="flex items-center gap-1.5">
+<span class="font-notoSerif text-xs">03</span>
+<input checked="" class="diamond-check" type="checkbox"/>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-spaceGrotesk text-[9px] uppercase text-neutral-400">Head</span>
+<div class="flex items-center gap-1.5"><span class="font-notoSerif text-xs">02</span><input class="diamond-check" type="checkbox"/><input class="diamond-check" type="checkbox"/></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-spaceGrotesk text-[9px] uppercase text-neutral-400">Body</span>
+<div class="flex items-center gap-1.5"><span class="font-notoSerif text-xs">04</span><input class="diamond-check" type="checkbox"/><input class="diamond-check" type="checkbox"/></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-spaceGrotesk text-[9px] uppercase text-neutral-400">Arms</span>
+<div class="flex items-center gap-1.5"><span class="font-notoSerif text-xs">02</span><input class="diamond-check" type="checkbox"/><input class="diamond-check" type="checkbox"/></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-spaceGrotesk text-[9px] uppercase text-neutral-400">Waist</span>
+<div class="flex items-center gap-1.5"><span class="font-notoSerif text-xs">02</span><input class="diamond-check" type="checkbox"/><input class="diamond-check" type="checkbox"/></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-spaceGrotesk text-[9px] uppercase text-neutral-400">Legs</span>
+<div class="flex items-center gap-1.5"><span class="font-notoSerif text-xs">02</span><input class="diamond-check" type="checkbox"/><input class="diamond-check" type="checkbox"/></div>
+</div>
+</div>
+</div>
+<!-- Weapon Mastery -->
+<div class="bg-surface-container-low/40 p-3">
+<h4 class="font-notoSerif text-[10px] uppercase italic text-secondary tracking-wider mb-2">Weapon Mastery</h4>
+<input class="w-full bg-transparent border-none border-b border-outline-variant/30 p-0 mb-3 font-spaceGrotesk text-[10px] text-tertiary focus:ring-0 focus:border-tertiary uppercase tracking-widest" type="text" value="Sword Mastery"/>
+<div class="grid grid-cols-5 gap-y-3 gap-x-2">
+<input checked="" class="diamond-check" type="checkbox"/>
+<input checked="" class="diamond-check" type="checkbox"/>
+<input checked="" class="diamond-check" type="checkbox"/>
+<input class="diamond-check" type="checkbox"/>
+<input class="diamond-check" type="checkbox"/>
+<input class="diamond-check" type="checkbox"/>
+<input class="diamond-check" type="checkbox"/>
+<input class="diamond-check" type="checkbox"/>
+<input class="diamond-check" type="checkbox"/>
+<input class="diamond-check" type="checkbox"/>
+</div>
+</div>
+</div>
+<nav class="mt-8 space-y-1">
+<a class="text-[#990000] bg-[#1c1b1b] border-l-4 border-[#990000] flex items-center gap-3 px-4 py-3 font-spaceGrotesk text-xs uppercase tracking-tighter" href="#">
+<span class="material-symbols-outlined text-sm">fort</span> Settlement
+            </a>
+<a class="text-neutral-500 hover:bg-neutral-800/30 hover:text-neutral-300 flex items-center gap-3 px-4 py-3 font-spaceGrotesk text-xs uppercase tracking-tighter transition-all" href="#">
+<span class="material-symbols-outlined text-sm">history</span> Timeline
+            </a>
+<a class="text-neutral-500 hover:bg-neutral-800/30 hover:text-neutral-300 flex items-center gap-3 px-4 py-3 font-spaceGrotesk text-xs uppercase tracking-tighter transition-all" href="#">
+<span class="material-symbols-outlined text-sm">menu_book</span> Bestiary
+            </a>
+</nav>
+<div class="px-6 mt-8 mb-4">
+<button class="w-full bg-[#990000] text-white font-spaceGrotesk text-[10px] py-3 uppercase tracking-[0.2em] transition-all hover:brightness-110">
+                Archive Survivor
+            </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 pt-24 px-8 pb-12 grid grid-cols-12 gap-8">
+<!-- Center Column: Core Stats & Gear -->
+<div class="col-span-12 lg:col-span-8 space-y-8">
+<!-- XP and Status Bar -->
+<div class="flex items-center gap-6 bg-surface-container-low p-6 lantern-glow relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-red-900"></div>
+<div class="flex items-baseline gap-2">
+<span class="font-spaceGrotesk text-[10px] text-secondary tracking-widest uppercase">Hunt XP</span>
+<span class="font-notoSerif text-4xl text-[#e9c349]">04</span>
+</div>
+<div class="h-8 w-px bg-outline-variant/20 mx-4"></div>
+<div class="flex flex-wrap gap-4">
+<span class="px-3 py-1 bg-stone-800 text-stone-400 border border-stone-700 font-spaceGrotesk text-[10px] uppercase tracking-widest">BLIND</span>
+<span class="px-3 py-1 bg-stone-800 text-stone-400 border border-stone-700 font-spaceGrotesk text-[10px] uppercase tracking-widest">DISEASED</span>
+</div>
+</div>
+<!-- Gear Grid Section: CENTRAL FOCAL POINT -->
+<section class="bg-surface-container p-1 relative">
+<div class="w-full bg-surface-container-highest px-4 py-2 border-b border-outline-variant/30 flex justify-between items-center">
+<h3 class="font-notoSerif text-sm italic text-secondary-fixed text-[#e9c349] !italic-none uppercase text-[10px] tracking-widest">Full Set Bonus</h3>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-1 bg-outline-variant/10">
+<!-- Gear Slots 1-9 -->
+<div class="aspect-square bg-surface-container-lowest flex flex-col items-center justify-center border border-outline-variant/5 group hover:bg-surface-container-high transition-all">
+<div class="opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-4xl text-outline">shield</span>
+</div>
+<span class="font-spaceGrotesk text-[9px] text-outline/40 uppercase mt-2">Weapon</span>
+</div>
+<div class="aspect-square bg-surface-container-lowest flex flex-col items-center justify-center border border-outline-variant/5 group hover:bg-surface-container-high transition-all">
+<div class="opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-4xl text-outline">apparel</span>
+</div>
+<span class="font-spaceGrotesk text-[9px] text-outline/40 uppercase mt-2">Body</span>
+</div>
+<div class="aspect-square bg-surface-container-lowest flex flex-col items-center justify-center border border-outline-variant/5 group hover:bg-surface-container-high transition-all">
+<div class="opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-4xl text-outline">backpack</span>
+</div>
+<span class="font-spaceGrotesk text-[9px] text-outline/40 uppercase mt-2">Gear</span>
+</div>
+<!-- Row 2 -->
+<div class="aspect-square bg-surface-container-lowest flex flex-col items-center justify-center border border-outline-variant/5 group hover:bg-surface-container-high transition-all">
+<div class="opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-4xl text-outline">medical_services</span>
+</div>
+<span class="font-spaceGrotesk text-[9px] text-outline/40 uppercase mt-2">Medicine</span>
+</div>
+<div class="aspect-square bg-primary-container/10 border border-primary-container/30 flex flex-col items-center justify-center group shadow-inner">
+<span class="material-symbols-outlined text-4xl text-on-primary-container">swords</span>
+<span class="font-spaceGrotesk text-[9px] text-on-primary-container uppercase mt-2">Twilight Sword</span>
+</div>
+<div class="aspect-square bg-surface-container-lowest flex flex-col items-center justify-center border border-outline-variant/5 group hover:bg-surface-container-high transition-all">
+<div class="opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-4xl text-outline">construction</span>
+</div>
+<span class="font-spaceGrotesk text-[9px] text-outline/40 uppercase mt-2">Tools</span>
+</div>
+<!-- Row 3 -->
+<div class="aspect-square bg-surface-container-lowest flex flex-col items-center justify-center border border-outline-variant/5 group hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-4xl text-outline/20">close</span>
+</div>
+<div class="aspect-square bg-surface-container-lowest flex flex-col items-center justify-center border border-outline-variant/5 group hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-4xl text-outline/20">close</span>
+</div>
+<div class="aspect-square bg-surface-container-lowest flex flex-col items-center justify-center border border-outline-variant/5 group hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-4xl text-outline/20">close</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Survival & Lore -->
+<div class="col-span-12 lg:col-span-4 space-y-8">
+<!-- Survival Counter -->
+<div class="bg-surface-container-high p-8 lantern-glow text-center border-t-2 border-tertiary">
+<p class="font-spaceGrotesk text-[10px] text-tertiary uppercase tracking-[0.3em] mb-2">Survival Remaining</p>
+<div class="font-notoSerif text-7xl text-neutral-100">07</div>
+<div class="grid grid-cols-2 gap-2 mt-8">
+<div class="py-3 bg-surface-container-highest border border-outline-variant/20 font-spaceGrotesk text-[10px] uppercase tracking-widest text-neutral-100 hover:bg-tertiary/10 hover:border-tertiary cursor-pointer transition-all">Dodge</div>
+<div class="py-3 bg-surface-container-highest border border-outline-variant/20 font-spaceGrotesk text-[10px] uppercase tracking-widest text-neutral-100 hover:bg-tertiary/10 hover:border-tertiary cursor-pointer transition-all">Encourage</div>
+<div class="py-3 bg-surface-container-highest border border-outline-variant/20 font-spaceGrotesk text-[10px] uppercase tracking-widest text-neutral-100 hover:bg-tertiary/10 hover:border-tertiary cursor-pointer transition-all">Surge</div>
+<div class="py-3 bg-surface-container-highest border border-outline-variant/20 font-spaceGrotesk text-[10px] uppercase tracking-widest text-neutral-100 hover:bg-tertiary/10 hover:border-tertiary cursor-pointer transition-all">Dash</div>
+</div>
+</div>
+<!-- Lore Sections -->
+<div class="space-y-4">
+<!-- Fighting Arts -->
+<div class="bg-surface-container-low overflow-hidden">
+<div class="bg-surface-container-highest px-4 py-2 border-l-4 border-[#e9c349] flex justify-between items-center">
+<span class="font-spaceGrotesk text-[10px] uppercase tracking-widest text-[#e9c349]">Fighting Arts</span>
+<span class="material-symbols-outlined text-xs text-[#e9c349]">edit</span>
+</div>
+<div class="p-4 space-y-3">
+<div class="text-xs font-notoSerif border-b border-outline-variant/10 pb-2 text-neutral-300 italic">Thrill Seeker</div>
+<div class="text-xs font-notoSerif border-b border-outline-variant/10 pb-2 text-neutral-500">Empty Slot</div>
+<div class="text-xs font-notoSerif text-neutral-500">Empty Slot</div>
+</div>
+</div>
+<!-- Abilities -->
+<div class="bg-surface-container-low overflow-hidden">
+<div class="bg-surface-container-highest px-4 py-2 border-l-4 border-[#990000] flex justify-between items-center">
+<span class="font-spaceGrotesk text-[10px] uppercase tracking-widest text-[#e9c349]">Abilities</span>
+<span class="material-symbols-outlined text-xs text-[#e9c349]">bolt</span>
+</div>
+<div class="p-4 space-y-3">
+<div class="text-xs font-notoSerif border-b border-outline-variant/10 pb-2 text-neutral-300 italic">Ambidextrous</div>
+<div class="text-xs font-notoSerif border-b border-outline-variant/10 pb-2 text-neutral-300 italic">Bitter Chew</div>
+<div class="text-xs font-notoSerif text-neutral-500">Empty Slot</div>
+</div>
+</div>
+<!-- Disorders -->
+<div class="bg-surface-container-low overflow-hidden">
+<div class="bg-surface-container-highest px-4 py-2 border-l-4 border-red-800 flex justify-between items-center">
+<span class="font-spaceGrotesk text-[10px] uppercase tracking-widest text-[#e9c349]">Disorders</span>
+<span class="material-symbols-outlined text-xs text-[#e9c349]">psychology</span>
+</div>
+<div class="p-4 space-y-3">
+<div class="text-xs font-notoSerif border-b border-outline-variant/10 pb-2 text-on-error-container">Prey</div>
+<div class="text-xs font-notoSerif border-b border-outline-variant/10 pb-2 text-neutral-500">Empty Slot</div>
+</div>
+</div>
+<!-- Severe Injuries -->
+<div class="bg-surface-container-low overflow-hidden">
+<div class="bg-surface-container-highest px-4 py-2 border-l-4 border-[#990000] flex justify-between items-center">
+<span class="font-spaceGrotesk text-[10px] uppercase tracking-widest text-on-primary-container text-[#e9c349]">Severe Injuries</span>
+<span class="material-symbols-outlined text-xs text-on-primary-container text-[#e9c349]">medical_mask</span>
+</div>
+<div class="p-4 space-y-3">
+<div class="text-xs font-notoSerif border-b border-outline-variant/10 pb-2 text-neutral-300">Shattered Jaw</div>
+<div class="text-xs font-notoSerif border-b border-outline-variant/10 pb-2 text-neutral-300">Destroyed Back</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Mobile Nav Pivot -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-neutral-950 flex justify-around items-center py-4 z-50 border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-red-700">fort</span>
+<span class="material-symbols-outlined text-neutral-500">history</span>
+<span class="material-symbols-outlined text-neutral-500">menu_book</span>
+<span class="material-symbols-outlined text-neutral-500">military_tech</span>
+<span class="material-symbols-outlined text-neutral-500">settings</span>
+</nav>
+</body></html>

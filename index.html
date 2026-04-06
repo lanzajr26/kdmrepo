@@ -1,58 +1,315 @@
 <!DOCTYPE html>
-<html>
+<html class="dark" lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>KD:M Survivor</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>KDM: Survivor</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "tertiary-fixed-dim": "#e9c349",
+            "secondary": "#c6c6c7",
+            "on-secondary-fixed-variant": "#454747",
+            "surface-variant": "#353534",
+            "surface-dim": "#131313",
+            "on-tertiary-fixed-variant": "#574500",
+            "primary": "#ffb4a8",
+            "on-primary": "#690000",
+            "primary-fixed-dim": "#ffb4a8",
+            "primary-container": "#990000",
+            "outline": "#ab8983",
+            "on-primary-fixed": "#410000",
+            "secondary-fixed": "#e2e2e2",
+            "inverse-on-surface": "#313030",
+            "surface-container-high": "#2a2a2a",
+            "on-error": "#690005",
+            "on-primary-container": "#ffa092",
+            "outline-variant": "#5b403c",
+            "surface-bright": "#3a3939",
+            "on-tertiary-container": "#4f3e00",
+            "on-surface-variant": "#e4beb8",
+            "tertiary": "#e9c349",
+            "on-error-container": "#ffdad6",
+            "tertiary-container": "#cca830",
+            "surface-tint": "#ffb4a8",
+            "on-secondary-container": "#b4b5b5",
+            "inverse-surface": "#e5e2e1",
+            "error-container": "#93000a",
+            "secondary-fixed-dim": "#c6c6c7",
+            "secondary-container": "#454747",
+            "on-background": "#e5e2e1",
+            "surface-container": "#201f1f",
+            "on-secondary": "#2f3131",
+            "on-tertiary-fixed": "#241a00",
+            "error": "#ffb4ab",
+            "surface-container-highest": "#353534",
+            "background": "#131313",
+            "surface-container-low": "#1c1b1b",
+            "surface": "#131313",
+            "tertiary-fixed": "#ffe088",
+            "surface-container-lowest": "#0e0e0e",
+            "on-tertiary": "#3c2f00",
+            "on-surface": "#e5e2e1",
+            "inverse-primary": "#b82014",
+            "primary-fixed": "#ffdad4",
+            "on-primary-fixed-variant": "#930000",
+            "on-secondary-fixed": "#1a1c1c"
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          fontFamily: {
+            "notoSerif": ["Noto Serif", "serif"],
+            "inter": ["Inter", "sans-serif"],
+            "spaceGrotesk": ["Space Grotesk", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
   <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .diamond-check {
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      transform: rotate(45deg);
+      border: 1px solid #5b403c;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .diamond-check:checked {
+      background-color: #990000;
+      box-shadow: 0 0 8px #ffb4a8;
+      border-color: #ffb4a8;
+    }
+    .lantern-glow {
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 20px rgba(153, 0, 0, 0.05);
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #131313; }
+    ::-webkit-scrollbar-thumb { background: #353534; }
+    .survivor-tab.tab-active {
+      color: #e9c349;
+      border-bottom: 2px solid #e9c349;
+      padding-bottom: 4px;
+    }
+    #topHeader {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+    }
+    #topHeader .header-brand {
+      justify-self: start;
+    }
+    #topHeader #survivorTabs {
+      justify-self: center;
+    }
+    #topHeader .header-actions {
+      justify-self: end;
+    }
+    :root {
+      --left-sidebar-width: clamp(19rem, 16vw, 28rem);
+      --right-sidebar-width: clamp(22rem, 18vw, 32rem);
+      --center-column-max: clamp(760px, 42vw, 1500px);
+      --gear-grid-cell: clamp(250px, 8.8vw, 420px);
+      --gear-grid-gap: clamp(8px, 0.7vw, 18px);
+      --landscape-layout-max: clamp(1544px, 72vw, 3000px);
+      --landscape-left-col-min: clamp(760px, 34vw, 1320px);
+      --landscape-right-col-min: clamp(766px, 36vw, 1460px);
+      --landscape-col-gap: clamp(18px, 1.2vw, 40px);
+    }
+    /* Condition badges */
+    .condition-badge {
+      background: #201f1f;
+      border: 1px solid rgba(91,64,60,0.4);
+      color: #c6c6c7;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .condition-badge:hover {
+      background: #2a2a2a;
+      color: #e5e2e1;
+    }
+    .condition-badge.active {
+      background-color: #990000;
+      border-color: rgba(255,180,168,0.6);
+      color: #e5e2e1;
+    }
+
+    /* Shared KDM stat bar containers (Survival, Hunt XP) */
+    .kdm-stat-bar {
+      max-width: var(--center-column-max);
+      width: 100%;
+      background: #1c1b1b;
+      padding: 12px 20px;
+      box-sizing: border-box;
+    }
+    .kdm-bar-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(91,64,60,0.3);
+      margin: 0 8px;
+      flex-shrink: 0;
+    }
+
+    /* Gold number counter inputs (Survival, Hunt XP) */
+    .kdm-counter-input {
+      width: 48px;
+      background: #201f1f;
+      background-color: #201f1f;
+      background-image: none;
+      color: #e9c349;
+      font-family: 'Noto Serif', serif;
+      font-size: 1.75rem;
+      border: 0;
+      border-bottom: 2px solid rgba(233,195,73,0.4);
+      outline: none;
+      text-align: center;
+      padding: 0;
+      appearance: auto;
+      -webkit-appearance: auto;
+      -moz-appearance: auto;
+      color-scheme: dark;
+    }
+    #survivalValue,
+    #huntXP {
+      background-color: #201f1f !important;
+      background-image: none !important;
+      color-scheme: dark;
+    }
+
+    /* Diamond checkboxes — applied globally to armorTable and survivalActions */
+    #armorTable input[type="checkbox"],
+    #survivalActions input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border: 1px solid rgba(153,0,0,0.6);
+      background: #1c1b1b;
+      transform: rotate(45deg);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s ease, box-shadow 0.15s ease;
+    }
+    #armorTable input[type="checkbox"]:checked,
+    #survivalActions input[type="checkbox"]:checked {
+      background-color: #990000;
+      box-shadow: 0 0 8px #ffb4a8;
+      border-color: #ffb4a8;
+    }
+    #bleedTracker {
+      gap: 6px;
+    }
+    #bleedTracker .bleed-token {
+      width: 28px;
+      height: 28px;
+    }
     body {
-      background: #111;
-      color: #eee;
-      font-family: sans-serif;
+      background: #131313;
+      color: #e5e2e1;
+      font-family: 'Inter', sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 40px;
+      padding-top: 5rem;
+      padding-left: var(--left-sidebar-width);
+      padding-right: var(--right-sidebar-width);
+      box-sizing: border-box;
     }
 
-#statusRow {
+#leftSidebar {
+  width: var(--left-sidebar-width);
+}
+
+#rightSidebar {
+  position: fixed;
+    top: 5rem;
+  right: 0;
+    height: calc(100vh - 5rem);
+  width: var(--right-sidebar-width);
+  padding-top: 0;
+  padding-bottom: 1rem;
+  background: #0e0e0e;
+  box-shadow: -20px 0 40px rgba(0,0,0,0.5);
+  z-index: 39;
   display: flex;
-  justify-content: center;
-  align-items: stretch;
+  flex-direction: column;
+}
+
+#rightSidebarContent {
+  flex: 1;
+  overflow-y: auto;
+    padding: 0 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#rightSidebar #survivalBlock {
+  display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 20px;
-  max-width: 760px;
+  gap: 12px;
   width: 100%;
-  margin: 0 auto 20px;
+  max-width: none;
+  margin: 0;
+  padding: 10px 12px;
+  min-height: 92px;
   box-sizing: border-box;
 }
 
-#statusRow > #survivorHeader {
-  flex: 1 1 360px;
-  min-width: 280px;
-  max-width: none;
-  margin: 0;
+#rightSidebar #survivalActions {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }
 
-#statusRow > #bleedTracker {
-  flex: 0 0 auto;
-  min-width: 180px;
-  max-width: 240px;
-  margin: 0;
-  align-self: center;
+#rightSidebar .survivalAction {
+  font-size: 10px;
 }
 
-#statusRow > #survivalBlock {
-  flex: 1 1 100%;
-  margin: 0;
+#rightSidebar .selections-block {
+  padding: 12px;
 }
 
-@media (max-width: 900px) {
-  #statusRow { flex-direction: column; align-items: stretch; }
-
-  #statusRow > #bleedTracker {
-    max-width: none;
-  }
+#rightSidebar .selection-entry {
+  margin-bottom: 10px;
 }
+
+#rightSidebar .selection-entry select {
+  padding: 8px;
+  font-size: 12px;
+}
+
+#rightSidebar .selection-info {
+  font-size: 12px;
+  padding: 8px;
+}
+
+
 
 /* bleed tracker itself (inside the status row) */
 #bleedTracker {
@@ -90,121 +347,50 @@
   stroke: #600;
 }
 
-/* Survivor Header */
-#survivorHeader {
+/* Sidebar identity inputs */
+aside #survivorName {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(91,64,60,0.3);
+  outline: none;
+  font-family: 'Noto Serif', serif;
+  font-size: 1.125rem;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  color: #e9c349;
+  padding: 2px 0;
   width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
+  margin-bottom: 4px;
+  display: block;
 }
 
-#survivorHeader input,
-#survivorHeader select {
-  background: #222;
-  color: #eee;
-  border: 1px solid #555;
-  padding: 8px 12px;
-  font-size: 16px;
-  border-radius: 6px;
-  flex: 1;
-  min-width: 0;
-}
-
-#survivorSex {
-  flex: 0 0 110px;
-}
-
-/* Character Selector */
-#characterSelector {
-  max-width: 760px;
+aside #survivorSex {
+  background: #201f1f;
+  color-scheme: dark;
+  border: none;
+  border-bottom: 1px solid rgba(91,64,60,0.2);
+  outline: none;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(198,198,199,0.6);
+  text-transform: uppercase;
   width: 100%;
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto 20px;
-  padding: 0 8px;
+  padding: 2px 0;
   box-sizing: border-box;
+  display: block;
 }
 
-#characterSelector select,
-#characterSelector button {
-  background: #222;
-  color: #eee;
-  border: 1px solid #555;
-  padding: 8px 12px;
-  font-size: 16px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-#characterSelector button:hover {
-  background: #333;
-}
-
-#layoutModeToggle {
-  min-width: 140px;
-}
-
-/* Survival Block */
+/* Survival Block + Hunt XP Bar — layout in CSS, lantern-glow via class */
 #survivalBlock {
-  flex: 1;
-  min-width: 300px;
-  background: #1a1a1a;
-  border: 1px solid #444;
-  padding: 12px 16px 16px;
-  border-radius: 6px;
-  margin: 0 0 20px;
-  box-sizing: border-box;
+  margin: 0 auto;
 }
-
-    #survivalBlock h2 {
-      margin: 0 0 8px 0;
-      font-size: 20px;
-      font-weight: 600;
-      color: #fff;
-    }
-
-    #survivalRow {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    #survivalValue {
-      width: 35px;
-      background: #222;
-      color: #eee;
-      border: 1px solid #555;
-      padding: 8px 10px;
-      font-size: 18px;
-      border-radius: 6px;
-    }
-
-    #survivalActions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .survivalAction {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 16px;
-    }
-
-    .survivalAction input {
-      width: 18px;
-      height: 18px;
-    }
+#huntXPBar {
+  margin: 0 auto 16px;
+}
 
 #layoutContainer {
-  max-width: 760px;
+  max-width: var(--center-column-max);
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
@@ -218,26 +404,24 @@
     /* Stats Block */
 #statsBlock {
   width: 100%;
-  background: #1a1a1a;
-  border: 1px solid #444;
+  background: #1c1b1b;
   padding: 15px 20px;
-  border-radius: 6px;
   margin-bottom: 25px;
   box-sizing: border-box;
 }
 
 #statsBlock h2,
-#armorBlock h2,
-#survivalBlock h2,
 #fightingArtsBlock h2,
 #disordersBlock h2,
 #abilitiesBlock h2,
 #injuriesBlock h2 {
   margin: 0 0 12px 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: #fff;
-  font-family: 'Baskerville BT', 'Baskerville', 'Georgia', serif;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #e9c349;
 }
 
 #statsTable {
@@ -248,99 +432,199 @@
 
 #statsTable th,
 #statsTable td {
-  padding: 8px;
+  padding: 10px 8px;
   text-align: center;
-  border-bottom: 1px solid #333;
 }
 
 #statsTable input {
   width: 60px;
-  background: #222;
+  background: #201f1f;
   color: #eee;
-  border: 1px solid #555;
+  border: 0;
+  border-bottom: 1px solid rgba(91,64,60,0.4);
   padding: 6px;
-  border-radius: 4px;
   text-align: center;
+  outline: none;
 }
 
 #statsTable tr[data-row="total"] td {
   font-weight: bold;
-  background: #111;
+  background: #0e0e0e;
+  color: #e9c349;
 }
 
 /* Armor Block */
 #armorBlock {
   width: 100%;
-  background: #1a1a1a;
-  border: 1px solid #444;
-  padding: 15px 20px;
-  border-radius: 6px;
-  margin-bottom: 25px;
+  background: #1c1b1b;
+  padding: 14px 12px;
+  margin-bottom: 18px;
   box-sizing: border-box;
-}
-#armorBlock h2 {
-  margin: 0 0 12px 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: #fff;
+  overflow: hidden;
 }
 #armorTable {
   width: 100%;
   border-collapse: collapse;
   color: #eee;
+  table-layout: fixed;
 }
 #armorTable th,
 #armorTable td {
-  padding: 8px;
+  padding: 8px 4px;
   text-align: center;
-  border-bottom: 1px solid #333;
+  font-size: 12px;
+  vertical-align: middle;
+}
+#armorTable th {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c6c6c7;
+}
+#armorTable th:first-child,
+#armorTable td:first-child {
+  text-align: left;
+}
+#armorTable td:first-child {
+  font-size: 11px;
+  line-height: 1.3;
+}
+#armorTable th:nth-child(2),
+#armorTable td:nth-child(2) {
+  width: 54px;
+}
+#armorTable th:nth-child(3),
+#armorTable td:nth-child(3) {
+  width: 76px;
+}
+#armorTable tbody tr:nth-child(even) {
+  background: rgba(255,255,255,0.02);
 }
 #armorTable input[type="number"] {
-  width: 80px;
-  background: #222;
+  width: 42px;
+  background: #201f1f;
   color: #eee;
-  border: 1px solid #555;
-  padding: 6px;
-  border-radius: 4px;
+  border: 0;
+  border-bottom: 1px solid rgba(91,64,60,0.4);
+  padding: 4px 2px;
   text-align: center;
+  outline: none;
+}
+#armorTable td.armor-injuries {
+  white-space: nowrap;
 }
 #armorTable label {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  margin-right: 6px;
-  font-size: 14px;
+  margin-right: 0;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c6c6c7;
+}
+#armorTable td.armor-injuries > div {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.sidebar-card-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  border-bottom: 1px solid rgba(91,64,60,0.3);
+  padding-bottom: 4px;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #e9c349;
+}
+
+#weaponMasteryBlock {
+  background: #1c1b1b;
+  padding: 14px 12px;
+  box-sizing: border-box;
+}
+
+.sidebar-meta-label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8f8f91;
+}
+
+.weapon-mastery-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 72px;
+  gap: 10px;
+  align-items: end;
+}
+
+#weaponMasteryBlock select,
+#weaponMasteryBlock input[type="number"] {
+  width: 100%;
+  background: #201f1f;
+  color: #eee;
+  border: 0;
+  border-bottom: 1px solid rgba(91,64,60,0.4);
+  padding: 8px 6px;
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.weapon-mastery-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c6c6c7;
+}
+
+#weaponMastered {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(153,0,0,0.6);
+  background: #1c1b1b;
+  transform: rotate(45deg);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+#weaponMastered:checked {
+  background-color: #990000;
+  box-shadow: 0 0 8px #ffb4a8;
+  border-color: #ffb4a8;
 }
 
 /* Selection Blocks (Fighting Arts, Disorders, Abilities, Injuries) */
 .selections-block {
-  background: #1a1a1a;
-  border: 1px solid #444;
+  background: #1c1b1b;
   padding: 15px 20px;
-  border-radius: 6px;
   margin: 0;
   box-sizing: border-box;
 }
 
-#selectionBlocks {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  max-width: 100%;
-  width: 100%;
-  margin: 0 auto 25px;
-  box-sizing: border-box;
-}
-
-@media (max-width: 900px) {
-  #selectionBlocks { grid-template-columns: 1fr; }
-}
-
 .selections-block h2 {
   margin: 0 0 12px 0;
-  font-size: 20px;
+  font-size: 13px;
   font-weight: 600;
-  color: #fff;
+  color: #c6c6c7;
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .selection-entry {
@@ -349,20 +633,20 @@
 
 .selection-entry select {
   width: 100%;
-  background: #222;
+  background: #201f1f;
   color: #eee;
-  border: 1px solid #555;
+  border: 0;
+  border-bottom: 1px solid rgba(91,64,60,0.4);
   padding: 10px;
-  border-radius: 4px;
   font-size: 14px;
   box-sizing: border-box;
+  outline: none;
 }
 
 .selection-info {
-  background: #111;
-  border-left: 3px solid #666;
+  background: #0e0e0e;
+  border-left: 3px solid rgba(153,0,0,0.5);
   padding: 10px;
-  border-radius: 4px;
   margin-top: 8px;
   font-size: 13px;
   line-height: 1.5;
@@ -393,9 +677,9 @@
     /* GRID SIZE — 250px squares */
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, 250px);
-      grid-template-rows: repeat(3, 250px);
-      gap: 8px;
+      grid-template-columns: repeat(3, var(--gear-grid-cell));
+      grid-template-rows: repeat(3, var(--gear-grid-cell));
+      gap: var(--gear-grid-gap);
       margin: 0 auto 25px;
       justify-content: center;
     }
@@ -406,9 +690,8 @@
       margin: 0 auto 10px;
       padding: 10px 14px;
       box-sizing: border-box;
-      border-radius: 6px;
-      background: #1f4f1f;
-      border: 1px solid #2f7f2f;
+      background: #1a2f1a;
+      border-left: 3px solid rgba(47,127,47,0.7);
       color: #b8fdb8;
       font-weight: 600;
       font-size: 15px;
@@ -421,9 +704,8 @@
       margin: 0 auto 10px;
       padding: 10px 14px;
       box-sizing: border-box;
-      border-radius: 6px;
-      background: #1f314f;
-      border: 1px solid #3d5f96;
+      background: #1a2237;
+      border-left: 3px solid rgba(61,95,150,0.7);
       color: #cfe3ff;
       font-size: 14px;
       display: none;
@@ -440,14 +722,13 @@
 
     .cell {
       position: relative;
-      background: #222;
-      border: 2px solid #444;
+      background: #1c1b1b;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
       overflow: hidden;
-      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+      transition: box-shadow 0.2s ease;
     }
 
     .cell img {
@@ -473,9 +754,8 @@
     }
 
     .modal-content-wrapper {
-      background: #222;
+      background: #1c1b1b;
       padding: 20px;
-      border-radius: 8px;
       max-height: 80vh;
       overflow-y: auto;
       width: 80vw;
@@ -491,27 +771,29 @@
       flex-wrap: wrap;
       margin-bottom: 15px;
       padding-bottom: 4px;
-      background: #222;
+      background: #1c1b1b;
     }
 
     #searchBox {
       flex: 1 1 320px;
       padding: 10px;
       font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #555;
-      background: #111;
+      border: 0;
+      border-bottom: 1px solid rgba(91,64,60,0.4);
+      background: #0e0e0e;
       color: #eee;
+      outline: none;
     }
 
     #craftingLocationFilter {
       flex: 0 1 240px;
       padding: 10px;
       font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #555;
-      background: #111;
+      border: 0;
+      border-bottom: 1px solid rgba(91,64,60,0.4);
+      background: #0e0e0e;
       color: #eee;
+      outline: none;
     }
 
     .modal-content {
@@ -522,9 +804,8 @@
 
     .thumb {
       width: 160px;
-      min-height: 190px;
-      background: #333;
-      border: 2px solid #555;
+        background: #201f1f;
+      background: #201f1f;
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -534,6 +815,10 @@
       gap: 8px;
       padding: 8px;
       box-sizing: border-box;
+      transition: background 0.15s ease;
+    }
+    .thumb:hover {
+      background: #2a2a2a;
     }
 
     .thumb img {
@@ -566,55 +851,17 @@
     }
 
 body.landscape-mode #statusRow {
-  max-width: 1544px;
+  max-width: var(--landscape-layout-max);
   justify-content: space-between;
   align-items: stretch;
   flex-wrap: nowrap;
 }
 
-body.landscape-mode #statusRow > #survivorHeader {
-  flex: 0 1 420px;
-  min-width: 340px;
-}
-
-body.landscape-mode #statusRow > #bleedTracker {
-  flex: 0 0 auto;
-}
-
-body.landscape-mode #statusRow > #survivalBlock {
-  flex: 0 1 520px;
-  min-width: 500px;
-  padding: 10px 14px 12px;
-}
-
-body.landscape-mode #survivalBlock h2 {
-  margin: 0 0 6px 0;
-}
-
-body.landscape-mode #survivalRow {
-  justify-content: flex-start;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: nowrap;
-}
-
-body.landscape-mode #survivalActions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: nowrap;
-}
-
-body.landscape-mode .survivalAction {
-  font-size: 14px;
-  white-space: nowrap;
-}
-
 body.landscape-mode #layoutContainer {
-  max-width: 1544px;
+  max-width: var(--landscape-layout-max);
   display: grid;
-  grid-template-columns: minmax(0, 760px) minmax(0, 766px);
-  gap: 18px;
+  grid-template-columns: minmax(var(--landscape-left-col-min), 1fr) minmax(var(--landscape-right-col-min), 1.1fr);
+  gap: var(--landscape-col-gap);
   align-items: start;
   justify-content: center;
 }
@@ -629,154 +876,261 @@ body.landscape-mode .grid {
 
 @media (max-width: 1300px) {
   body.landscape-mode #statusRow {
-    max-width: 760px;
-    flex-wrap: wrap;
-  }
-
-  body.landscape-mode #statusRow > #survivalBlock {
-    flex: 1 1 100%;
-    min-width: 300px;
-  }
-
-  body.landscape-mode #survivalRow,
-  body.landscape-mode #survivalActions {
+    max-width: var(--center-column-max);
     flex-wrap: wrap;
   }
 
   body.landscape-mode #layoutContainer {
     grid-template-columns: 1fr;
-    max-width: 760px;
+    max-width: var(--center-column-max);
   }
 
   body.landscape-mode .grid {
     margin-bottom: 25px;
   }
 }
+
+@media (min-width: 2560px) {
+  :root {
+    --center-column-max: clamp(1100px, 46vw, 2000px);
+    --gear-grid-cell: clamp(300px, 9.2vw, 460px);
+    --landscape-layout-max: clamp(1900px, 76vw, 3500px);
+    --landscape-left-col-min: clamp(900px, 35vw, 1600px);
+    --landscape-right-col-min: clamp(920px, 37vw, 1750px);
+  }
+}
   </style>
 </head>
-<body>
+<body class="bg-background text-on-background font-inter selection:bg-primary-container selection:text-on-primary-container">
 
-<!-- CHARACTER SELECTOR -->
-<div id="characterSelector">
-  <select id="characterSlot">
-    <option value="1">Character Slot 1</option>
-    <option value="2">Character Slot 2</option>
-    <option value="3">Character Slot 3</option>
-    <option value="4">Character Slot 4</option>
-    <option value="5">Character Slot 5</option>
-  </select>
-  <button id="saveSlot">Save to Slot</button>
-  <button id="loadSlot">Load from Slot</button>
-  <button id="deleteSlot">Delete Slot</button>
-  <button id="layoutModeToggle" type="button">Landscape Mode</button>
-</div>
-
-<div id="statusRow">
-  <div id="survivorHeader">
-    <input id="survivorName" type="text" placeholder="Survivor Name">
-    <select id="survivorSex">
-      <option value="">Sex</option>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-    </select>
+<!-- TOP NAV HEADER -->
+<header id="topHeader" class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-4 bg-[#131313] shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
+  <div class="header-brand text-2xl font-notoSerif font-bold uppercase tracking-widest text-[#990000]">KDM: SURVIVOR</div>
+  <nav id="survivorTabs" class="hidden md:flex gap-8">
+    <button class="survivor-tab font-notoSerif uppercase tracking-widest text-neutral-500 hover:text-neutral-200 transition-colors bg-transparent border-0 cursor-pointer" data-slot="1">Survivor 1</button>
+    <button class="survivor-tab font-notoSerif uppercase tracking-widest text-neutral-500 hover:text-neutral-200 transition-colors bg-transparent border-0 cursor-pointer" data-slot="2">Survivor 2</button>
+    <button class="survivor-tab font-notoSerif uppercase tracking-widest text-neutral-500 hover:text-neutral-200 transition-colors bg-transparent border-0 cursor-pointer" data-slot="3">Survivor 3</button>
+    <button class="survivor-tab font-notoSerif uppercase tracking-widest text-neutral-500 hover:text-neutral-200 transition-colors bg-transparent border-0 cursor-pointer" data-slot="4">Survivor 4</button>
+    <button class="survivor-tab font-notoSerif uppercase tracking-widest text-neutral-500 hover:text-neutral-200 transition-colors bg-transparent border-0 cursor-pointer" data-slot="5">Survivor 5</button>
+  </nav>
+  <div class="header-actions flex items-center gap-4">
+    <span class="material-symbols-outlined text-neutral-400 cursor-pointer hover:text-white transition-all">account_circle</span>
   </div>
+  <div class="absolute bottom-0 left-0 bg-gradient-to-r from-transparent via-red-900/30 to-transparent h-px w-full"></div>
+</header>
 
-  <!-- BLEED TRACKER -->
-<div id="bleedTracker">
-  <div class="bleed-token" data-index="0">
-    <svg viewBox="0 0 100 100" class="bleed-svg">
-      <path d="
-        M50 5
-        C70 25, 90 45, 90 65
-        C90 82, 75 95, 50 95
-        C25 95, 10 82, 10 65
-        C10 45, 30 25, 50 5
-        Z
-      " />
-    </svg>
-  </div>
-
-  <div class="bleed-token" data-index="1">
-    <svg viewBox="0 0 100 100" class="bleed-svg">
-      <path d="
-        M50 5
-        C70 25, 90 45, 90 65
-        C90 82, 75 95, 50 95
-        C25 95, 10 82, 10 65
-        C10 45, 30 25, 50 5
-        Z
-      " />
-    </svg>
-  </div>
-
-  <div class="bleed-token" data-index="2">
-    <svg viewBox="0 0 100 100" class="bleed-svg">
-      <path d="
-        M50 5
-        C70 25, 90 45, 90 65
-        C90 82, 75 95, 50 95
-        C25 95, 10 82, 10 65
-        C10 45, 30 25, 50 5
-        Z
-      " />
-    </svg>
-  </div>
-
-  <div class="bleed-token" data-index="3">
-    <svg viewBox="0 0 100 100" class="bleed-svg">
-      <path d="
-        M50 5
-        C70 25, 90 45, 90 65
-        C90 82, 75 95, 50 95
-        C25 95, 10 82, 10 65
-        C10 45, 30 25, 50 5
-        Z
-      " />
-    </svg>
-  </div>
-
-  <div class="bleed-token" data-index="4">
-    <svg viewBox="0 0 100 100" class="bleed-svg">
-      <path d="
-        M50 5
-        C70 25, 90 45, 90 65
-        C90 82, 75 95, 50 95
-        C25 95, 10 82, 10 65
-        C10 45, 30 25, 50 5
-        Z
-      " />
-    </svg>
-  </div>
-</div>
-<!-- SURVIVAL BLOCK -->
-<div id="survivalBlock">
-  <h2>Survival</h2>
-  <div id="survivalRow">
-    <input id="survivalValue" type="number" min="0" placeholder="0">
-
-    <div id="survivalActions">
-      <label class="survivalAction">
-        <input type="checkbox" id="survivalDodge">
-        Dodge
-      </label>
-
-      <label class="survivalAction">
-        <input type="checkbox" id="survivalEncourage">
-        Encourage
-      </label>
-
-      <label class="survivalAction">
-        <input type="checkbox" id="survivalSurge">
-        Surge
-      </label>
-
-      <label class="survivalAction">
-        <input type="checkbox" id="survivalDash">
-        Dash
-      </label>
+<!-- SIDEBAR -->
+<aside id="leftSidebar" class="fixed top-0 left-0 h-screen pt-16 pb-8 w-[19rem] bg-[#0e0e0e] shadow-[20px_0_40px_rgba(0,0,0,0.5)] z-40 flex flex-col">
+  <div class="px-6 py-4 border-b border-[#5b403c]/20">
+    <div class="flex items-center gap-3 min-w-0">
+      <div class="w-12 h-12 bg-surface-container-high flex items-center justify-center flex-shrink-0">
+        <span class="material-symbols-outlined text-3xl text-neutral-500">person</span>
+      </div>
+      <div class="min-w-0 flex-1">
+        <input id="survivorName" type="text" placeholder="Survivor Name">
+        <select id="survivorSex">
+          <option value="">Sex</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- SIDEBAR CHARACTER CONTENT -->
+  <div class="flex-1 overflow-y-auto px-6 space-y-4 py-3">
+    <div>
+      <h4 class="font-spaceGrotesk text-[9px] text-red-600 uppercase tracking-[0.2em] mb-2">Bleeding Tokens</h4>
+      <div id="bleedTracker">
+        <div class="bleed-token" data-index="0"><svg viewBox="0 0 100 100" class="bleed-svg"><path d="M50 5 C70 25, 90 45, 90 65 C90 82, 75 95, 50 95 C25 95, 10 82, 10 65 C10 45, 30 25, 50 5 Z" /></svg></div>
+        <div class="bleed-token" data-index="1"><svg viewBox="0 0 100 100" class="bleed-svg"><path d="M50 5 C70 25, 90 45, 90 65 C90 82, 75 95, 50 95 C25 95, 10 82, 10 65 C10 45, 30 25, 50 5 Z" /></svg></div>
+        <div class="bleed-token" data-index="2"><svg viewBox="0 0 100 100" class="bleed-svg"><path d="M50 5 C70 25, 90 45, 90 65 C90 82, 75 95, 50 95 C25 95, 10 82, 10 65 C10 45, 30 25, 50 5 Z" /></svg></div>
+        <div class="bleed-token" data-index="3"><svg viewBox="0 0 100 100" class="bleed-svg"><path d="M50 5 C70 25, 90 45, 90 65 C90 82, 75 95, 50 95 C25 95, 10 82, 10 65 C10 45, 30 25, 50 5 Z" /></svg></div>
+        <div class="bleed-token" data-index="4"><svg viewBox="0 0 100 100" class="bleed-svg"><path d="M50 5 C70 25, 90 45, 90 65 C90 82, 75 95, 50 95 C25 95, 10 82, 10 65 C10 45, 30 25, 50 5 Z" /></svg></div>
+      </div>
+    </div>
+    <div>
+      <div id="armorBlock">
+        <h4 class="sidebar-card-title">Armor</h4>
+        <table id="armorTable">
+          <thead><tr><th>Slot</th><th>Value</th><th>Injuries</th></tr></thead>
+          <tbody>
+            <tr><td>Insanity</td><td><input type="number" step="1" value="0"></td><td class="armor-injuries"><div><label><input type="checkbox"> L</label><label><input type="checkbox"> H</label></div></td></tr>
+            <tr><td>Head</td><td><input type="number" step="1" value="0"></td><td class="armor-injuries"><div><label><input type="checkbox"> L</label><label><input type="checkbox"> H</label></div></td></tr>
+            <tr><td>Arms</td><td><input type="number" step="1" value="0"></td><td class="armor-injuries"><div><label><input type="checkbox"> L</label><label><input type="checkbox"> H</label></div></td></tr>
+            <tr><td>Body</td><td><input type="number" step="1" value="0"></td><td class="armor-injuries"><div><label><input type="checkbox"> L</label><label><input type="checkbox"> H</label></div></td></tr>
+            <tr><td>Legs</td><td><input type="number" step="1" value="0"></td><td class="armor-injuries"><div><label><input type="checkbox"> L</label><label><input type="checkbox"> H</label></div></td></tr>
+            <tr><td>Waist</td><td><input type="number" step="1" value="0"></td><td class="armor-injuries"><div><label><input type="checkbox"> L</label><label><input type="checkbox"> H</label></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div id="weaponMasteryBlock">
+        <h4 class="sidebar-card-title">Weapon Proficiency</h4>
+        <div class="weapon-mastery-grid">
+          <label>
+            <span class="sidebar-meta-label">Weapon Type</span>
+            <select id="weaponMasteryType">
+              <option value="">Select weapon</option>
+              <option value="axe">Axe</option>
+              <option value="bow">Bow</option>
+              <option value="club">Club</option>
+              <option value="dagger">Dagger</option>
+              <option value="fist-tooth">Fist &amp; Tooth</option>
+              <option value="grand">Grand Weapon</option>
+              <option value="katana">Katana</option>
+              <option value="shield">Shield</option>
+              <option value="spear">Spear</option>
+              <option value="sword">Sword</option>
+              <option value="whip">Whip</option>
+            </select>
+          </label>
+          <label>
+            <span class="sidebar-meta-label">Prof.</span>
+            <input id="weaponMasteryLevel" type="number" min="0" max="8" value="0">
+          </label>
+        </div>
+        <label class="weapon-mastery-toggle">
+          <input id="weaponMastered" type="checkbox">
+          Mastery unlocked
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <button class="w-full bg-[#990000] text-white font-spaceGrotesk text-[10px] py-3 uppercase tracking-[0.2em] transition-all hover:brightness-110">
+        Archive Survivor
+      </button>
+    </div>
+
+    <nav class="space-y-1 pt-4 border-t border-[#5b403c]/20">
+      <a class="text-[#990000] bg-[#1c1b1b] border-l-4 border-[#990000] flex items-center gap-3 px-4 py-3 font-spaceGrotesk text-xs uppercase tracking-tighter" href="#">
+        <span class="material-symbols-outlined text-sm">fort</span> Settlement
+      </a>
+      <a class="text-neutral-500 hover:bg-neutral-800/30 hover:text-neutral-300 flex items-center gap-3 px-4 py-3 font-spaceGrotesk text-xs uppercase tracking-tighter transition-all" href="#">
+        <span class="material-symbols-outlined text-sm">history</span> Timeline
+      </a>
+      <a class="text-neutral-500 hover:bg-neutral-800/30 hover:text-neutral-300 flex items-center gap-3 px-4 py-3 font-spaceGrotesk text-xs uppercase tracking-tighter transition-all" href="#">
+        <span class="material-symbols-outlined text-sm">menu_book</span> Bestiary
+      </a>
+      <a class="text-neutral-500 hover:bg-neutral-800/30 hover:text-neutral-300 flex items-center gap-3 px-4 py-3 font-spaceGrotesk text-xs uppercase tracking-tighter transition-all" href="#">
+        <span class="material-symbols-outlined text-sm">military_tech</span> Milestones
+      </a>
+      <a class="text-neutral-500 hover:bg-neutral-800/30 hover:text-neutral-300 flex items-center gap-3 px-4 py-3 font-spaceGrotesk text-xs uppercase tracking-tighter transition-all" href="#">
+        <span class="material-symbols-outlined text-sm">settings</span> Settings
+      </a>
+    </nav>
+  </div>
+</aside>
+
+<!-- RIGHT SIDEBAR -->
+<aside id="rightSidebar">
+  <div id="rightSidebarContent">
+    <div id="survivalBlock" class="kdm-stat-bar lantern-glow relative overflow-hidden flex items-center gap-4 flex-wrap">
+      <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-900"></div>
+      <div class="flex items-baseline gap-2 pl-2">
+        <span class="font-spaceGrotesk text-[13px] text-[#c6c6c7] tracking-widest uppercase">Survival</span>
+        <input id="survivalValue" type="number" min="0" value="0" class="kdm-counter-input">
+      </div>
+      <div class="kdm-bar-divider"></div>
+      <div id="survivalActions" class="flex flex-wrap gap-3">
+        <label class="survivalAction font-spaceGrotesk text-[11px] text-[#c6c6c7] uppercase tracking-wider flex items-center gap-1 cursor-pointer">
+          <input type="checkbox" id="survivalDodge"> Dodge
+        </label>
+        <label class="survivalAction font-spaceGrotesk text-[11px] text-[#c6c6c7] uppercase tracking-wider flex items-center gap-1 cursor-pointer">
+          <input type="checkbox" id="survivalEncourage"> Encourage
+        </label>
+        <label class="survivalAction font-spaceGrotesk text-[11px] text-[#c6c6c7] uppercase tracking-wider flex items-center gap-1 cursor-pointer">
+          <input type="checkbox" id="survivalSurge"> Surge
+        </label>
+        <label class="survivalAction font-spaceGrotesk text-[11px] text-[#c6c6c7] uppercase tracking-wider flex items-center gap-1 cursor-pointer">
+          <input type="checkbox" id="survivalDash"> Dash
+        </label>
+      </div>
+    </div>
+
+    <div id="fightingArtsBlock" class="selections-block">
+      <h2>Fighting Arts</h2>
+      <div class="selection-entry">
+        <select id="fightingArt1"></select>
+        <div id="fightingArt1-info" class="selection-info"></div>
+      </div>
+      <div class="selection-entry">
+        <select id="fightingArt2"></select>
+        <div id="fightingArt2-info" class="selection-info"></div>
+      </div>
+      <div class="selection-entry">
+        <select id="fightingArt3"></select>
+        <div id="fightingArt3-info" class="selection-info"></div>
+      </div>
+    </div>
+
+    <div id="abilitiesBlock" class="selections-block">
+      <h2>Abilities</h2>
+      <div class="selection-entry">
+        <select id="ability1"></select>
+        <div id="ability1-info" class="selection-info"></div>
+      </div>
+      <div class="selection-entry">
+        <select id="ability2"></select>
+        <div id="ability2-info" class="selection-info"></div>
+      </div>
+      <div class="selection-entry">
+        <select id="ability3"></select>
+        <div id="ability3-info" class="selection-info"></div>
+      </div>
+    </div>
+
+    <div id="disordersBlock" class="selections-block">
+      <h2>Disorders</h2>
+      <div class="selection-entry">
+        <select id="disorder1"></select>
+        <div id="disorder1-info" class="selection-info"></div>
+      </div>
+      <div class="selection-entry">
+        <select id="disorder2"></select>
+        <div id="disorder2-info" class="selection-info"></div>
+      </div>
+      <div class="selection-entry">
+        <select id="disorder3"></select>
+        <div id="disorder3-info" class="selection-info"></div>
+      </div>
+    </div>
+
+    <div id="injuriesBlock" class="selections-block">
+      <h2>Severe Injuries</h2>
+      <div class="selection-entry">
+        <select id="injury1"></select>
+        <div id="injury1-info" class="selection-info"></div>
+      </div>
+      <div class="selection-entry">
+        <select id="injury2"></select>
+        <div id="injury2-info" class="selection-info"></div>
+      </div>
+      <div class="selection-entry">
+        <select id="injury3"></select>
+        <div id="injury3-info" class="selection-info"></div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- HUNT XP + CONDITIONS BAR -->
+<div id="huntXPBar" class="kdm-stat-bar lantern-glow relative overflow-hidden flex items-center gap-4 flex-wrap">
+  <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-900"></div>
+  <div class="flex items-baseline gap-2 pl-2">
+    <span class="font-spaceGrotesk text-[10px] text-[#c6c6c7] tracking-widest uppercase">Hunt XP</span>
+    <input id="huntXP" type="number" min="0" max="16" value="0" class="kdm-counter-input">
+  </div>
+  <div class="kdm-bar-divider"></div>
+  <div id="conditionsBar" class="flex flex-wrap gap-2">
+    <button class="condition-badge" data-condition="blind">Blind</button>
+    <button class="condition-badge" data-condition="deaf">Deaf</button>
+    <button class="condition-badge" data-condition="diseased">Diseased</button>
+    <button class="condition-badge" data-condition="insane">Insane</button>
+    <button class="condition-badge" data-condition="haggard">Haggard</button>
+  </div>
 </div>
 
 <div id="layoutContainer">
@@ -830,94 +1184,6 @@ body.landscape-mode .grid {
       </tr>
     </tbody>
   </table>
-</div>
-
-
-<div id="armorBlock">
-  <h2>Armor</h2>
-  <table id="armorTable">
-    <thead>
-      <tr>
-        <th>Slot</th>
-        <th>Value</th>
-        <th>Injuries</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>Brain (Insanity)</td><td><input type="number" step="1" value="0"></td><td><label><input type="checkbox"> L</label><label><input type="checkbox"> H</label></td></tr>
-      <tr><td>Head</td><td><input type="number" step="1" value="0"></td><td><label><input type="checkbox"> L</label><label><input type="checkbox"> H</label></td></tr>
-      <tr><td>Arms</td><td><input type="number" step="1" value="0"></td><td><label><input type="checkbox"> L</label><label><input type="checkbox"> H</label></td></tr>
-      <tr><td>Body</td><td><input type="number" step="1" value="0"></td><td><label><input type="checkbox"> L</label><label><input type="checkbox"> H</label></td></tr>
-      <tr><td>Legs</td><td><input type="number" step="1" value="0"></td><td><label><input type="checkbox"> L</label><label><input type="checkbox"> H</label></td></tr>
-      <tr><td>Waist</td><td><input type="number" step="1" value="0"></td><td><label><input type="checkbox"> L</label><label><input type="checkbox"> H</label></td></tr>
-    </tbody>
-  </table>
-</div>
-
-<div id="selectionBlocks">
-  <div id="fightingArtsBlock" class="selections-block">
-    <h2>Fighting Arts</h2>
-    <div class="selection-entry">
-      <select id="fightingArt1"></select>
-      <div id="fightingArt1-info" class="selection-info"></div>
-    </div>
-    <div class="selection-entry">
-      <select id="fightingArt2"></select>
-      <div id="fightingArt2-info" class="selection-info"></div>
-    </div>
-    <div class="selection-entry">
-      <select id="fightingArt3"></select>
-      <div id="fightingArt3-info" class="selection-info"></div>
-    </div>
-  </div>
-
-  <div id="abilitiesBlock" class="selections-block">
-    <h2>Abilities</h2>
-    <div class="selection-entry">
-      <select id="ability1"></select>
-      <div id="ability1-info" class="selection-info"></div>
-    </div>
-    <div class="selection-entry">
-      <select id="ability2"></select>
-      <div id="ability2-info" class="selection-info"></div>
-    </div>
-    <div class="selection-entry">
-      <select id="ability3"></select>
-      <div id="ability3-info" class="selection-info"></div>
-    </div>
-  </div>
-
-  <div id="disordersBlock" class="selections-block">
-    <h2>Disorders</h2>
-    <div class="selection-entry">
-      <select id="disorder1"></select>
-      <div id="disorder1-info" class="selection-info"></div>
-    </div>
-    <div class="selection-entry">
-      <select id="disorder2"></select>
-      <div id="disorder2-info" class="selection-info"></div>
-    </div>
-    <div class="selection-entry">
-      <select id="disorder3"></select>
-      <div id="disorder3-info" class="selection-info"></div>
-    </div>
-  </div>
-
-  <div id="injuriesBlock" class="selections-block">
-    <h2>Severe Injuries</h2>
-    <div class="selection-entry">
-      <select id="injury1"></select>
-      <div id="injury1-info" class="selection-info"></div>
-    </div>
-    <div class="selection-entry">
-      <select id="injury2"></select>
-      <div id="injury2-info" class="selection-info"></div>
-    </div>
-    <div class="selection-entry">
-      <select id="injury3"></select>
-      <div id="injury3-info" class="selection-info"></div>
-    </div>
-  </div>
 </div>
 
 </div>
@@ -1133,6 +1399,10 @@ body.landscape-mode .grid {
   }
 
   function formatAffinityEffectText(effects = {}) {
+    if (effects.text) {
+      return Array.isArray(effects.text) ? effects.text.join(' ') : effects.text;
+    }
+
     const parts = [];
 
     Object.entries(effects.stats || {}).forEach(([stat, value]) => {
@@ -1144,14 +1414,6 @@ body.landscape-mode .grid {
       if (!value) return;
       parts.push(`${value > 0 ? '+' : ''}${value} ${formatDisplayName(slot)} Armor`);
     });
-
-    if (effects.text) {
-      if (Array.isArray(effects.text)) {
-        parts.push(...effects.text);
-      } else {
-        parts.push(effects.text);
-      }
-    }
 
     return parts.join(' ');
   }
@@ -1178,7 +1440,42 @@ body.landscape-mode .grid {
     matchMap[index].edges[edge].push(color);
   }
 
-  function affinityRequirementsMet(requires = {}, matchedState = { colors: {}, edges: {} }) {
+  function getGridAffinityState(cells = []) {
+    const state = { colors: {} };
+
+    cells.forEach(cell => {
+      const affinities = getCellAffinities(cell);
+      if (!affinities) return;
+
+      ['top', 'right', 'bottom', 'left'].forEach(edge => {
+        const color = affinities[edge];
+        if (!color) return;
+        state.colors[color] = (state.colors[color] || 0) + 1;
+      });
+    });
+
+    return state;
+  }
+
+  function getGridMatchState(matchMap = {}) {
+    let totalMatchedAffinities = 0;
+
+    Object.values(matchMap).forEach(matchedState => {
+      totalMatchedAffinities += Object.values(matchedState.colors || {}).reduce((sum, count) => sum + count, 0);
+    });
+
+    return {
+      totalMatchedAffinities,
+      hasAnyMatch: totalMatchedAffinities > 0
+    };
+  }
+
+  function affinityRequirementsMet(
+    requires = {},
+    matchedState = { colors: {}, edges: {} },
+    gridState = { colors: {} },
+    gridMatchState = { totalMatchedAffinities: 0, hasAnyMatch: false }
+  ) {
     const requiredMatches = requires.matches || {};
     for (const [color, count] of Object.entries(requiredMatches)) {
       if ((matchedState.colors[color] || 0) < count) {
@@ -1203,6 +1500,17 @@ body.landscape-mode .grid {
       if (totalMatches < requires.totalMatches) {
         return false;
       }
+    }
+
+    const requiredGlobalAffinities = requires.globalAffinities || {};
+    for (const [color, count] of Object.entries(requiredGlobalAffinities)) {
+      if ((gridState.colors[color] || 0) < count) {
+        return false;
+      }
+    }
+
+    if (requires.noGridMatches === true && gridMatchState.hasAnyMatch) {
+      return false;
     }
 
     return true;
@@ -1235,16 +1543,20 @@ body.landscape-mode .grid {
     clearAffinityBonusState();
 
     const bonuses = [];
+    const occupiedCells = Array.from(document.querySelectorAll('.cell')).filter(cell => !!cell.dataset.filename);
+    const gridState = getGridAffinityState(occupiedCells);
+    const gridMatchState = getGridMatchState(matchMap);
 
-    Object.entries(matchMap).forEach(([cellIndex, matchedState]) => {
-      const cell = document.querySelector(`.cell[data-index="${cellIndex}"]`);
+    occupiedCells.forEach(cell => {
+      const cellIndex = getCellIndex(cell);
+      const matchedState = matchMap[cellIndex] || { colors: {}, edges: {} };
       const filename = cell?.dataset.filename;
       if (!filename) return;
 
       getAffinityRulesForFile(filename).forEach(rule => {
-        if (affinityRequirementsMet(rule.requires, matchedState)) {
+        if (affinityRequirementsMet(rule.requires, matchedState, gridState, gridMatchState)) {
           bonuses.push({
-            cellIndex: parseInt(cellIndex, 10),
+            cellIndex,
             filename,
             rule
           });
@@ -1280,7 +1592,7 @@ body.landscape-mode .grid {
     });
 
     // Armor
-    const slotMap = { brain: 'Brain', head: 'Head', arms: 'Arms', body: 'Body', legs: 'Legs', waist: 'Waist' };
+    const slotMap = { brain: 'Insanity', head: 'Head', arms: 'Arms', body: 'Body', legs: 'Legs', waist: 'Waist' };
     Object.entries(bonus.armor).forEach(([slot, value]) => {
       if (value === 0) return;
       const row = Array.from(document.querySelectorAll('#armorTable tbody tr'))
@@ -1574,6 +1886,13 @@ function renderBleedState() {
   });
 }
 
+function renderConditions() {
+  const active = new Set(characterData.conditions || []);
+  document.querySelectorAll('.condition-badge').forEach(btn => {
+    btn.classList.toggle('active', active.has(btn.dataset.condition));
+  });
+}
+
 document.querySelectorAll('.bleed-token').forEach(token => {
   token.addEventListener('click', () => {
     const idx = parseInt(token.dataset.index, 10);
@@ -1635,7 +1954,9 @@ let characterData = {
   survivorSex: "",
   layoutMode: 'portrait',
   bleedState: [0, 0, 0, 0, 0],
+  weaponMastery: { type: '', level: 0, mastered: false },
   survivalValue: 0,
+  survivalActions: { dodge: false, encourage: false, surge: false, dash: false },
   attributesBase: [5, 1, 2, 2, 0, 0],
   attributesEquipped: [0, 0, 0, 0, 0, 0],
   armor: { insanity: 0, head: 0, arms: 0, body: 0, legs: 0, waist: 0 },
@@ -1652,7 +1973,9 @@ let characterData = {
   disorders: [],
   abilities: [],
   severeInjuries: [],
-  gridImages: ["", "", "", "", "", "", "", "", ""]
+  gridImages: ["", "", "", "", "", "", "", "", ""],
+  huntXP: 0,
+  conditions: [],
 };
 
 let currentSlot = localStorage.getItem('kdmCurrentSlot') || '1';
@@ -1669,6 +1992,34 @@ function loadCharacter(slot = currentSlot) {
     if (characterData.layoutMode !== 'landscape') {
       characterData.layoutMode = 'portrait';
     }
+    if (!Array.isArray(characterData.bleedState) || characterData.bleedState.length !== 5) {
+      characterData.bleedState = [0, 0, 0, 0, 0];
+    }
+    if (!Array.isArray(characterData.conditions)) {
+      characterData.conditions = [];
+    }
+    if (!characterData.weaponMastery || typeof characterData.weaponMastery !== 'object') {
+      characterData.weaponMastery = { type: '', level: 0, mastered: false };
+    }
+    characterData.weaponMastery.type = characterData.weaponMastery.type || '';
+    characterData.weaponMastery.level = Math.max(0, Math.min(8, parseInt(characterData.weaponMastery.level, 10) || 0));
+    characterData.weaponMastery.mastered = !!characterData.weaponMastery.mastered;
+    if (typeof characterData.huntXP !== 'number' || Number.isNaN(characterData.huntXP)) {
+      characterData.huntXP = 0;
+    }
+    if (!characterData.survivalActions || typeof characterData.survivalActions !== 'object') {
+      characterData.survivalActions = { dodge: false, encourage: false, surge: false, dash: false };
+    }
+    if (!characterData.armor || typeof characterData.armor !== 'object') {
+      characterData.armor = { insanity: 0, head: 0, arms: 0, body: 0, legs: 0, waist: 0 };
+    }
+    if (!characterData.armorInjuries || typeof characterData.armorInjuries !== 'object') {
+      characterData.armorInjuries = {
+        insanity: { light: false, heavy: false }, head: { light: false, heavy: false },
+        arms: { light: false, heavy: false }, body: { light: false, heavy: false },
+        legs: { light: false, heavy: false }, waist: { light: false, heavy: false }
+      };
+    }
   } else {
     // Reset to defaults if no saved data
     characterData = {
@@ -1676,6 +2027,7 @@ function loadCharacter(slot = currentSlot) {
       survivorSex: "",
       layoutMode: 'portrait',
       bleedState: [0, 0, 0, 0, 0],
+      weaponMastery: { type: '', level: 0, mastered: false },
       survivalValue: 0,
       attributesBase: [5, 1, 2, 2, 0, 0],
       attributesEquipped: [0, 0, 0, 0, 0, 0],
@@ -1692,58 +2044,114 @@ function loadCharacter(slot = currentSlot) {
       disorders: [],
       abilities: [],
       severeInjuries: [],
-      gridImages: ["", "", "", "", "", "", "", "", ""]
+      gridImages: ["", "", "", "", "", "", "", "", ""],
+      huntXP: 0,
+      conditions: [],
+      survivalActions: { dodge: false, encourage: false, surge: false, dash: false }
     };
   }
 }
 
+// ─── UI ELEMENT MAP ──────────────────────────────────────────────────────────
+// Single point of truth for all critical DOM references.
+// Evaluated lazily so it works even if called before full DOM parse.
+const ui = {
+  get survivorName()    { return document.getElementById('survivorName'); },
+  get survivorSex()     { return document.getElementById('survivorSex'); },
+  get weaponMasteryType() { return document.getElementById('weaponMasteryType'); },
+  get weaponMasteryLevel() { return document.getElementById('weaponMasteryLevel'); },
+  get weaponMastered()  { return document.getElementById('weaponMastered'); },
+  get survivalValue()   { return document.getElementById('survivalValue'); },
+  get survivalDodge()   { return document.getElementById('survivalDodge'); },
+  get survivalEncourage(){ return document.getElementById('survivalEncourage'); },
+  get survivalSurge()   { return document.getElementById('survivalSurge'); },
+  get survivalDash()    { return document.getElementById('survivalDash'); },
+  get huntXP()          { return document.getElementById('huntXP'); },
+  get layoutModeToggle(){ return document.getElementById('layoutModeToggle'); },
+  armorTableRows()      { return document.querySelectorAll('#armorTable tbody tr'); },
+  gridCells()           { return document.querySelectorAll('.cell'); },
+  statsBaseInputs()     { return document.querySelectorAll('tr[data-row="base"] input'); },
+  statsEqInputs()       { return document.querySelectorAll('tr[data-row="equipped"] input'); },
+};
+
+const ARMOR_SLOTS = ['insanity', 'head', 'arms', 'body', 'legs', 'waist'];
+
+// ─── APPLY SUB-FUNCTIONS ─────────────────────────────────────────────────────
+
+function applyIdentity() {
+  if (ui.survivorName) ui.survivorName.value = characterData.survivorName || '';
+  if (ui.survivorSex)  ui.survivorSex.value  = characterData.survivorSex  || '';
+}
+
+function applyWeaponMastery() {
+  const mastery = characterData.weaponMastery || { type: '', level: 0, mastered: false };
+  if (ui.weaponMasteryType) ui.weaponMasteryType.value = mastery.type || '';
+  if (ui.weaponMasteryLevel) ui.weaponMasteryLevel.value = mastery.level ?? 0;
+  if (ui.weaponMastered) ui.weaponMastered.checked = !!mastery.mastered;
+}
+
+function applySurvival() {
+  if (ui.survivalValue) ui.survivalValue.value = characterData.survivalValue || 0;
+  const sa = characterData.survivalActions || {};
+  if (ui.survivalDodge)    ui.survivalDodge.checked    = !!sa.dodge;
+  if (ui.survivalEncourage)ui.survivalEncourage.checked = !!sa.encourage;
+  if (ui.survivalSurge)    ui.survivalSurge.checked    = !!sa.surge;
+  if (ui.survivalDash)     ui.survivalDash.checked     = !!sa.dash;
+  if (ui.huntXP) ui.huntXP.value = characterData.huntXP || 0;
+  renderConditions();
+  bleedState = [...(Array.isArray(characterData.bleedState) ? characterData.bleedState : [0,0,0,0,0])];
+  renderBleedState();
+}
+
+function applyAttributes() {
+  const baseInputs = ui.statsBaseInputs();
+  const eqInputs   = ui.statsEqInputs();
+  characterData.attributesBase.forEach((val, i) => { if (baseInputs[i]) baseInputs[i].value = val; });
+  characterData.attributesEquipped.forEach((val, i) => { if (eqInputs[i])   eqInputs[i].value   = val; });
+  updateStatTotals();
+}
+
+function applyArmor() {
+  ui.armorTableRows().forEach((row, i) => {
+    const slot     = ARMOR_SLOTS[i];
+    const valInput = row.querySelector('td:nth-child(2) input');
+    const lightCb  = row.querySelector('td:nth-child(3) label:first-of-type input');
+    const heavyCb  = row.querySelector('td:nth-child(3) label:last-of-type input');
+    if (valInput) valInput.value    = characterData.armor?.[slot] ?? 0;
+    if (lightCb)  lightCb.checked  = !!(characterData.armorInjuries?.[slot]?.light);
+    if (heavyCb)  heavyCb.checked  = !!(characterData.armorInjuries?.[slot]?.heavy);
+  });
+}
+
+function applyGrid() {
+  ui.gridCells().forEach((cell, i) => updateCellImage(cell, characterData.gridImages[i] || ''));
+  updateArmorSetBonusState();
+}
+
+function applySelections() {
+  applySavedSelections();
+}
+
+// ─── MAIN APPLY ORCHESTRATOR ─────────────────────────────────────────────────
+
 function applyLayoutMode(mode) {
   const safeMode = mode === 'landscape' ? 'landscape' : 'portrait';
-  const isLandscape = safeMode === 'landscape';
-  document.body.classList.toggle('landscape-mode', isLandscape);
-
-  const toggle = document.getElementById('layoutModeToggle');
-  if (toggle) {
-    toggle.textContent = isLandscape ? 'Portrait Mode' : 'Landscape Mode';
+  document.body.classList.toggle('landscape-mode', safeMode === 'landscape');
+  if (ui.layoutModeToggle) {
+    ui.layoutModeToggle.textContent = safeMode === 'landscape' ? 'Portrait Mode' : 'Landscape Mode';
   }
-
   characterData.layoutMode = safeMode;
 }
 
 function applyCharacterDataToUI() {
   applyLayoutMode(characterData.layoutMode || 'portrait');
-
-  // Survivor info
-  document.getElementById('survivorName').value = characterData.survivorName || "";
-  document.getElementById('survivorSex').value = characterData.survivorSex || "";
-
-  // Bleed state
-  bleedState = [...characterData.bleedState];
-  renderBleedState();
-
-  // Survival
-  document.getElementById('survivalValue').value = characterData.survivalValue || 0;
-  // TODO: survival actions checkboxes
-
-  // Attributes
-  const baseInputs = document.querySelectorAll('tr[data-row="base"] input');
-  const eqInputs = document.querySelectorAll('tr[data-row="equipped"] input');
-  characterData.attributesBase.forEach((val, i) => baseInputs[i].value = val);
-  characterData.attributesEquipped.forEach((val, i) => eqInputs[i].value = val);
-  updateStatTotals();
-
-  // Armor
-  // TODO: armor values and injuries
-
-  // Grid images
-  document.querySelectorAll('.cell').forEach((cell, index) => {
-    updateCellImage(cell, characterData.gridImages[index] || "");
-  });
-
-  updateArmorSetBonusState();
-
-  // Selections
-  applySavedSelections();
+  applyIdentity();
+  applyWeaponMastery();
+  applySurvival();
+  applyAttributes();
+  applyArmor();
+  applyGrid();
+  applySelections();
 }
 
 function initializeSelectionBlock(type, maxCount = 3) {
@@ -1833,7 +2241,7 @@ function applyGearAttributes(filename) {
   // Armor
   Object.entries(attrs.armor).forEach(([slot, bonus]) => {
     if (bonus === 0) return;
-    const slotMap = { brain: 'Brain', head: 'Head', arms: 'Arms', body: 'Body', legs: 'Legs', waist: 'Waist' };
+    const slotMap = { brain: 'Insanity', head: 'Head', arms: 'Arms', body: 'Body', legs: 'Legs', waist: 'Waist' };
     const row = Array.from(document.querySelectorAll('#armorTable tbody tr'))
       .find(r => r.firstElementChild.textContent.trim().toLowerCase().includes(slotMap[slot].toLowerCase()));
     if (row) {
@@ -1866,7 +2274,7 @@ function removeGearAttributes(filename) {
   // Armor
   Object.entries(attrs.armor).forEach(([slot, bonus]) => {
     if (bonus === 0) return;
-    const slotMap = { brain: 'Brain', head: 'Head', arms: 'Arms', body: 'Body', legs: 'Legs', waist: 'Waist' };
+    const slotMap = { brain: 'Insanity', head: 'Head', arms: 'Arms', body: 'Body', legs: 'Legs', waist: 'Waist' };
     const row = Array.from(document.querySelectorAll('#armorTable tbody tr'))
       .find(r => r.firstElementChild.textContent.trim().toLowerCase().includes(slotMap[slot].toLowerCase()));
     if (row) {
@@ -1886,62 +2294,128 @@ initializeSelectionBlock('disorder', 3);
 initializeSelectionBlock('ability', 3);
 initializeSelectionBlock('injury', 3);
 
-// Character selector
-document.getElementById('characterSlot').value = currentSlot;
-
-document.getElementById('characterSlot').addEventListener('change', () => {
+// Character selector (legacy select removed; tabs in header handle slot switching)
+document.getElementById('characterSlot')?.addEventListener('change', () => {
   currentSlot = document.getElementById('characterSlot').value;
   loadCharacter();
   applyCharacterDataToUI();
 });
 
-document.getElementById('saveSlot').addEventListener('click', () => {
-  // Update characterData from UI
-  characterData.survivorName = document.getElementById('survivorName').value;
-  characterData.survivorSex = document.getElementById('survivorSex').value;
-  characterData.bleedState = [...bleedState];
-  characterData.survivalValue = parseInt(document.getElementById('survivalValue').value) || 0;
-  // TODO: update attributes, armor, etc.
+document.getElementById('saveSlot')?.addEventListener('click', () => {
+  characterData.survivorName  = ui.survivorName?.value  || '';
+  characterData.survivorSex   = ui.survivorSex?.value   || '';
+  characterData.bleedState    = [...bleedState];
+  characterData.survivalValue = parseInt(ui.survivalValue?.value) || 0;
+  characterData.huntXP        = parseInt(ui.huntXP?.value)        || 0;
+  characterData.conditions    = [...document.querySelectorAll('.condition-badge.active')].map(b => b.dataset.condition);
   saveCharacter();
   alert('Character saved to slot ' + currentSlot);
 });
 
-document.getElementById('loadSlot').addEventListener('click', () => {
+document.getElementById('loadSlot')?.addEventListener('click', () => {
   loadCharacter();
   applyCharacterDataToUI();
 });
 
-document.getElementById('deleteSlot').addEventListener('click', () => {
+document.getElementById('deleteSlot')?.addEventListener('click', () => {
   if (confirm('Delete character in slot ' + currentSlot + '?')) {
     localStorage.removeItem(`kdmCharacter${currentSlot}`);
-    loadCharacter(); // Load defaults
+    loadCharacter();
     applyCharacterDataToUI();
   }
 });
 
-document.getElementById('layoutModeToggle').addEventListener('click', () => {
+document.getElementById('layoutModeToggle')?.addEventListener('click', () => {
   const nextMode = characterData.layoutMode === 'landscape' ? 'portrait' : 'landscape';
   applyLayoutMode(nextMode);
   saveCharacter();
 });
 
 // Save on changes
-document.getElementById('survivorName').addEventListener('input', () => {
-  characterData.survivorName = document.getElementById('survivorName').value;
+ui.survivorName?.addEventListener('input', () => {
+  characterData.survivorName = ui.survivorName.value;
   saveCharacter();
 });
 
-document.getElementById('survivorSex').addEventListener('change', () => {
-  characterData.survivorSex = document.getElementById('survivorSex').value;
+ui.survivorSex?.addEventListener('change', () => {
+  characterData.survivorSex = ui.survivorSex.value;
   saveCharacter();
 });
 
-document.getElementById('survivalValue').addEventListener('input', () => {
-  characterData.survivalValue = parseInt(document.getElementById('survivalValue').value) || 0;
+ui.weaponMasteryType?.addEventListener('change', () => {
+  characterData.weaponMastery.type = ui.weaponMasteryType.value;
   saveCharacter();
 });
 
-// TODO: add listeners for attributes, armor changes
+ui.weaponMasteryLevel?.addEventListener('input', () => {
+  const nextLevel = Math.max(0, Math.min(8, parseInt(ui.weaponMasteryLevel.value, 10) || 0));
+  ui.weaponMasteryLevel.value = nextLevel;
+  characterData.weaponMastery.level = nextLevel;
+  saveCharacter();
+});
+
+ui.weaponMastered?.addEventListener('change', () => {
+  characterData.weaponMastery.mastered = ui.weaponMastered.checked;
+  saveCharacter();
+});
+
+ui.survivalValue?.addEventListener('input', () => {
+  characterData.survivalValue = parseInt(ui.survivalValue.value) || 0;
+  saveCharacter();
+});
+
+ui.huntXP?.addEventListener('input', () => {
+  characterData.huntXP = parseInt(ui.huntXP.value) || 0;
+  saveCharacter();
+});
+
+document.querySelectorAll('.condition-badge').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('active');
+    characterData.conditions = [...document.querySelectorAll('.condition-badge.active')].map(el => el.dataset.condition);
+    saveCharacter();
+  });
+});
+
+// Survival action checkboxes
+['Dodge', 'Encourage', 'Surge', 'Dash'].forEach(action => {
+  ui[`survival${action}`]?.addEventListener('change', e => {
+    characterData.survivalActions[action.toLowerCase()] = e.target.checked;
+    saveCharacter();
+  });
+});
+
+// Armor value inputs + injury checkboxes
+ui.armorTableRows().forEach((row, i) => {
+  const slot     = ARMOR_SLOTS[i];
+  const valInput = row.querySelector('td:nth-child(2) input');
+  const lightCb  = row.querySelector('td:nth-child(3) label:first-of-type input');
+  const heavyCb  = row.querySelector('td:nth-child(3) label:last-of-type input');
+  valInput?.addEventListener('input',  () => { characterData.armor[slot]             = parseInt(valInput.value) || 0; saveCharacter(); });
+  lightCb?.addEventListener('change',  () => { characterData.armorInjuries[slot].light = lightCb.checked;              saveCharacter(); });
+  heavyCb?.addEventListener('change',  () => { characterData.armorInjuries[slot].heavy = heavyCb.checked;              saveCharacter(); });
+});
+
+// --- SIDEBAR & NAV TAB WIRING ---
+function updateActiveTab() {
+  document.querySelectorAll('.survivor-tab').forEach(t => {
+    const isActive = t.dataset.slot === String(currentSlot);
+    t.classList.toggle('tab-active', isActive);
+    t.classList.toggle('text-neutral-500', !isActive);
+  });
+}
+
+document.querySelectorAll('.survivor-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    currentSlot = tab.dataset.slot;
+    document.getElementById('characterSlot')?.setAttribute('value', currentSlot);
+    loadCharacter();
+    applyCharacterDataToUI();
+    updateActiveTab();
+  });
+});
+
+updateActiveTab();
 
 </script>
 
