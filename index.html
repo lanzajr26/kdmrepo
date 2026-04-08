@@ -487,7 +487,7 @@ aside #survivorSex {
   text-align: left;
 }
 #armorTable td:first-child {
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.3;
 }
 #armorTable th:nth-child(2),
@@ -578,35 +578,8 @@ aside #survivorSex {
   box-sizing: border-box;
 }
 
-.weapon-mastery-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+#weaponMasteryInfo {
   margin-top: 12px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #c6c6c7;
-}
-
-#weaponMastered {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
-  border: 1px solid rgba(153,0,0,0.6);
-  background: #1c1b1b;
-  transform: rotate(45deg);
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: background 0.15s ease, box-shadow 0.15s ease;
-}
-
-#weaponMastered:checked {
-  background-color: #990000;
-  box-shadow: 0 0 8px #ffb4a8;
-  border-color: #ffb4a8;
 }
 
 /* Selection Blocks (Fighting Arts, Disorders, Abilities, Injuries) */
@@ -674,14 +647,13 @@ aside #survivorSex {
   border-radius: 2px;
 }
 
-    /* GRID SIZE — 250px squares */
+    /* Gear grid scales with the column width while keeping square cells */
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, var(--gear-grid-cell));
-      grid-template-rows: repeat(3, var(--gear-grid-cell));
+      width: 100%;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: var(--gear-grid-gap);
       margin: 0 auto 25px;
-      justify-content: center;
     }
 
     .armor-set-bonus {
@@ -722,6 +694,7 @@ aside #survivorSex {
 
     .cell {
       position: relative;
+      aspect-ratio: 1 / 1;
       background: #1c1b1b;
       display: flex;
       justify-content: center;
@@ -767,11 +740,82 @@ aside #survivorSex {
       top: 0;
       z-index: 10;
       display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 10px;
       margin-bottom: 15px;
       padding-bottom: 4px;
       background: #1c1b1b;
+    }
+
+    .modal-controls-primary {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .modal-controls-affinity {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      padding: 8px 0 2px;
+      border-top: 1px solid rgba(91,64,60,0.35);
+    }
+
+    .affinity-toggle-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border-bottom: 1px solid rgba(91,64,60,0.4);
+      color: #c6c6c7;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      user-select: none;
+      background: #0e0e0e;
+      box-sizing: border-box;
+    }
+
+    .affinity-toggle-label input[type="checkbox"] {
+      margin: 0;
+      accent-color: #990000;
+      cursor: pointer;
+    }
+
+    .affinity-filter-group {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .affinity-filter-title {
+      color: #e9c349;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-right: 2px;
+    }
+
+    .affinity-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #c6c6c7;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .affinity-option input[type="checkbox"] {
+      margin: 0;
+      accent-color: #990000;
+      cursor: pointer;
     }
 
     #searchBox {
@@ -973,17 +1017,6 @@ body.landscape-mode .grid {
             <span class="sidebar-meta-label">Weapon Type</span>
             <select id="weaponMasteryType">
               <option value="">Select weapon</option>
-              <option value="axe">Axe</option>
-              <option value="bow">Bow</option>
-              <option value="club">Club</option>
-              <option value="dagger">Dagger</option>
-              <option value="fist-tooth">Fist &amp; Tooth</option>
-              <option value="grand">Grand Weapon</option>
-              <option value="katana">Katana</option>
-              <option value="shield">Shield</option>
-              <option value="spear">Spear</option>
-              <option value="sword">Sword</option>
-              <option value="whip">Whip</option>
             </select>
           </label>
           <label>
@@ -991,10 +1024,7 @@ body.landscape-mode .grid {
             <input id="weaponMasteryLevel" type="number" min="0" max="8" value="0">
           </label>
         </div>
-        <label class="weapon-mastery-toggle">
-          <input id="weaponMastered" type="checkbox">
-          Mastery unlocked
-        </label>
+        <div id="weaponMasteryInfo" class="selection-info" aria-live="polite" hidden></div>
       </div>
     </div>
 
@@ -1099,7 +1129,7 @@ body.landscape-mode .grid {
     </div>
 
     <div id="injuriesBlock" class="selections-block">
-      <h2>Severe Injuries</h2>
+      <h2>Permanent Injuries</h2>
       <div class="selection-entry">
         <select id="injury1"></select>
         <div id="injury1-info" class="selection-info"></div>
@@ -1173,6 +1203,16 @@ body.landscape-mode .grid {
         <td><input type="number" value="0"></td>
       </tr>
 
+      <tr data-row="temporary">
+        <td>Temporary</td>
+        <td><input type="number" value="0"></td>
+        <td><input type="number" value="0"></td>
+        <td><input type="number" value="0"></td>
+        <td><input type="number" value="0"></td>
+        <td><input type="number" value="0"></td>
+        <td><input type="number" value="0"></td>
+      </tr>
+
       <tr data-row="total">
         <td>Total</td>
         <td class="totalCell">0</td>
@@ -1201,10 +1241,31 @@ body.landscape-mode .grid {
 <div class="modal" id="modal">
   <div class="modal-content-wrapper">
     <div class="modal-controls">
-      <input id="searchBox" type="text" placeholder="Search by name or crafting location...">
-      <select id="craftingLocationFilter">
-        <option value="">All Crafting Locations</option>
-      </select>
+      <div class="modal-controls-primary">
+        <input id="searchBox" type="text" placeholder="Search by name or crafting location...">
+        <select id="craftingLocationFilter">
+          <option value="">All Crafting Locations</option>
+        </select>
+        <label class="affinity-toggle-label" for="affinitySearchEnabled">
+          <input id="affinitySearchEnabled" type="checkbox">
+          <span>Affinity Search</span>
+        </label>
+      </div>
+      <div class="modal-controls-affinity" id="affinityFilterRow" hidden>
+        <div class="affinity-filter-group">
+          <span class="affinity-filter-title">Color</span>
+          <label class="affinity-option"><input class="affinity-color-filter" type="checkbox" value="blue">Blue</label>
+          <label class="affinity-option"><input class="affinity-color-filter" type="checkbox" value="red">Red</label>
+          <label class="affinity-option"><input class="affinity-color-filter" type="checkbox" value="green">Green</label>
+        </div>
+        <div class="affinity-filter-group">
+          <span class="affinity-filter-title">Position</span>
+          <label class="affinity-option"><input class="affinity-side-filter" type="checkbox" value="top">Top</label>
+          <label class="affinity-option"><input class="affinity-side-filter" type="checkbox" value="right">Right</label>
+          <label class="affinity-option"><input class="affinity-side-filter" type="checkbox" value="bottom">Bottom</label>
+          <label class="affinity-option"><input class="affinity-side-filter" type="checkbox" value="left">Left</label>
+        </div>
+      </div>
     </div>
     <div class="modal-content" id="modalContent"></div>
   </div>
@@ -1221,6 +1282,38 @@ body.landscape-mode .grid {
   }));
 
   const ARMOR_SETS = [
+    {     
+    id: 'gloomleather',
+      name: 'Gloomleather Armor',
+      pieces: [
+        'gloomleather_cowl.png',
+        'leather_boots.png',
+        'leather_bracers.png',
+        'leather_cuirass.png',
+        'leather_skirt.png'
+      ],
+      description: 'When you perform a survival action, spend insanity instead of survival. When you lose survival, lose insanity instead.',
+      bonus: {
+        stats: { move: 0, accuracy: 0, strength: 0, evasion: 0, luck: 0, speed: 0 },
+        armor: { brain: 0, head: 4, arms: 4, body: 4, legs: 4, waist: 4 }
+      }
+  },
+  {     
+    id: 'green',
+      name: 'Green Armor',
+      pieces: [
+        'green_boots.png',
+        'green_faulds.png',
+        'green_gloves.png',
+        'green_helm.png',
+        'green_plate.png'
+      ],
+      description: 'Knight\'s Charge: Spend movement & activation, full move in a straight line. At the end of the movement, activate Griswaldo and attack. If you moved more than 5 spaces this attack gains [devastating] 2.',
+      bonus: {
+        stats: { move: 0, accuracy: 0, strength: 0, evasion: 0, luck: 0, speed: 0 },
+        armor: { brain: 0, head: 5, arms: 5, body: 5, legs: 5, waist: 5 }
+      }
+  },
   {     
     id: 'lantern',
       name: 'Lantern Armor',
@@ -1237,55 +1330,23 @@ body.landscape-mode .grid {
         armor: { brain: 0, head: 0, arms: 0, body: 0, legs: 0, waist: 0 }
       }
   },
-  {
-      id: 'rawhide',
-      name: 'Rawhide Armor',
+  {     
+    id: 'leather',
+      name: 'Leather Armor',
       pieces: [
-        'rawhide_boots.png',
-        'rawhide_gloves.png',
-        'rawhide_headband.png',
-        'rawhide_pants.png',
-        'rawhide_vest.png'
+        'leather_boots.png',
+        'leather_bracers.png',
+        'leather_cuirass.png',
+        'leather_mask.png',
+        'leather_skirt.png'
       ],
-      description: 'All armor locations gain +1 when full set is equipped.',
+      description: 'You ignore [bash].',
       bonus: {
         stats: { move: 0, accuracy: 0, strength: 0, evasion: 0, luck: 0, speed: 0 },
         armor: { brain: 0, head: 1, arms: 1, body: 1, legs: 1, waist: 1 }
       }
-    },
-    {
-      id: 'white_lion',
-      name: 'White Lion Armor',
-      pieces: [
-        'white_lion_boots.png',
-        'white_lion_coat.png',
-        'white_lion_gauntlet.png',
-        'white_lion_helm.png',
-        'white_lion_skirt.png'
-      ],
-      description: 'Gain +1 speed and +2 strength when attacking with daggers or katars.',
-      bonus: {
-        stats: { move: 0, accuracy: 0, strength: 2, evasion: 0, luck: 0, speed: 0 },
-        armor: { brain: 0, head: 0, arms: 0, body: 0, legs: 0, waist: 0 }
-      }
-    },
-    {
-      id: 'screaming',
-      name: 'Screaming Armor',
-      pieces: [
-        'screaming_bracers.png',
-        'screaming_coat.png',
-        'screaming_horns.png',
-        'screaming_leg_warmers.png',
-        'screaming_skirt.png'
-      ],
-      description: 'Add 1 to all hit locations. Skewer: After you [slam], spend Movement Activation to move 1 space and activate a melee weapon with +2 strength. If you wound with a spear, apply that wound roll result to the next selected hit location this attack.',
-      bonus: {
-        stats: { move: 0, accuracy: 0, strength: 1, evasion: 1, luck: 0, speed: 0 },
-        armor: { brain: 0, head: 1, arms: 1, body: 1, legs: 1, waist: 1 }
-      }
-    },
-    {
+  },
+  {
       id: 'phoenix',
       name: 'Phoenix Armor',
       pieces: [
@@ -1300,12 +1361,65 @@ body.landscape-mode .grid {
         stats: { move: 0, accuracy: 0, strength: 0, evasion: 0, luck: 0, speed: 0 },
         armor: { brain: 0, head: 1, arms: 1, body: 1, legs: 1, waist: 1 }
       }
-    }
+    },
+  {
+      id: 'rawhide',
+      name: 'Rawhide Armor',
+      pieces: [
+        'rawhide_boots.png',
+        'rawhide_gloves.png',
+        'rawhide_headband.png',
+        'rawhide_pants.png',
+        'rawhide_vest.png'
+      ],
+      description: 'When you perform a survival action roll 1d10. On a result of 6+, gain +1 survival.',
+      bonus: {
+        stats: { move: 0, accuracy: 0, strength: 0, evasion: 0, luck: 0, speed: 0 },
+        armor: { brain: 0, head: 1, arms: 1, body: 1, legs: 1, waist: 1 }
+      }
+    },
+  {
+      id: 'screaming',
+      name: 'Screaming Armor',
+      pieces: [
+        'screaming_bracers.png',
+        'screaming_coat.png',
+        'screaming_horns.png',
+        'screaming_leg_warmers.png',
+        'screaming_skirt.png'
+      ],
+      description: 'Add 1 to all hit locations. Skewer: After you [slam], spend Movement Activation to move 1 space and activate a melee weapon with +2 strength. If you wound with a spear, apply that wound roll result to the next selected hit location this attack.',
+      bonus: {
+        stats: { move: 0, accuracy: 0, strength: 0, evasion: 0, luck: 0, speed: 0 },
+        armor: { brain: 0, head: 1, arms: 1, body: 1, legs: 1, waist: 1 }
+      }
+    },
+  {
+      id: 'white_lion',
+      name: 'White Lion Armor',
+      pieces: [
+        'white_lion_boots.png',
+        'white_lion_coat.png',
+        'white_lion_gauntlet.png',
+        'white_lion_helm.png',
+        'white_lion_skirt.png'
+      ],
+      description: 'Gain +1 speed and +2 strength when attacking with daggers or katars.',
+      bonus: {
+        stats: { move: 0, accuracy: 0, strength: 2, evasion: 0, luck: 0, speed: 0 },
+        armor: { brain: 0, head: 1, arms: 1, body: 1, legs: 1, waist: 1 }
+      }
+    }  
   ];
 
   let activeArmorSetId = '';
   let activeAffinityBonuses = [];
-
+  let activeWeaponProficiencyTier = '';
+  let activeWeaponProficiencyStats = {};
+  const SURVIVAL_BONUS_GEAR = {
+    'stone_noses.png': 1,
+    'whisker_harp.png': 1
+  };
   let activeCell = null;
   let draggedCell = null;
 
@@ -1425,20 +1539,119 @@ body.landscape-mode .grid {
       : [];
   }
 
-  function recordAffinityMatch(matchMap, cell, edge, color) {
-    const index = getCellIndex(cell);
-    if (!matchMap[index]) {
-      matchMap[index] = { colors: {}, edges: {} };
+function initializeWeaponProficiencyOptions() {
+  if (!ui.weaponMasteryType || typeof WEAPON_PROFICIENCY_DATA !== 'object') return;
+
+  const selectedValue = characterData.weaponMastery?.type || '';
+  ui.weaponMasteryType.innerHTML = '';
+  ui.weaponMasteryType.appendChild(Object.assign(document.createElement('option'), {
+    value: '',
+    textContent: 'Select weapon'
+  }));
+
+  Object.entries(WEAPON_PROFICIENCY_DATA).forEach(([id, entry]) => {
+    const option = document.createElement('option');
+    option.value = id;
+    option.textContent = entry.name || formatDisplayName(id);
+    ui.weaponMasteryType.appendChild(option);
+  });
+
+  ui.weaponMasteryType.value = selectedValue;
+}
+
+function getWeaponProficiencyTier(level) {
+  if (level >= 8) return 'master';
+  if (level >= 3) return 'specialist';
+  return '';
+}
+
+function modifyWeaponProficiencyStats(stats = {}, multiplier = 1) {
+  const baseRow = document.querySelector('tr[data-row="base"]');
+  if (!baseRow) return;
+
+  const statInputs = baseRow.querySelectorAll('input');
+  const statOrder = ['move', 'accuracy', 'strength', 'evasion', 'luck', 'speed'];
+
+  statOrder.forEach((key, i) => {
+    const delta = (stats[key] || 0) * multiplier;
+    if (!delta || !statInputs[i]) return;
+    const current = parseInt(statInputs[i].value || 0, 10);
+    const nextValue = current + delta;
+    statInputs[i].value = nextValue;
+    if (Array.isArray(characterData.attributesBase)) {
+      characterData.attributesBase[i] = nextValue;
     }
+  });
 
-    matchMap[index].colors[color] = (matchMap[index].colors[color] || 0) + 1;
+  updateStatTotals();
+}
 
-    if (!matchMap[index].edges[edge]) {
-      matchMap[index].edges[edge] = [];
-    }
-
-    matchMap[index].edges[edge].push(color);
+function clearWeaponProficiencyBonusState() {
+  if (Object.values(activeWeaponProficiencyStats).some(Boolean)) {
+    modifyWeaponProficiencyStats(activeWeaponProficiencyStats, -1);
   }
+
+  activeWeaponProficiencyTier = '';
+  activeWeaponProficiencyStats = {};
+}
+
+function renderWeaponProficiencyInfo() {
+  if (!ui.weaponMasteryInfo) return;
+
+  const type = characterData.weaponMastery?.type || '';
+  const level = parseInt(characterData.weaponMastery?.level, 10) || 0;
+  const tier = getWeaponProficiencyTier(level);
+  const entry = (typeof WEAPON_PROFICIENCY_DATA === 'object' && type) ? WEAPON_PROFICIENCY_DATA[type] : null;
+
+  if (!entry || !tier || !entry[tier]) {
+    ui.weaponMasteryInfo.hidden = true;
+    ui.weaponMasteryInfo.innerHTML = '';
+    return;
+  }
+
+  const bonus = entry[tier];
+  const effectText = bonus.effect && bonus.effect !== 'none'
+    ? bonus.effect
+    : (formatAffinityEffectText({ stats: bonus.stats || {} }) || 'none');
+
+  ui.weaponMasteryInfo.hidden = false;
+  ui.weaponMasteryInfo.innerHTML = `<p><strong>${bonus.title || `${entry.name} ${formatDisplayName(tier)}`}</strong></p><p>${parseDescription(bonus.description || 'Bonus text not yet entered.')}</p><p><em>Effect: ${parseDescription(effectText)}</em></p>`;
+}
+
+function updateWeaponProficiencyBonusState() {
+  clearWeaponProficiencyBonusState();
+  renderWeaponProficiencyInfo();
+
+  const type = characterData.weaponMastery?.type || '';
+  const level = parseInt(characterData.weaponMastery?.level, 10) || 0;
+  const tier = getWeaponProficiencyTier(level);
+  const entry = (typeof WEAPON_PROFICIENCY_DATA === 'object' && type) ? WEAPON_PROFICIENCY_DATA[type] : null;
+
+  if (!entry || !tier || !entry[tier]) return;
+
+  const stats = entry[tier].stats || {};
+  if (Object.values(stats).some(Boolean)) {
+    modifyWeaponProficiencyStats(stats, 1);
+    activeWeaponProficiencyStats = { ...stats };
+  }
+
+  activeWeaponProficiencyTier = tier;
+}
+
+function recordAffinityMatch(matchMap, cell, edge, color) {
+  const index = getCellIndex(cell);
+  if (!matchMap[index]) {
+    matchMap[index] = { colors: {}, edges: {} };
+  }
+
+  matchMap[index].colors[color] = (matchMap[index].colors[color] || 0) + 1;
+
+  if (!matchMap[index].edges[edge]) {
+    matchMap[index].edges[edge] = [];
+  }
+
+  matchMap[index].edges[edge].push(color);
+}
 
   function getGridAffinityState(cells = []) {
     const state = { colors: {} };
@@ -1588,7 +1801,7 @@ body.landscape-mode .grid {
       const delta = (bonus.stats[key] || 0) * multiplier;
       if (delta === 0) return;
       const current = parseInt(statInputs[i].value || 0, 10);
-      statInputs[i].value = Math.max(0, current + delta);
+      statInputs[i].value = current + delta;
     });
 
     // Armor
@@ -1682,19 +1895,20 @@ body.landscape-mode .grid {
     cellB.classList.add("match");
   }
 
-  function updateCellImage(cell, filename) {
+  function updateCellImage(cell, filename, options = {}) {
+    if (!cell) return;
+
+    const { skipSave = false, skipRecompute = false } = options;
     const index = parseInt(cell.dataset.index, 10);
     const oldFilename = cell.dataset.filename;
 
-    // Remove attributes from old item
     if (oldFilename && equipment[index]) {
       removeGearAttributes(oldFilename);
     }
 
     cell.dataset.filename = filename || "";
     characterData.gridImages[index] = filename || "";
-    
-    // Apply attributes from new item
+
     if (filename) {
       equipment[index] = filename;
       applyGearAttributes(filename);
@@ -1702,20 +1916,25 @@ body.landscape-mode .grid {
       delete equipment[index];
     }
 
-    saveCharacter();
-
     cell.innerHTML = "";
     if (filename) {
       const img = document.createElement("img");
       img.src = imageFolder + filename;
+      img.draggable = false;
       cell.appendChild(img);
 
       const data = getImageDataByFile(filename);
       applyAffinities(cell, data ? data.affinities : null);
     }
 
-    recomputeMatches();
-    updateArmorSetBonusState();
+    if (!skipRecompute) {
+      recomputeMatches();
+      updateArmorSetBonusState();
+    }
+
+    if (!skipSave) {
+      saveCharacter();
+    }
   }
 
   function openPicker(cell) {
@@ -1762,7 +1981,11 @@ body.landscape-mode .grid {
         div.appendChild(location);
       }
 
-      div.onclick = () => selectImage(filename);
+      div.onclick = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        selectImage(filename);
+      };
 
       content.appendChild(div);
     });
@@ -1798,30 +2021,71 @@ body.landscape-mode .grid {
   function resetPickerFilters() {
     document.getElementById("searchBox").value = "";
     document.getElementById("craftingLocationFilter").value = "";
+    document.getElementById("affinitySearchEnabled").checked = false;
+    document.querySelectorAll('.affinity-color-filter, .affinity-side-filter').forEach(input => {
+      input.checked = false;
+    });
+    updateAffinitySearchVisibility();
+  }
+
+  function updateAffinitySearchVisibility() {
+    const affinityEnabled = document.getElementById("affinitySearchEnabled").checked;
+    document.getElementById("affinityFilterRow").hidden = !affinityEnabled;
   }
 
   function applyImageFilters() {
     const term = document.getElementById("searchBox").value.trim().toLowerCase();
     const selectedLocation = document.getElementById("craftingLocationFilter").value;
+    const affinityEnabled = document.getElementById("affinitySearchEnabled").checked;
+    const selectedColors = Array.from(document.querySelectorAll('.affinity-color-filter:checked')).map(input => input.value);
+    const selectedSides = Array.from(document.querySelectorAll('.affinity-side-filter:checked')).map(input => input.value);
+    const hasAffinitySelection = selectedColors.length > 0 || selectedSides.length > 0;
 
     const filtered = images.filter(item => {
       const filename = item.file.toLowerCase();
       const craftingLocation = (item.craftingLocation || '').toLowerCase();
       const matchesText = !term || filename.includes(term) || craftingLocation.includes(term);
       const matchesLocation = !selectedLocation || item.craftingLocation === selectedLocation;
-      return matchesText && matchesLocation;
+      if (!matchesText || !matchesLocation) return false;
+
+      if (!affinityEnabled || !hasAffinitySelection) {
+        return true;
+      }
+
+      const affinities = item.affinities || {};
+
+      if (selectedColors.length > 0 && selectedSides.length > 0) {
+        return selectedSides.some(side => selectedColors.includes(affinities[side]));
+      }
+
+      if (selectedColors.length > 0) {
+        return Object.values(affinities).some(color => selectedColors.includes(color));
+      }
+
+      return selectedSides.some(side => !!affinities[side]);
     });
 
     renderThumbnails(filtered);
   }
 
   function selectImage(filename) {
+    const modal = document.getElementById("modal");
+    if (modal) {
+      modal.style.display = "none";
+    }
+
+    if (!activeCell) return;
+
     updateCellImage(activeCell, filename);
-    document.getElementById("modal").style.display = "none";
+    activeCell = null;
   }
 
   function dragStart(e) {
     draggedCell = e.target.closest(".cell");
+  }
+
+  function dragEnd() {
+    draggedCell = null;
   }
 
   function dragOver(e) {
@@ -1832,15 +2096,18 @@ body.landscape-mode .grid {
     e.preventDefault();
 
     const targetCell = e.target.closest(".cell");
-    if (!targetCell || targetCell === draggedCell) return;
+    if (!draggedCell || !targetCell || targetCell === draggedCell) return;
 
-    const dragIndex = getCellIndex(draggedCell);
-    const targetIndex = getCellIndex(targetCell);
     const fileA = draggedCell.dataset.filename || "";
     const fileB = targetCell.dataset.filename || "";
 
-    updateCellImage(draggedCell, fileB || null);
-    updateCellImage(targetCell, fileA || null);
+    updateCellImage(draggedCell, fileB || null, { skipSave: true, skipRecompute: true });
+    updateCellImage(targetCell, fileA || null, { skipSave: true, skipRecompute: true });
+
+    recomputeMatches();
+    updateArmorSetBonusState();
+    saveCharacter();
+    draggedCell = null;
   }
 
   document.getElementById("modal").onclick = (e) => {
@@ -1851,6 +2118,13 @@ body.landscape-mode .grid {
 
   document.getElementById("searchBox").oninput = applyImageFilters;
   document.getElementById("craftingLocationFilter").onchange = applyImageFilters;
+  document.getElementById("affinitySearchEnabled").onchange = () => {
+    updateAffinitySearchVisibility();
+    applyImageFilters();
+  };
+  document.querySelectorAll('.affinity-color-filter, .affinity-side-filter').forEach(input => {
+    input.onchange = applyImageFilters;
+  });
 
   const grid = document.getElementById("grid");
   for (let i = 0; i < 9; i++) {
@@ -1862,6 +2136,7 @@ body.landscape-mode .grid {
     cell.onclick = () => openPicker(cell);
     cell.draggable = true;
     cell.ondragstart = dragStart;
+    cell.ondragend = dragEnd;
     cell.ondragover = dragOver;
     cell.ondrop = dropImage;
     cell.oncontextmenu = (e) => {
@@ -1909,26 +2184,32 @@ renderBleedState();
 function updateStatTotals() {
   const baseRow = document.querySelector('tr[data-row="base"]');
   const eqRow = document.querySelector('tr[data-row="equipped"]');
+  const tempRow = document.querySelector('tr[data-row="temporary"]');
   const totalRow = document.querySelector('tr[data-row="total"]');
 
   const baseInputs = baseRow.querySelectorAll('input');
   const eqInputs = eqRow.querySelectorAll('input');
+  const tempInputs = tempRow.querySelectorAll('input');
   const totalCells = totalRow.querySelectorAll('.totalCell');
 
   for (let i = 0; i < totalCells.length; i++) {
     const baseVal = parseInt(baseInputs[i].value || 0, 10);
     const eqVal = parseInt(eqInputs[i].value || 0, 10);
-    totalCells[i].textContent = baseVal + eqVal;
+    const tempVal = parseInt(tempInputs[i].value || 0, 10);
+    totalCells[i].textContent = baseVal + eqVal + tempVal;
   }
 }
 
-document.querySelectorAll('#statsTable input').forEach((input, index) => {
+document.querySelectorAll('#statsTable input').forEach(input => {
   input.addEventListener('input', () => {
     const row = input.closest('tr').dataset.row;
+    const statIndex = Array.from(input.closest('tr').querySelectorAll('input')).indexOf(input);
     if (row === 'base') {
-      characterData.attributesBase[index % 6] = parseInt(input.value) || 0;
+      characterData.attributesBase[statIndex] = parseInt(input.value) || 0;
     } else if (row === 'equipped') {
-      characterData.attributesEquipped[index % 6] = parseInt(input.value) || 0;
+      characterData.attributesEquipped[statIndex] = parseInt(input.value) || 0;
+    } else if (row === 'temporary') {
+      characterData.attributesTemporary[statIndex] = parseInt(input.value) || 0;
     }
     updateStatTotals();
     saveCharacter();
@@ -1954,11 +2235,12 @@ let characterData = {
   survivorSex: "",
   layoutMode: 'portrait',
   bleedState: [0, 0, 0, 0, 0],
-  weaponMastery: { type: '', level: 0, mastered: false },
+  weaponMastery: { type: '', level: 0 },
   survivalValue: 0,
   survivalActions: { dodge: false, encourage: false, surge: false, dash: false },
   attributesBase: [5, 1, 2, 2, 0, 0],
   attributesEquipped: [0, 0, 0, 0, 0, 0],
+  attributesTemporary: [0, 0, 0, 0, 0, 0],
   armor: { insanity: 0, head: 0, arms: 0, body: 0, legs: 0, waist: 0 },
   armorInjuries: {
     insanity: { light: false, heavy: false },
@@ -1998,12 +2280,22 @@ function loadCharacter(slot = currentSlot) {
     if (!Array.isArray(characterData.conditions)) {
       characterData.conditions = [];
     }
-    if (!characterData.weaponMastery || typeof characterData.weaponMastery !== 'object') {
-      characterData.weaponMastery = { type: '', level: 0, mastered: false };
+    if (!Array.isArray(characterData.attributesBase) || characterData.attributesBase.length !== 6) {
+      characterData.attributesBase = [5, 1, 2, 2, 0, 0];
     }
-    characterData.weaponMastery.type = characterData.weaponMastery.type || '';
-    characterData.weaponMastery.level = Math.max(0, Math.min(8, parseInt(characterData.weaponMastery.level, 10) || 0));
-    characterData.weaponMastery.mastered = !!characterData.weaponMastery.mastered;
+    if (!Array.isArray(characterData.attributesEquipped) || characterData.attributesEquipped.length !== 6) {
+      characterData.attributesEquipped = [0, 0, 0, 0, 0, 0];
+    }
+    if (!Array.isArray(characterData.attributesTemporary) || characterData.attributesTemporary.length !== 6) {
+      characterData.attributesTemporary = [0, 0, 0, 0, 0, 0];
+    }
+    if (!characterData.weaponMastery || typeof characterData.weaponMastery !== 'object') {
+      characterData.weaponMastery = { type: '', level: 0 };
+    }
+    characterData.weaponMastery = {
+      type: characterData.weaponMastery.type || '',
+      level: Math.max(0, Math.min(8, parseInt(characterData.weaponMastery.level, 10) || 0))
+    };
     if (typeof characterData.huntXP !== 'number' || Number.isNaN(characterData.huntXP)) {
       characterData.huntXP = 0;
     }
@@ -2027,10 +2319,11 @@ function loadCharacter(slot = currentSlot) {
       survivorSex: "",
       layoutMode: 'portrait',
       bleedState: [0, 0, 0, 0, 0],
-      weaponMastery: { type: '', level: 0, mastered: false },
+      weaponMastery: { type: '', level: 0 },
       survivalValue: 0,
       attributesBase: [5, 1, 2, 2, 0, 0],
       attributesEquipped: [0, 0, 0, 0, 0, 0],
+      attributesTemporary: [0, 0, 0, 0, 0, 0],
       armor: { insanity: 0, head: 0, arms: 0, body: 0, legs: 0, waist: 0 },
       armorInjuries: {
         insanity: { light: false, heavy: false },
@@ -2060,7 +2353,7 @@ const ui = {
   get survivorSex()     { return document.getElementById('survivorSex'); },
   get weaponMasteryType() { return document.getElementById('weaponMasteryType'); },
   get weaponMasteryLevel() { return document.getElementById('weaponMasteryLevel'); },
-  get weaponMastered()  { return document.getElementById('weaponMastered'); },
+  get weaponMasteryInfo() { return document.getElementById('weaponMasteryInfo'); },
   get survivalValue()   { return document.getElementById('survivalValue'); },
   get survivalDodge()   { return document.getElementById('survivalDodge'); },
   get survivalEncourage(){ return document.getElementById('survivalEncourage'); },
@@ -2072,6 +2365,7 @@ const ui = {
   gridCells()           { return document.querySelectorAll('.cell'); },
   statsBaseInputs()     { return document.querySelectorAll('tr[data-row="base"] input'); },
   statsEqInputs()       { return document.querySelectorAll('tr[data-row="equipped"] input'); },
+  statsTempInputs()     { return document.querySelectorAll('tr[data-row="temporary"] input'); },
 };
 
 const ARMOR_SLOTS = ['insanity', 'head', 'arms', 'body', 'legs', 'waist'];
@@ -2084,10 +2378,10 @@ function applyIdentity() {
 }
 
 function applyWeaponMastery() {
-  const mastery = characterData.weaponMastery || { type: '', level: 0, mastered: false };
+  const mastery = characterData.weaponMastery || { type: '', level: 0 };
   if (ui.weaponMasteryType) ui.weaponMasteryType.value = mastery.type || '';
   if (ui.weaponMasteryLevel) ui.weaponMasteryLevel.value = mastery.level ?? 0;
-  if (ui.weaponMastered) ui.weaponMastered.checked = !!mastery.mastered;
+  updateWeaponProficiencyBonusState();
 }
 
 function applySurvival() {
@@ -2106,8 +2400,10 @@ function applySurvival() {
 function applyAttributes() {
   const baseInputs = ui.statsBaseInputs();
   const eqInputs   = ui.statsEqInputs();
+  const tempInputs = ui.statsTempInputs();
   characterData.attributesBase.forEach((val, i) => { if (baseInputs[i]) baseInputs[i].value = val; });
   characterData.attributesEquipped.forEach((val, i) => { if (eqInputs[i])   eqInputs[i].value   = val; });
+  characterData.attributesTemporary.forEach((val, i) => { if (tempInputs[i]) tempInputs[i].value = val; });
   updateStatTotals();
 }
 
@@ -2144,13 +2440,15 @@ function applyLayoutMode(mode) {
 }
 
 function applyCharacterDataToUI() {
+  activeWeaponProficiencyTier = '';
+  activeWeaponProficiencyStats = {};
   applyLayoutMode(characterData.layoutMode || 'portrait');
   applyIdentity();
-  applyWeaponMastery();
   applySurvival();
   applyAttributes();
   applyArmor();
   applyGrid();
+  applyWeaponMastery();
   applySelections();
 }
 
@@ -2238,6 +2536,14 @@ function applyGearAttributes(filename) {
     }
   });
 
+  const survivalBonus = SURVIVAL_BONUS_GEAR[filename] || 0;
+  if (survivalBonus && ui.survivalValue) {
+    const current = parseInt(ui.survivalValue.value || 0, 10);
+    const nextValue = current + survivalBonus;
+    ui.survivalValue.value = nextValue;
+    characterData.survivalValue = nextValue;
+  }
+
   // Armor
   Object.entries(attrs.armor).forEach(([slot, bonus]) => {
     if (bonus === 0) return;
@@ -2267,9 +2573,17 @@ function removeGearAttributes(filename) {
     const bonus = (attrs.stats[key] || 0);
     if (bonus !== 0) {
       const current = parseInt(statInputs[i].value || 0, 10);
-      statInputs[i].value = Math.max(0, current - bonus);
+      statInputs[i].value = current - bonus;
     }
   });
+
+  const survivalBonus = SURVIVAL_BONUS_GEAR[filename] || 0;
+  if (survivalBonus && ui.survivalValue) {
+    const current = parseInt(ui.survivalValue.value || 0, 10);
+    const nextValue = Math.max(0, current - survivalBonus);
+    ui.survivalValue.value = nextValue;
+    characterData.survivalValue = nextValue;
+  }
 
   // Armor
   Object.entries(attrs.armor).forEach(([slot, bonus]) => {
@@ -2288,6 +2602,7 @@ function removeGearAttributes(filename) {
 }
 
 loadCharacter();
+initializeWeaponProficiencyOptions();
 applyCharacterDataToUI();
 initializeSelectionBlock('fightingArt', 3);
 initializeSelectionBlock('disorder', 3);
@@ -2344,6 +2659,7 @@ ui.survivorSex?.addEventListener('change', () => {
 
 ui.weaponMasteryType?.addEventListener('change', () => {
   characterData.weaponMastery.type = ui.weaponMasteryType.value;
+  updateWeaponProficiencyBonusState();
   saveCharacter();
 });
 
@@ -2351,11 +2667,7 @@ ui.weaponMasteryLevel?.addEventListener('input', () => {
   const nextLevel = Math.max(0, Math.min(8, parseInt(ui.weaponMasteryLevel.value, 10) || 0));
   ui.weaponMasteryLevel.value = nextLevel;
   characterData.weaponMastery.level = nextLevel;
-  saveCharacter();
-});
-
-ui.weaponMastered?.addEventListener('change', () => {
-  characterData.weaponMastery.mastered = ui.weaponMastered.checked;
+  updateWeaponProficiencyBonusState();
   saveCharacter();
 });
 

@@ -1,8 +1,10 @@
 // kdm-data.js - Kingdom Death: Monster character data
-// Fighting Arts, Disorders, Abilities, and Severe Injuries
+// Fighting Arts, Disorders, Abilities, and Permanent Injuries
 
 const GLOSSARY = {
   'bash': 'Causes survivors to be knocked down.',
+  'cursed': 'This gear cannot be removed from the gear grid for any reason. If the survivor dies, archive this gear.',
+  'deadly': 'Gain +X luck while attacking with this weapon. This increases the odds of inflicting critical wounds.',
   'deaf': 'An impairment. You won\'t hear it coming. Suffer -1 permanent evasion. This injury is permanent and can be recorded once.',
   'guardless': 'You cannot ignore hits.',
   'heavy': 'This gear has substantial weight.',
@@ -10,14 +12,83 @@ const GLOSSARY = {
   'two-handed': 'This weapon requires two hands to use. Some gear and rules do not work with two-handed weapons.',
   'encourage': 'A survival action. A standing survivor may spend 1 survival at any time to encourage a knocked down survivor, letting them stand. Deaf survivors may not be encouraged. Each survivor may only Encourage once per round, and only if the settlement has the Language innovation.',
   'endeavors': 'Actions taken during the settlement phase to improve your survivor or settlement.',
+  'impervious': 'Impervious hit locations cannot be wounded, even with a Lantern 10 wound roll. Wound attempts will never remove AI cards. However, critical effects may still occur.',
   'insanity': 'A measure of psychological stress. Too much insanity can cause disorders.',
   'evasion': 'Your ability to avoid incoming attacks.',
   'momentum': 'When you travel 4 or more spaces from movement or knockback without passing over the same space twice, gain +1 momentum token. When you successfully Tumble, gain +1 momentum token. When you are knocked down, lose all your momentum tokens.',
+  'noisy': 'This gear  This gear is hard to keep quiet.',
+  'paired': 'Paired weapons are two identical weapons that can be used as one. Add the speed of the second weapon when attacking with the first. These weapons must have the same name, and both must be in your gear grid.',
   'perfect hit': 'An attack dice roll result of a Lantern 10. This always results in a hit. When there are multiple Perfect Hits in a single attack, trigger any rules applying to Perfect Hits that many times. Perfect Hits are modified by the Perfection special rule.',
   'provoke': 'When you wound with this weapon, gain the priority target token.',
+  'savage': 'After the first critical wound in an attack, savage weapons cause 1 additional wound. This rule does not trigger on [Impervious] hit locations.',
   'slam': 'Spend activation and full move forward in a straight line. If you move 4+ spaces and stop adjacent to a monster, it suffers knockback 1 and -1 toughness until the end of the round.',
   'sharp': 'Add 1d10 strength to each wound attempt using this gear. This d10 is not a wound roll, and cannot cause critical wounds.',
   'surge': 'A type of survival action. When opportunity permits, a survivor may spend 1 survival to surge. Gain +1 Activation which must be spent immediately. This allows them to activate a weapon, interact with terrain, use gear, and anything else spending an activation allows them to do. Resolve the results of the surge (including any monster reactions) before resuming the turn. Each survivor may only surge once per round, and only if the settlement has the Inner Lantern innovation.'
+};
+
+// Weapon proficiency data is keyed by the select option value.
+// Add new weapon types here and they will automatically appear in the dropdown.
+const WEAPON_PROFICIENCY_DATA = {
+  axe: {
+    name: 'Axe',
+    specialist: { title: 'Axe Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
+    master: { title: 'Axe Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+  },
+  bow: {
+    name: 'Bow',
+    specialist: { title: 'Bow Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
+    master: { title: 'Bow Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+  },
+  club: {
+    name: 'Club',
+    specialist: { title: 'Club Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
+    master: { title: 'Club Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+  },
+  dagger: {
+    name: 'Dagger',
+    specialist: { title: 'Dagger Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
+    master: { title: 'Dagger Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+  },
+  'fist-tooth': {
+    name: 'Fist & Tooth',
+    specialist: { title: 'Fist & Tooth Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
+    master: {
+      title: 'Fist & Tooth Master',
+      description: 'Gain +2 accuracy and +2 strength while using Fist & Tooth.',
+      effect: '+2 accuracy, +2 strength',
+      stats: { accuracy: 2, strength: 2 }
+    }
+  },
+  grand: {
+    name: 'Grand Weapon',
+    specialist: { title: 'Grand Weapon Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
+    master: { title: 'Grand Weapon Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+  },
+  katana: {
+    name: 'Katana',
+    specialist: { title: 'Katana Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
+    master: { title: 'Katana Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+  },
+  shield: {
+    name: 'Shield',
+    specialist: { title: 'Shield Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
+    master: { title: 'Shield Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+  },
+  spear: {
+    name: 'Spear',
+    specialist: { title: 'Spear Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
+    master: { title: 'Spear Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+  },
+  sword: {
+    name: 'Sword',
+    specialist: { title: 'Sword Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
+    master: { title: 'Sword Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+  },
+  whip: {
+    name: 'Whip',
+    specialist: { title: 'Whip Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
+    master: { title: 'Whip Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+  }
 };
 
 const FIGHTING_ARTS_LIST = [
@@ -74,52 +145,52 @@ const DISORDERS_LIST = [
   { id: 'binge_eating', name: 'Binge Eating', description: 'You cannot depart unless you have consumable gear in your gear grid. You must consume if a choice to consume arises.', effect: 'none' },
   { id: 'bloodlust', name: 'Bloodlust', description: 'Whenever a survivor gains a bleeding token, suffer the frenzy disorder. Limit once per round.', effect: 'none' },
   { id: 'brain_smog', name: 'Brain Smog', description: 'You cannot [Surge] or Concentrate.', effect: 'none' },
-  { id: 'coprolalia', name: 'Coprolalia', description: '', effect: 'none' },
-  { id: 'fear_of_the_dark', name: 'Fear of the Dark', description: '', effect: 'none' },
-  { id: 'hemophobia', name: 'Hemophobia', description: '', effect: 'none' },
-  { id: 'hoarder', name: 'Hoarder', description: '', effect: 'none' },
-  { id: 'honorable', name: 'Honorable', description: '', effect: 'none' },
-  { id: 'hyperactive', name: 'Hyperactive', description: '', effect: 'none' },
-  { id: 'immortal', name: 'Immortal', description: '', effect: 'none' },
-  { id: 'indecision', name: 'Indecision', description: '', effect: 'none' },
-  { id: 'monster_panic', name: 'Monster Panic', description: '', effect: 'none' },
-  { id: 'post_traumatic_stress', name: 'Post-Traumatic Stress', description: '', effect: 'none' },
-  { id: 'prey', name: 'Prey', description: '', effect: 'none' },
-  { id: 'quixotic', name: 'Quixotic', description: '', effect: 'none' },
-  { id: 'rageholic', name: 'Rageholic', description: '', effect: 'none' },
-  { id: 'secretive', name: 'Secretive', description: '', effect: 'none' },
-  { id: 'seizures', name: 'Seizures', description: '', effect: 'none' },
-  { id: 'squeamish', name: 'Squeamish', description: '', effect: 'none' },
-  { id: 'traumatized', name: 'Traumatized', description: '', effect: 'none' },
-  { id: 'vestiphobia', name: 'Vestiphobia', description: '', effect: 'none' },
-  { id: 'weak_spot', name: 'Weak Spot', description: '', effect: 'none' }
+  { id: 'coprolalia', name: 'Coprolalia', description: 'All your gear is [noisy]. You are always a threat unless you are knocked down, even if an effect says otherwise.', effect: 'none' },
+  { id: 'fear_of_the_dark', name: 'Fear of the Dark', description: 'You [retire]. If you gain this disorder during a hunt or showdown, you put on a brave face until you return to the settlement, vowing never to leave the Lantern Hoard again.', effect: 'none' },
+  { id: 'hemophobia', name: 'Hemophobia', description: 'During the showdown, whenever a survivor (including you) gains a bleeding token, you are knocked down.', effect: 'none' },
+  { id: 'hoarder', name: 'Hoarder', description: 'Whenever you are a returning survivor, archive 1 resource gained from the last showdown and gain +1 courage.', effect: 'none' },
+  { id: 'honorable', name: 'Honorable', description: 'You cannot attack a monster from its blind spot or if it is knocked down.', effect: 'none' },
+  { id: 'hyperactive', name: 'Hyperactive', description: 'During the showdown, you must move at least 1 space every round.', effect: 'none' },
+  { id: 'immortal', name: 'Immortal', description: 'While you are insane, convert all damage dealt to your hit locations to brain damage. You are so busy reveling in your own glory that you cannot spend survival while insane.', effect: 'none' },
+  { id: 'indecision', name: 'Indecision', description: 'If you are the event revealer of hunt events that call on you to make a roll, roll twice and use the lower result.', effect: 'none' },
+  { id: 'monster_panic', name: 'Monster Panic', description: 'Whenever you suffer brain damage from an intimidate action, suffer 1 additional brain damage.', effect: 'none' },
+  { id: 'post_traumatic_stress', name: 'Post-Traumatic Stress', description: 'Next settlement phase, you do not contribute or participate in any endeavors. Skip the next hunt to recover.', effect: 'none' },
+  { id: 'prey', name: 'Prey', description: 'You may not spend survival unless you are insane.', effect: 'none' },
+  { id: 'quixotic', name: 'Quixotic', description: 'If you are insane when you depart, gain +1 survival and +1 strength token.', effect: 'none' },
+  { id: 'rageholic', name: 'Rageholic', description: 'Whenever you suffer a severe injury, also suffer the frenzy brain trauma.', effect: 'none' },
+  { id: 'secretive', name: 'Secretive', description: 'When you are a returning survivor, you quickly become preoccupied with your own affairs. You must skip the next hunt to deal with them.', effect: 'none' },
+  { id: 'seizures', name: 'Seizures', description: 'During the showdown, whenever you suffer damage to your head location, you are knocked down.', effect: 'none' },
+  { id: 'squeamish', name: 'Squeamish', description: 'You cannot depart with any stinky gear in your gear grid. If a status or effect would cause you to become [stinky], lose all your survival.', effect: 'none' },
+  { id: 'traumatized', name: 'Traumatized', description: 'Whenever you end your act adjacent to a monster, you are knocked down.', effect: 'none' },
+  { id: 'vestiphobia', name: 'Vestiphobia', description: 'You cannot wear armor at the body location. If you are wearing armor at the body location when you gain this disorder, archive it as you tear it off your person!', effect: 'none' },
+  { id: 'weak_spot', name: 'Weak Spot', description: 'When you gain this disorder, roll a random hit location and record it. You cannot depart unless you have armor at this hit location.', effect: 'none' }
 ];
 
 const ABILITIES_LIST = [
-  { id: 'acceleration', name: 'Acceleration', description: '', effect: 'none' },
-  { id: 'acid_palms', name: 'Acid Palms', description: '', effect: 'none' },
-  { id: 'ageless', name: 'Ageless', description: '', effect: 'none' },
+  { id: 'acceleration', name: 'Acceleration', description: 'Add +1d10 movement to a move action. Before moving, you may roll the Death Die and add the result to your movement for one move action this round.', effect: 'none' },
+  { id: 'acid_palms', name: 'Acid Palms', description: 'Add 1d10 strength to wound attempts when attacking with Fist & Tooth.', effect: 'none' },
+  { id: 'ageless', name: 'Ageless', description: 'You may hunt if you are retired. When you gain Hunt XP, you may decide not to gain it. Saviors age unnaturally and cannot use Ageless, though they are able to gain Ageless.', effect: 'none' },
   { id: 'aggression_overload', name: 'Aggression Overload', description: '', effect: 'none' },
-  { id: 'analyze', name: 'Analyze', description: '', effect: 'none' },
-  { id: 'astute', name: 'Astute', description: '', effect: 'none' },
-  { id: 'bitter_frenzy', name: 'Bitter Frenzy', description: '', effect: 'none' },
-  { id: 'burnt_nerves', name: 'Burnt Nerves', description: '', effect: 'none' },
-  { id: 'caratosis', name: 'Caratosis', description: '', effect: 'none' },
-  { id: 'crystal_skin', name: 'Crystal Skin', description: '', effect: 'none' },
-  { id: 'dormenatus', name: 'Dormenatus', description: '', effect: 'none' },
-  { id: 'explore', name: 'Explore', description: '', effect: 'none' },
-  { id: 'fated_battle', name: 'Fated Battle', description: '', effect: 'none' },
-  { id: 'forgettable', name: 'Forgettable', description: '', effect: 'none' },
-  { id: 'heart_of_the_sword', name: 'Heart of the Sword', description: '', effect: 'none' },
-  { id: 'homing_instinct', name: 'Homing Instinct', description: '', effect: 'none' },
-  { id: 'iridescent_hide', name: 'Iridescent Hide', description: '', effect: 'none' },
-  { id: 'iron_will', name: 'Iron Will', description: '', effect: 'none' },
-  { id: 'legendcaller', name: 'Legendcaller', description: '', effect: 'none' },
-  { id: 'legs_locked', name: 'Legs Locked', description: '', effect: 'none' },
-  { id: 'leyline_walker', name: 'Leyline Walker', description: '', effect: 'none' },
-  { id: 'life_exchange', name: 'Life Exchange', description: '', effect: 'none' },
-  { id: 'limb_maker', name: 'Limb-maker', description: '', effect: 'none' },
-  { id: 'lucernae', name: 'Lucernae', description: '', effect: 'none' },
+  { id: 'analyze', name: 'Analyze', description: ' At the start of the survivors\' turn, if you are adjacent to the monster, reveal the top AI card, then place it back on top of the deck.', effect: 'none' },
+  { id: 'astute', name: 'Astute', description: 'On Arrival, if possible, add an acanthus plant terrain card to the showdown.', effect: 'none' },
+  { id: 'bitter_frenzy', name: 'Bitter Frenzy', description: 'Each showdown, the first time you suffer the frenzy brain trauma, gain 1d10 survival. You may spend survival while Frenzied.', effect: 'none' },
+  { id: 'burnt_nerves', name: 'Burnt Nerves', description: 'You are immune to [bash].', effect: 'none' },
+  { id: 'caratosis', name: 'Caratosis', description: ' Before making an attack roll, you may declare "Caratosis X" in a loud, booming voice. If you do, that attack gains X automatic hits. X cannot be more than your total red affinities. When the attack ends, gain +X hunt XP.', effect: 'none' },
+  { id: 'crystal_skin', name: 'Crystal Skin', description: 'You ignore [cursed] and cannot wear armor. When you depart gain 3 to all hit locations. Suffer -2 to the result of all severe injury rolls. When you participate in Intimacy, newborns gain Crystal Skin in addition to any other roll results.', effect: 'none' },
+  { id: 'dormenatus', name: 'Dormenatus', description: 'When you suffer damage, you may declare "Dormenatus X" in a loud, booming voice, if you do, gain X armor points to each hit location. X cannot be more than your total green affinities. After the damage is resolved, gain +X hunt XP.', effect: 'none' },
+  { id: 'explore', name: 'Explore', description: 'When you roll on an investigate table, add +2 to your roll result.', effect: 'none' },
+  { id: 'fated_battle', name: 'Fated Battle', description: 'At the start of a showdown with the picked monster, gain +1 speed token.', effect: 'none' },
+  { id: 'forgettable', name: 'Forgettable', description: 'Gain +2 permanent evasion. Forgettable survivors cannot be encouraged.', effect: 'none' },
+  { id: 'heart_of_the_sword', name: 'Heart of the Sword', description: 'If you gain a weapon proficiency during the Aftermath, gain +3 additional ranks. You cough up a hunk of your own solidified blood and gain +1 Iron strange resource.', effect: 'none' },
+  { id: 'homing_instinct', name: 'Homing Instinct', description: 'Add +5 to your rolls on the Run Away story event.', effect: 'none' },
+  { id: 'iridescent_hide', name: 'Iridescent Hide', description: 'Gain 1 to all hit locations for each different-colored affinity in your gear grid.', effect: 'none' },
+  { id: 'iron_will', name: 'Iron Will', description: 'You cannot be knocked down. Reduce all knockback you suffer to knockback 1.', effect: 'none' },
+  { id: 'legendcaller', name: 'Legendcaller', description: 'Once a lifetime, on a hunt board space after Overwhelming Darkness, in place of rolling a random hunt event, use "53" as your result.', effect: 'none' },
+  { id: 'legs_locked', name: 'Legs Locked', description: 'While you have the Death Die, you stand. While you have the Death Die, you cannot be knocked down for any reason.', effect: 'none' },
+  { id: 'leyline_walker', name: 'Leyline Walker', description: 'While there is no armor or accessory gear in your gear grid, gain +3 evasion.', effect: '+3 evasion' },
+  { id: 'life_exchange', name: 'Life Exchange', description: 'In the Aftermath, gain 1 additional Hunt XP. You may not wear other gear. If you trigger the White Secret story event, you cease to exist. When you retire, you cease to exist.', effect: 'none' },
+  { id: 'limb_maker', name: 'Limb-maker', description: 'Once per settlement phase, spend 2 Endeavors to carve a prosthetic limb. Remove a survivor\'s dismembered injury and add 1 bone to the settlement\'s storage.', effect: 'none' },
+  { id: 'lucernae', name: 'Lucernae', description: 'Before making a wound attempt, you many declare "Lucernae X" in a loud, booming voice. If you do, that wound attempt gains X Luck. X cannot be more than your total blue affinities. When the attack ends, gain +X hunt XP. When you trigger Age 2, gain the Lucernae\'s Lantern secret fighting art.', effect: 'none' },
   { id: 'mad_oracle', name: 'Mad Oracle', description: '', effect: 'none' },
   { id: 'matchmaker', name: 'Matchmaker', description: '', effect: 'none' },
   { id: 'metabolic_surrender', name: 'Metabolic Surrender', description: '', effect: 'none' },
