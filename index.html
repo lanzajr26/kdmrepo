@@ -1417,6 +1417,7 @@ body.landscape-mode .grid {
   let activeWeaponProficiencyTier = '';
   let activeWeaponProficiencyStats = {};
   const SURVIVAL_BONUS_GEAR = {
+    'scrap_lantern.png': 1,
     'stone_noses.png': 1,
     'whisker_harp.png': 1
   };
@@ -1610,12 +1611,23 @@ function renderWeaponProficiencyInfo() {
   }
 
   const bonus = entry[tier];
-  const effectText = bonus.effect && bonus.effect !== 'none'
-    ? bonus.effect
-    : (formatAffinityEffectText({ stats: bonus.stats || {} }) || 'none');
+  const explicitEffect = bonus.effect;
+  const normalizedExplicitEffect = typeof explicitEffect === 'string'
+    ? explicitEffect.trim().toLowerCase()
+    : explicitEffect;
+  const hasExplicitEffect = !(
+    explicitEffect == null ||
+    normalizedExplicitEffect === '' ||
+    normalizedExplicitEffect === 'none' ||
+    normalizedExplicitEffect === 'null'
+  );
+  const derivedEffect = formatAffinityEffectText({ stats: bonus.stats || {} });
+  const effectText = hasExplicitEffect ? explicitEffect : derivedEffect;
+  const normalizedEffectText = typeof effectText === 'string' ? effectText.trim().toLowerCase() : '';
+  const showEffect = typeof effectText === 'string' && normalizedEffectText !== '' && normalizedEffectText !== 'none' && normalizedEffectText !== 'null';
 
   ui.weaponMasteryInfo.hidden = false;
-  ui.weaponMasteryInfo.innerHTML = `<p><strong>${bonus.title || `${entry.name} ${formatDisplayName(tier)}`}</strong></p><p>${parseDescription(bonus.description || 'Bonus text not yet entered.')}</p><p><em>Effect: ${parseDescription(effectText)}</em></p>`;
+  ui.weaponMasteryInfo.innerHTML = `<p><strong>${bonus.title || `${entry.name} ${formatDisplayName(tier)}`}</strong></p><p>${parseDescription(bonus.description || 'Bonus text not yet entered.')}</p>${showEffect ? `<p><em>Effect: ${parseDescription(effectText)}</em></p>` : ''}`;
 }
 
 function updateWeaponProficiencyBonusState() {

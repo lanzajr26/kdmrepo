@@ -2,7 +2,9 @@
 // Fighting Arts, Disorders, Abilities, and Permanent Injuries
 
 const GLOSSARY = {
+  'barbed': 'On a Perfect hit, gain +X strength for the rest of the attack.',
   'bash': 'Causes survivors to be knocked down.',
+  'collision': 'When a survivor suffers collision, they are knocked down.',
   'cursed': 'This gear cannot be removed from the gear grid for any reason. If the survivor dies, archive this gear.',
   'deadly': 'Gain +X luck while attacking with this weapon. This increases the odds of inflicting critical wounds.',
   'deaf': 'An impairment. You won\'t hear it coming. Suffer -1 permanent evasion. This injury is permanent and can be recorded once.',
@@ -31,63 +33,84 @@ const GLOSSARY = {
 const WEAPON_PROFICIENCY_DATA = {
   axe: {
     name: 'Axe',
-    specialist: { title: 'Axe Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
-    master: { title: 'Axe Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+    specialist: { title: 'Axe Specialist', description: 'When attacking with an axe, if your wound attempt fails, you may ignore it and attempt to wound the selected hit location again. Limit, once per attack.', effect: 'none', stats: {} },
+    master: { title: 'Axe Mastery', description: 'When an Axe Master wounds a monster with an axe at a location with a persistent injury, that wound becomes a critical wound. All survivors gain Axe Specialization in addition to their other weapon proficiencies.', effect: 'none', stats: {} }
   },
   bow: {
     name: 'Bow',
-    specialist: { title: 'Bow Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
-    master: { title: 'Bow Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+    specialist: { title: 'Bow Specialist', description: 'When attacking with a bow you may reroll any misses once. Limit, once per attack.', effect: 'none', stats: {} },
+    master: { title: 'Bow Mastery', description: 'If you are a Bow Master, all bows in your gear grid gain [Deadly] 2. In addition, ignore cumbersome on all bows. All survivors gain Bow Specialization in addition to their other weapon proficiencies.', effect: 'none', stats: {} }
   },
   club: {
     name: 'Club',
-    specialist: { title: 'Club Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
-    master: { title: 'Club Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+    specialist: { title: 'Club Specialist', description: 'When attacking with a club, on a [Perfect hit], double your wound attempt total on the first selected hit location. Limit, once per attack.', effect: 'none', stats: {} },
+    master: { title: 'Club Mastery', description: 'When a Club Master attacks with a club, if a successful wound attempt total is greater than or equal to twice the monster\'s toughness, inflict an additional wound. All survivors gain Club Specialization in addition to their other weapon proficiencies.', effect: 'none', stats: {} }
   },
   dagger: {
     name: 'Dagger',
-    specialist: { title: 'Dagger Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
-    master: { title: 'Dagger Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+    specialist: { title: 'Dagger Specialist', description: 'When attacking with a Dagger, if a wound attempt fails, after performing any reactions, you may discard another drawn hit location card to attempt to wound the failed hit location again. Limit once per attack.', effect: 'none', stats: {} },
+    master: { title: 'Dagger Mastery', description: 'After a wounded hit location is discarded, a Dagger Master who is adjacent to the attacker and the wounded monster may spend 1 survival to re-draw the wounded hit location and attempt to wound with a dagger. Treat monster reactions on the re-drawn hit location card normally. All survivors gain Dagger Specialization in addition to their other weapon proficiencies.', effect: 'none', stats: {} }
   },
   'fist-tooth': {
     name: 'Fist & Tooth',
-    specialist: { title: 'Fist & Tooth Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
+    specialist: { title: 'Fist & Tooth Specialist', description: 'You may stand (if knocked down) at the start of the monster\'s turn or the survivor\'s turn. Limit, once per round.', effect: 'none', stats: {} },
     master: {
-      title: 'Fist & Tooth Master',
-      description: 'Gain +2 accuracy and +2 strength while using Fist & Tooth.',
+      title: 'Fist & Tooth Mastery',
+      description: 'While a survivor is a Fist & Tooth Master, they gain +2 permanent accuracy and +2 permanent strength (they receive this bonus even when not attacking with Fist & Tooth). All survivors gain Fist & Tooth Specialization in addition to their other weapon proficiencies.',
       effect: '+2 accuracy, +2 strength',
       stats: { accuracy: 2, strength: 2 }
     }
   },
   grand: {
     name: 'Grand Weapon',
-    specialist: { title: 'Grand Weapon Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
-    master: { title: 'Grand Weapon Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+    specialist: { title: 'Grand Weapon Specialist', description: 'When attacking with a grand weapon, gain +1 accuracy. When attacking with a grand weapon during your act, if you critically wound, the monster is knocked down.',
+       effect: '+1 accuracy',
+        stats: { accuracy: 1 } },
+    master: { title: 'Grand Weapon Mastery', description: 'When a Grand Weapon Master [perfect hit]s with a grand weapon, cancel all reactions for that attack. All survivors gain Grand Weapon Specialization in addition to their other weapon proficiencies.', effect: 'none', stats: {} }
   },
-  katana: {
-    name: 'Katana',
-    specialist: { title: 'Katana Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
-    master: { title: 'Katana Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+  katar: {
+    name: 'Katar',
+    specialist: { title: 'Katar Specialist', description: 'When attacking with a katar, cancel reactions on the first selected hit locations.', effect: 'none', stats: {} },
+    master: { title: 'Katar Mastery', description: 'If you are a Katar Master, gain a +1 evasion token on a [Perfect hit] with a katar. When you are knocked down, remove all +1 evasion tokens. All survivors gain Katar Specialization in addition to their other weapon proficiencies.', effect: 'none', stats: {} }
   },
   shield: {
     name: 'Shield',
-    specialist: { title: 'Shield Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
-    master: { title: 'Shield Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+    specialist: { title: 'Shield Specialist', description: 'While a shield is in your gear grid, you are no longer knocked down after [Collision] with a monster. While a shield is in your gear grid, add 1 to all hit locations.', effect: 'none', stats: {} },
+    master: { title: 'Shield Mastery', description: 'When a Shield Master is adjacent to a survivor that is targeted by a monster, they may swap spaces on the board with the survivor and become the target instead. The master must have a shield to perform this. All survivors gain Shield Specialization in addition to their other weapon proficiencies.', effect: 'none', stats: {} }
   },
   spear: {
     name: 'Spear',
-    specialist: { title: 'Spear Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
-    master: { title: 'Spear Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+    specialist: { title: 'Spear Specialist', description: 'When attacking with a spear, if you draw a trap, roll 1d10. On a 7+, cancel the trap. Discard it, then reshuffle the hit location discard into the hit location deck and draw a new card. Limit once per round.', effect: 'none', stats: {} },
+    master: { title: 'Spear Mastery', description: 'Whenever a Spear Master hits a monster with a spear, they may spend 1 survival to gain the priority target token. If they made the hit from directly behind another survivor, that survivor gains the priority target token instead. All survivors gain Spear Specialization in addition to their other weapon proficiencies.', effect: 'none', stats: {} }
   },
   sword: {
     name: 'Sword',
-    specialist: { title: 'Sword Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
-    master: { title: 'Sword Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+    specialist: { title: 'Sword Specialist', description: 'When attacking with a sword, after drawing hit locations, make a wound attempt and then select a hit location to resolve with that result. Limit once per attack.', effect: 'none', stats: {} },
+    master: { title: 'Sword Mastery', description: 'A Sword Master gains +1 accuracy, +1 strength, and +1 speed when attacking with a Sword. All survivors gain Sword Specialization in addition to their other weapon proficiencies.', 
+      effect: '+1 accuracy, +1 strength, +1 speed', 
+      stats: {accuracy: 1, strength: 1, speed: 1}
+   }
   },
+  sword_willow: {
+    name: 'Sword Willow',
+    specialist: { title: 'Sword Willow Specialist', description: 'Swords in your gear grid gain Block 1 and the two-handed keyword. When you block or deflect a hit with a sword, gain +1 survival. Limit once per round.', effect: 'none', stats: {} },
+    master: { title: 'Sword Willow Mastery', description: 'After resolving a monster\'s AI card, if you ignored a hit with a block or deflect, you may spend 1 survival to activate a sword and attack. Limit once per round.', 
+      effect: 'none', 
+      stats: {}
+   }
+  },  
+  twilight_sword: {
+    name: 'Twilight Sword',
+    specialist: { title: 'Twilight Sword Specialist', description: 'This sentient sword improves as it\'s used. Gain the effects as proficiency rank increases: <br>2 Ignore Cumbersome on Twilight Sword.<br>4 When attacking with the Twilight Sword, ignore slow and gain +2 speed.<br>6 Twilight Sword gains deadly.', effect: 'none', stats: {} },
+    master: { title: 'Twilight Sword Mastery', description: 'Any survivor who attains Twilight Sword Mastery leaves the settlement forever in pursuit of a higher purpose. Remove them from the settlement\'s population. You may place the master\'s Twilight Sword in another survivor\'s gear grid or archive it.', effect: 'none', stats: {} }
+  },  
   whip: {
     name: 'Whip',
-    specialist: { title: 'Whip Specialist', description: 'Specialist bonus not yet entered.', effect: 'none', stats: {} },
-    master: { title: 'Whip Master', description: 'Master bonus not yet entered.', effect: 'none', stats: {} }
+    specialist: { title: 'Whip Specialist', description: 'When you wound with a whip, instead of moving the top card of the AI deck into the wound stack, you may move the top card of the AI discard pile. Limit once per attack.', effect: 'none', stats: {} },
+    master: { title: 'Whip Mastery', description: 'Whip Masters gain +5 strength when attacking with a whip. All survivors gain Whip Specialization in addition to their other weapon proficiencies.', 
+      effect: '+5 strength', 
+      stats: {strength: 5}
+}
   }
 };
 
@@ -162,6 +185,7 @@ const DISORDERS_LIST = [
   { id: 'seizures', name: 'Seizures', description: 'During the showdown, whenever you suffer damage to your head location, you are knocked down.', effect: 'none' },
   { id: 'squeamish', name: 'Squeamish', description: 'You cannot depart with any stinky gear in your gear grid. If a status or effect would cause you to become [stinky], lose all your survival.', effect: 'none' },
   { id: 'traumatized', name: 'Traumatized', description: 'Whenever you end your act adjacent to a monster, you are knocked down.', effect: 'none' },
+  { id: 'vermin_obsession', name: 'Vermin Obesession', description: 'While there is a Bug Patch terrain tile on the showdown board, you are so overwhelmed that you cannont spend survival.', effect: 'none' },
   { id: 'vestiphobia', name: 'Vestiphobia', description: 'You cannot wear armor at the body location. If you are wearing armor at the body location when you gain this disorder, archive it as you tear it off your person!', effect: 'none' },
   { id: 'weak_spot', name: 'Weak Spot', description: 'When you gain this disorder, roll a random hit location and record it. You cannot depart unless you have armor at this hit location.', effect: 'none' }
 ];
@@ -191,21 +215,21 @@ const ABILITIES_LIST = [
   { id: 'life_exchange', name: 'Life Exchange', description: 'In the Aftermath, gain 1 additional Hunt XP. You may not wear other gear. If you trigger the White Secret story event, you cease to exist. When you retire, you cease to exist.', effect: 'none' },
   { id: 'limb_maker', name: 'Limb-maker', description: 'Once per settlement phase, spend 2 Endeavors to carve a prosthetic limb. Remove a survivor\'s dismembered injury and add 1 bone to the settlement\'s storage.', effect: 'none' },
   { id: 'lucernae', name: 'Lucernae', description: 'Before making a wound attempt, you many declare "Lucernae X" in a loud, booming voice. If you do, that wound attempt gains X Luck. X cannot be more than your total blue affinities. When the attack ends, gain +X hunt XP. When you trigger Age 2, gain the Lucernae\'s Lantern secret fighting art.', effect: 'none' },
-  { id: 'mad_oracle', name: 'Mad Oracle', description: '', effect: 'none' },
-  { id: 'matchmaker', name: 'Matchmaker', description: '', effect: 'none' },
-  { id: 'metabolic_surrender', name: 'Metabolic Surrender', description: '', effect: 'none' },
-  { id: 'metal_maw', name: 'Metal Maw', description: '', effect: 'none' },
-  { id: 'nightmare_blood', name: 'Nightmare Blood', description: '', effect: 'none' },
-  { id: 'nightmare_membrane', name: 'Nightmare Membrane', description: '', effect: 'none' },
-  { id: 'nightmare_spurs', name: 'Nightmare Spurs', description: '', effect: 'none' },
-  { id: 'oracles_eye', name: 'Oracle\'s Eye', description: '', effect: 'none' },
-  { id: 'partner', name: 'Partner', description: '', effect: 'none' },
-  { id: 'peerless', name: 'Peerless', description: '', effect: 'none' },
-  { id: 'possessed', name: 'Possessed', description: '', effect: 'none' },
-  { id: 'prepared', name: 'Prepared', description: '', effect: 'none' },
-  { id: 'presage', name: 'Presage', description: '', effect: 'none' },
-  { id: 'pristine', name: 'Pristine', description: '', effect: 'none' },
-  { id: 'psychovore', name: 'Psychovore', description: '', effect: 'none' },
+  { id: 'mad_oracle', name: 'Mad Oracle', description: 'Once per showdown, as a monster draws an AI, name a card. If the AI card drawn is the named card, gain +1 evasion token.', effect: 'none' },
+  { id: 'matchmaker', name: 'Matchmaker', description: 'When you are a returning survivor, once per lantern year, you may spend an Endeavor to trigger the Story Event Intimacy.', effect: 'none' },
+  { id: 'metabolic_surrender', name: 'Metabolic Surrender', description: 'Any time during the showdown, you may roll the Death Die. Gain twice that much survival. This round, ignore negative effects of permanent injuries, impairments, disorders, and negative attributes (including tokens). At the end of the round, you die.', effect: 'none' },
+  { id: 'metal_maw', name: 'Metal Maw', description: 'Your Fist & Tooth attacks gain [Sharp] (add 1d10 strength to each wound attempt).', effect: 'none' },
+  { id: 'nightmare_blood', name: 'Nightmare Blood', description: 'Whenever you gain a bleeding token, add 1 to all hit locations.', effect: 'none' },
+  { id: 'nightmare_membrane', name: 'Nightmare Membrane', description: 'You may spend Movement & Activation to exchange any 1 of your tokens for a +1 strength token.', effect: 'none' },
+  { id: 'nightmare_spurs', name: 'Nightmare Spurs', description: 'Once per showdown, you may spend all of your survival (at least 1) to lose all your +1 strength tokens and gain that many +1 luck tokens.', effect: 'none' },
+  { id: 'oracles_eye', name: 'Oracle\'s Eye', description: 'At the start of the showdown, look through the AI deck, then shuffle it.', effect: 'none' },
+  { id: 'partner', name: 'Partner', description: 'When you gain this ability, add the name of your partner. Partners may only nominate each other for Story Event Intimacy. When you partner dies, gain a random disorder and lose this ability.', effect: 'none' },
+  { id: 'peerless', name: 'Peerless', description: 'When you gain insanity, you may gain an equal amount of survival.', effect: 'none' },
+  { id: 'possessed', name: 'Possessed', description: 'The survivor cannot use weapon specialization, weapon mastery, or fighting arts.', effect: 'none' },
+  { id: 'prepared', name: 'Prepared', description: 'When rolling to determine a straggler, add your hunt experience to your roll result.', effect: 'none' },
+  { id: 'presage', name: 'Presage', description: 'Each time you attack, before drawing hit locations, loudly say a name. You lightly bite the eye in your cheek to see what it sees. If you draw any hit locations with the name, gain +3 insanity and +10 strength when attempting to wound them.', effect: 'none' },
+  { id: 'pristine', name: 'Pristine', description: 'When you suffer a dismembered severe injury, ignore it and gain 1 bleeding token instead.', effect: 'none' },
+  { id: 'psychovore', name: 'Psychovore', description: 'Once per showdown, you may eat an adjacent survior\'s disorder. If you do, remove the disorder. They gain 1 bleeding token and you gain +1 permanent strength. At the end of the showdown, if you haven\'t eaten a disorder, you die.', effect: 'none' },
   { id: 'reflection', name: 'Reflection', description: '', effect: 'none' },
   { id: 'refraction', name: 'Refraction', description: '', effect: 'none' },
   { id: 'rooted_to_all', name: 'Rooted to All', description: '', effect: 'none' },
