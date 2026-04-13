@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="dark" lang="en">
 <head>
   <meta charset="UTF-8">
@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="kdm-styles.css" rel="stylesheet">
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -76,874 +77,6 @@
       }
     }
   </script>
-  <style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
-    .diamond-check {
-      appearance: none;
-      width: 14px;
-      height: 14px;
-      transform: rotate(45deg);
-      border: 1px solid #5b403c;
-      background: transparent;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-    .diamond-check:checked {
-      background-color: #990000;
-      box-shadow: 0 0 8px #ffb4a8;
-      border-color: #ffb4a8;
-    }
-    .lantern-glow {
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 20px rgba(153, 0, 0, 0.05);
-    }
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: #131313; }
-    ::-webkit-scrollbar-thumb { background: #353534; }
-    .survivor-tab.tab-active {
-      color: #e9c349;
-      border-bottom: 2px solid #e9c349;
-      padding-bottom: 4px;
-    }
-    #topHeader {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-      align-items: center;
-    }
-    #topHeader .header-brand {
-      justify-self: start;
-    }
-    #topHeader #survivorTabs {
-      justify-self: center;
-    }
-    #topHeader .header-actions {
-      justify-self: end;
-    }
-    :root {
-      --left-sidebar-width: clamp(19rem, 16vw, 28rem);
-      --right-sidebar-width: clamp(22rem, 18vw, 32rem);
-      --center-column-max: clamp(760px, 42vw, 1500px);
-      --gear-grid-cell: clamp(250px, 8.8vw, 420px);
-      --gear-grid-gap: clamp(8px, 0.7vw, 18px);
-      --landscape-layout-max: clamp(1544px, 72vw, 3000px);
-      --landscape-left-col-min: clamp(760px, 34vw, 1320px);
-      --landscape-right-col-min: clamp(766px, 36vw, 1460px);
-      --landscape-col-gap: clamp(18px, 1.2vw, 40px);
-    }
-    /* Condition badges */
-    .condition-badge {
-      background: #201f1f;
-      border: 1px solid rgba(91,64,60,0.4);
-      color: #c6c6c7;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-    }
-    .condition-badge:hover {
-      background: #2a2a2a;
-      color: #e5e2e1;
-    }
-    .condition-badge.active {
-      background-color: #990000;
-      border-color: rgba(255,180,168,0.6);
-      color: #e5e2e1;
-    }
-
-    /* Shared KDM stat bar containers (Survival, Hunt XP) */
-    .kdm-stat-bar {
-      max-width: var(--center-column-max);
-      width: 100%;
-      background: #1c1b1b;
-      padding: 12px 20px;
-      box-sizing: border-box;
-    }
-    .kdm-bar-divider {
-      width: 1px;
-      height: 32px;
-      background: rgba(91,64,60,0.3);
-      margin: 0 8px;
-      flex-shrink: 0;
-    }
-
-    /* Gold number counter inputs (Survival, Hunt XP) */
-    .kdm-counter-input {
-      width: 48px;
-      background: #201f1f;
-      background-color: #201f1f;
-      background-image: none;
-      color: #e9c349;
-      font-family: 'Noto Serif', serif;
-      font-size: 1.75rem;
-      border: 0;
-      border-bottom: 2px solid rgba(233,195,73,0.4);
-      outline: none;
-      text-align: center;
-      padding: 0;
-      appearance: auto;
-      -webkit-appearance: auto;
-      -moz-appearance: auto;
-      color-scheme: dark;
-    }
-    #survivalValue,
-    #huntXP {
-      background-color: #201f1f !important;
-      background-image: none !important;
-      color-scheme: dark;
-    }
-
-    /* Diamond checkboxes — applied globally to armorTable and survivalActions */
-    #armorTable input[type="checkbox"],
-    #survivalActions input[type="checkbox"] {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
-      border: 1px solid rgba(153,0,0,0.6);
-      background: #1c1b1b;
-      transform: rotate(45deg);
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: background 0.15s ease, box-shadow 0.15s ease;
-    }
-    #armorTable input[type="checkbox"]:checked,
-    #survivalActions input[type="checkbox"]:checked {
-      background-color: #990000;
-      box-shadow: 0 0 8px #ffb4a8;
-      border-color: #ffb4a8;
-    }
-    #bleedTracker {
-      gap: 6px;
-    }
-    #bleedTracker .bleed-token {
-      width: 28px;
-      height: 28px;
-    }
-    body {
-      background: #131313;
-      color: #e5e2e1;
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 5rem;
-      padding-left: var(--left-sidebar-width);
-      padding-right: var(--right-sidebar-width);
-      box-sizing: border-box;
-    }
-
-#leftSidebar {
-  width: var(--left-sidebar-width);
-}
-
-#rightSidebar {
-  position: fixed;
-    top: 5rem;
-  right: 0;
-    height: calc(100vh - 5rem);
-  width: var(--right-sidebar-width);
-  padding-top: 0;
-  padding-bottom: 1rem;
-  background: #0e0e0e;
-  box-shadow: -20px 0 40px rgba(0,0,0,0.5);
-  z-index: 39;
-  display: flex;
-  flex-direction: column;
-}
-
-#rightSidebarContent {
-  flex: 1;
-  overflow-y: auto;
-    padding: 0 16px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-#rightSidebar #survivalBlock {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 10px 12px;
-  min-height: 92px;
-  box-sizing: border-box;
-}
-
-#rightSidebar #survivalActions {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-}
-
-#rightSidebar .survivalAction {
-  font-size: 10px;
-}
-
-#rightSidebar .selections-block {
-  padding: 12px;
-}
-
-#rightSidebar .selection-entry {
-  margin-bottom: 10px;
-}
-
-#rightSidebar .selection-entry select {
-  padding: 8px;
-  font-size: 12px;
-}
-
-#rightSidebar .selection-info {
-  font-size: 12px;
-  padding: 8px;
-}
-
-
-
-/* bleed tracker itself (inside the status row) */
-#bleedTracker {
-  display: flex;
-  gap: 12px;
-  margin: 0;
-  justify-content: center;
-}
-
-.bleed-token {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-
-.bleed-token:hover {
-  transform: scale(1.1);
-}
-
-.bleed-token svg {
-  width: 100%;
-  height: 100%;
-}
-
-.bleed-token svg path {
-  fill: transparent;
-  stroke: #900;
-  stroke-width: 6;
-  transition: fill 0.2s ease, stroke 0.2s ease;
-}
-
-.bleed-token.active svg path {
-  fill: #c00;
-  stroke: #600;
-}
-
-/* Sidebar identity inputs */
-aside #survivorName {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(91,64,60,0.3);
-  outline: none;
-  font-family: 'Noto Serif', serif;
-  font-size: 1.125rem;
-  text-transform: uppercase;
-  letter-spacing: -0.05em;
-  color: #e9c349;
-  padding: 2px 0;
-  width: 100%;
-  box-sizing: border-box;
-  margin-bottom: 4px;
-  display: block;
-}
-
-aside #survivorSex {
-  background: #201f1f;
-  color-scheme: dark;
-  border: none;
-  border-bottom: 1px solid rgba(91,64,60,0.2);
-  outline: none;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.75rem;
-  color: rgba(198,198,199,0.6);
-  text-transform: uppercase;
-  width: 100%;
-  padding: 2px 0;
-  box-sizing: border-box;
-  display: block;
-}
-
-/* Survival Block + Hunt XP Bar — layout in CSS, lantern-glow via class */
-#survivalBlock {
-  margin: 0 auto;
-}
-#huntXPBar {
-  margin: 0 auto 16px;
-}
-
-#layoutContainer {
-  max-width: var(--center-column-max);
-  width: 100%;
-  margin: 0 auto;
-  box-sizing: border-box;
-}
-
-#leftColumn,
-#rightColumn {
-  width: 100%;
-}
-   
-    /* Stats Block */
-#statsBlock {
-  width: 100%;
-  background: #1c1b1b;
-  padding: 15px 20px;
-  margin-bottom: 25px;
-  box-sizing: border-box;
-}
-
-#statsBlock h2,
-#fightingArtsBlock h2,
-#disordersBlock h2,
-#abilitiesBlock h2,
-#injuriesBlock h2 {
-  margin: 0 0 12px 0;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: #e9c349;
-}
-
-#statsTable {
-  width: 100%;
-  border-collapse: collapse;
-  color: #eee;
-}
-
-#statsTable th,
-#statsTable td {
-  padding: 10px 8px;
-  text-align: center;
-}
-
-#statsTable input {
-  width: 60px;
-  background: #201f1f;
-  color: #eee;
-  border: 0;
-  border-bottom: 1px solid rgba(91,64,60,0.4);
-  padding: 6px;
-  text-align: center;
-  outline: none;
-}
-
-#statsTable tr[data-row="total"] td {
-  font-weight: bold;
-  background: #0e0e0e;
-  color: #e9c349;
-}
-
-/* Armor Block */
-#armorBlock {
-  width: 100%;
-  background: #1c1b1b;
-  padding: 14px 12px;
-  margin-bottom: 18px;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-#armorTable {
-  width: 100%;
-  border-collapse: collapse;
-  color: #eee;
-  table-layout: fixed;
-}
-#armorTable th,
-#armorTable td {
-  padding: 8px 4px;
-  text-align: center;
-  font-size: 12px;
-  vertical-align: middle;
-}
-#armorTable th {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #c6c6c7;
-}
-#armorTable th:first-child,
-#armorTable td:first-child {
-  text-align: left;
-}
-#armorTable td:first-child {
-  font-size: 13px;
-  line-height: 1.3;
-}
-#armorTable th:nth-child(2),
-#armorTable td:nth-child(2) {
-  width: 54px;
-}
-#armorTable th:nth-child(3),
-#armorTable td:nth-child(3) {
-  width: 76px;
-}
-#armorTable tbody tr:nth-child(even) {
-  background: rgba(255,255,255,0.02);
-}
-#armorTable input[type="number"] {
-  width: 42px;
-  background: #201f1f;
-  color: #eee;
-  border: 0;
-  border-bottom: 1px solid rgba(91,64,60,0.4);
-  padding: 4px 2px;
-  text-align: center;
-  outline: none;
-}
-#armorTable td.armor-injuries {
-  white-space: nowrap;
-}
-#armorTable label {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-right: 0;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #c6c6c7;
-}
-#armorTable td.armor-injuries > div {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-}
-
-.sidebar-card-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  border-bottom: 1px solid rgba(91,64,60,0.3);
-  padding-bottom: 4px;
-  margin: 0 0 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: #e9c349;
-}
-
-#weaponMasteryBlock {
-  background: #1c1b1b;
-  padding: 14px 12px;
-  box-sizing: border-box;
-}
-
-.sidebar-meta-label {
-  display: block;
-  margin-bottom: 6px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #8f8f91;
-}
-
-.weapon-mastery-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 72px;
-  gap: 10px;
-  align-items: end;
-}
-
-#weaponMasteryBlock select,
-#weaponMasteryBlock input[type="number"] {
-  width: 100%;
-  background: #201f1f;
-  color: #eee;
-  border: 0;
-  border-bottom: 1px solid rgba(91,64,60,0.4);
-  padding: 8px 6px;
-  font-size: 13px;
-  outline: none;
-  box-sizing: border-box;
-}
-
-#weaponMasteryInfo {
-  margin-top: 12px;
-}
-
-/* Selection Blocks (Fighting Arts, Disorders, Abilities, Injuries) */
-.selections-block {
-  background: #1c1b1b;
-  padding: 15px 20px;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-.selections-block h2 {
-  margin: 0 0 12px 0;
-  font-size: 13px;
-  font-weight: 600;
-  color: #c6c6c7;
-  font-family: 'Space Grotesk', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.selection-entry {
-  margin-bottom: 15px;
-}
-
-.selection-entry select {
-  width: 100%;
-  background: #201f1f;
-  color: #eee;
-  border: 0;
-  border-bottom: 1px solid rgba(91,64,60,0.4);
-  padding: 10px;
-  font-size: 14px;
-  box-sizing: border-box;
-  outline: none;
-}
-
-.selection-info {
-  background: #0e0e0e;
-  border-left: 3px solid rgba(153,0,0,0.5);
-  padding: 10px;
-  margin-top: 8px;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.selection-info p {
-  margin: 4px 0;
-}
-
-.selection-info em {
-  color: #aaa;
-}
-
-.glossary-term {
-  cursor: help;
-  border-bottom: 1px dotted #aaa;
-  color: #ff9;
-}
-
-.glossary-term:hover {
-  color: #fff;
-  border-bottom: 1px dotted #fff;
-  background: rgba(255, 255, 153, 0.1);
-  padding: 0 2px;
-  border-radius: 2px;
-}
-
-    /* Gear grid scales with the column width while keeping square cells */
-    .grid {
-      display: grid;
-      width: 100%;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--gear-grid-gap);
-      margin: 0 auto 25px;
-    }
-
-    .armor-set-bonus {
-      max-width: 100%;
-      width: 100%;
-      margin: 0 auto 10px;
-      padding: 10px 14px;
-      box-sizing: border-box;
-      background: #1a2f1a;
-      border-left: 3px solid rgba(47,127,47,0.7);
-      color: #b8fdb8;
-      font-weight: 600;
-      font-size: 15px;
-      display: none;
-    }
-
-    .affinity-bonus-list {
-      max-width: 100%;
-      width: 100%;
-      margin: 0 auto 10px;
-      padding: 10px 14px;
-      box-sizing: border-box;
-      background: #1a2237;
-      border-left: 3px solid rgba(61,95,150,0.7);
-      color: #cfe3ff;
-      font-size: 14px;
-      display: none;
-    }
-
-    .affinity-bonus-list ul {
-      margin: 8px 0 0 18px;
-      padding: 0;
-    }
-
-    .affinity-bonus-list li {
-      margin: 4px 0;
-    }
-
-    .cell {
-      position: relative;
-      aspect-ratio: 1 / 1;
-      background: #1c1b1b;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      overflow: hidden;
-      transition: box-shadow 0.2s ease;
-    }
-
-    .cell img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-
-    /* WHITE MATCH GLOW */
-    .cell.match {
-      border-color: #fff;
-      box-shadow: 0 0 20px 6px rgba(255, 255, 255, 0.75);
-    }
-
-    /* Modal */
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content-wrapper {
-      background: #1c1b1b;
-      padding: 20px;
-      max-height: 80vh;
-      overflow-y: auto;
-      width: 80vw;
-      max-width: 900px;
-    }
-
-    .modal-controls {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 15px;
-      padding-bottom: 4px;
-      background: #1c1b1b;
-    }
-
-    .modal-controls-primary {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .modal-controls-affinity {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      padding: 8px 0 2px;
-      border-top: 1px solid rgba(91,64,60,0.35);
-    }
-
-    .affinity-toggle-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 10px;
-      border-bottom: 1px solid rgba(91,64,60,0.4);
-      color: #c6c6c7;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      cursor: pointer;
-      user-select: none;
-      background: #0e0e0e;
-      box-sizing: border-box;
-    }
-
-    .affinity-toggle-label input[type="checkbox"] {
-      margin: 0;
-      accent-color: #990000;
-      cursor: pointer;
-    }
-
-    .affinity-filter-group {
-      display: inline-flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .affinity-filter-title {
-      color: #e9c349;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-right: 2px;
-    }
-
-    .affinity-option {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: #c6c6c7;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .affinity-option input[type="checkbox"] {
-      margin: 0;
-      accent-color: #990000;
-      cursor: pointer;
-    }
-
-    #searchBox {
-      flex: 1 1 320px;
-      padding: 10px;
-      font-size: 16px;
-      border: 0;
-      border-bottom: 1px solid rgba(91,64,60,0.4);
-      background: #0e0e0e;
-      color: #eee;
-      outline: none;
-    }
-
-    #craftingLocationFilter {
-      flex: 0 1 240px;
-      padding: 10px;
-      font-size: 16px;
-      border: 0;
-      border-bottom: 1px solid rgba(91,64,60,0.4);
-      background: #0e0e0e;
-      color: #eee;
-      outline: none;
-    }
-
-    .modal-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, 160px);
-      gap: 12px;
-    }
-
-    .thumb {
-      width: 160px;
-        background: #201f1f;
-      background: #201f1f;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      overflow: hidden;
-      gap: 8px;
-      padding: 8px;
-      box-sizing: border-box;
-      transition: background 0.15s ease;
-    }
-    .thumb:hover {
-      background: #2a2a2a;
-    }
-
-    .thumb img {
-      max-width: 100%;
-      max-height: 120px;
-      object-fit: contain;
-    }
-
-    .thumb-label,
-    .thumb-location {
-      width: 100%;
-      text-align: center;
-      line-height: 1.3;
-      word-break: break-word;
-    }
-
-    .thumb-label {
-      font-size: 12px;
-      color: #f3f3f3;
-    }
-
-    .thumb-location {
-      font-size: 11px;
-      color: #b8fdb8;
-    }
-
-    .empty-search-results {
-      margin: 0;
-      color: #bbb;
-    }
-
-body.landscape-mode #statusRow {
-  max-width: var(--landscape-layout-max);
-  justify-content: space-between;
-  align-items: stretch;
-  flex-wrap: nowrap;
-}
-
-body.landscape-mode #layoutContainer {
-  max-width: var(--landscape-layout-max);
-  display: grid;
-  grid-template-columns: minmax(var(--landscape-left-col-min), 1fr) minmax(var(--landscape-right-col-min), 1.1fr);
-  gap: var(--landscape-col-gap);
-  align-items: start;
-  justify-content: center;
-}
-
-body.landscape-mode #rightColumn {
-  min-width: 0;
-}
-
-body.landscape-mode .grid {
-  margin-bottom: 0;
-}
-
-@media (max-width: 1300px) {
-  body.landscape-mode #statusRow {
-    max-width: var(--center-column-max);
-    flex-wrap: wrap;
-  }
-
-  body.landscape-mode #layoutContainer {
-    grid-template-columns: 1fr;
-    max-width: var(--center-column-max);
-  }
-
-  body.landscape-mode .grid {
-    margin-bottom: 25px;
-  }
-}
-
-@media (min-width: 2560px) {
-  :root {
-    --center-column-max: clamp(1100px, 46vw, 2000px);
-    --gear-grid-cell: clamp(300px, 9.2vw, 460px);
-    --landscape-layout-max: clamp(1900px, 76vw, 3500px);
-    --landscape-left-col-min: clamp(900px, 35vw, 1600px);
-    --landscape-right-col-min: clamp(920px, 37vw, 1750px);
-  }
-}
-  </style>
 </head>
 <body class="bg-background text-on-background font-inter selection:bg-primary-container selection:text-on-primary-container">
 
@@ -983,6 +116,10 @@ body.landscape-mode .grid {
 
   <!-- SIDEBAR CHARACTER CONTENT -->
   <div class="flex-1 overflow-y-auto px-6 space-y-4 py-3">
+    <div id="sidebarStatusRow">
+      <button class="condition-badge" data-condition="insane" type="button">Insane</button>
+      <button class="condition-badge" data-condition="retired" type="button">Retired</button>
+    </div>
     <div>
       <h4 class="font-spaceGrotesk text-[9px] text-red-600 uppercase tracking-[0.2em] mb-2">Bleeding Tokens</h4>
       <div id="bleedTracker">
@@ -1028,9 +165,58 @@ body.landscape-mode .grid {
       </div>
     </div>
 
+    <div id="courageBlock">
+      <h4 class="sidebar-card-title">Courage</h4>
+      <div class="sidebar-counter-grid">
+        <label>
+          <span class="sidebar-meta-label">Value</span>
+          <input id="courageValue" class="trait-value-input" type="number" min="0" max="9" value="0">
+        </label>
+        <label>
+          <span class="sidebar-meta-label">Bonus</span>
+          <select id="courage1"></select>
+        </label>
+      </div>
+      <div id="courage1-info" class="selection-info" hidden></div>
+      <div id="courageReminder" class="selection-info sidebar-reminder" hidden>
+        <div class="sidebar-reminder-header">
+          <strong>Courage Reminder</strong>
+          <button id="courageReminderClose" type="button" class="sidebar-reminder-close">Close</button>
+        </div>
+        <p id="courageReminderText"></p>
+      </div>
+    </div>
+
+    <div id="understandingBlock">
+      <h4 class="sidebar-card-title">Understanding</h4>
+      <div class="sidebar-counter-grid">
+        <label>
+          <span class="sidebar-meta-label">Value</span>
+          <input id="understandingValue" class="trait-value-input" type="number" min="0" max="9" value="0">
+        </label>
+        <label>
+          <span class="sidebar-meta-label">Bonus</span>
+          <select id="understanding1"></select>
+        </label>
+      </div>
+      <div id="understanding1-info" class="selection-info" hidden></div>
+      <div id="understandingReminder" class="selection-info sidebar-reminder" hidden>
+        <div class="sidebar-reminder-header">
+          <strong>Understanding Reminder</strong>
+          <button id="understandingReminderClose" type="button" class="sidebar-reminder-close">Close</button>
+        </div>
+        <p id="understandingReminderText"></p>
+      </div>
+    </div>
+
     <div>
       <button class="w-full bg-[#990000] text-white font-spaceGrotesk text-[10px] py-3 uppercase tracking-[0.2em] transition-all hover:brightness-110">
         Archive Survivor
+      </button>
+    </div>
+    <div>
+      <button id="resetSurvivor" type="button" class="w-full bg-[#2f2a29] text-[#d5d0cb] font-spaceGrotesk text-[10px] py-3 uppercase tracking-[0.2em] transition-all hover:bg-[#3f3836]">
+        Reset Survivor
       </button>
     </div>
 
@@ -1041,7 +227,7 @@ body.landscape-mode .grid {
       <a class="text-neutral-500 hover:bg-neutral-800/30 hover:text-neutral-300 flex items-center gap-3 px-4 py-3 font-spaceGrotesk text-xs uppercase tracking-tighter transition-all" href="#">
         <span class="material-symbols-outlined text-sm">history</span> Timeline
       </a>
-      <a class="text-neutral-500 hover:bg-neutral-800/30 hover:text-neutral-300 flex items-center gap-3 px-4 py-3 font-spaceGrotesk text-xs uppercase tracking-tighter transition-all" href="#">
+      <a class="text-neutral-500 hover:bg-neutral-800/30 hover:text-neutral-300 flex items-center gap-3 px-4 py-3 font-spaceGrotesk text-xs uppercase tracking-tighter transition-all" href="bestiary.html">
         <span class="material-symbols-outlined text-sm">menu_book</span> Bestiary
       </a>
       <a class="text-neutral-500 hover:bg-neutral-800/30 hover:text-neutral-300 flex items-center gap-3 px-4 py-3 font-spaceGrotesk text-xs uppercase tracking-tighter transition-all" href="#">
@@ -1057,14 +243,18 @@ body.landscape-mode .grid {
 <!-- RIGHT SIDEBAR -->
 <aside id="rightSidebar">
   <div id="rightSidebarContent">
-    <div id="survivalBlock" class="kdm-stat-bar lantern-glow relative overflow-hidden flex items-center gap-4 flex-wrap">
+    <div id="survivalBlock" class="kdm-stat-bar lantern-glow relative overflow-hidden flex flex-col gap-3">
       <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-900"></div>
-      <div class="flex items-baseline gap-2 pl-2">
-        <span class="font-spaceGrotesk text-[13px] text-[#c6c6c7] tracking-widest uppercase">Survival</span>
-        <input id="survivalValue" type="number" min="0" value="0" class="kdm-counter-input">
+      <div class="flex items-start justify-between gap-3 pl-2 pr-2 flex-wrap">
+        <div class="flex items-baseline gap-2 pt-1">
+          <span class="font-spaceGrotesk text-[13px] text-[#c6c6c7] tracking-widest uppercase">Survival</span>
+          <input id="survivalValue" type="number" min="0" value="0" class="kdm-counter-input">
+        </div>
+        <div id="survivalStatusBar" class="flex gap-2">
+          <button class="condition-badge leading-tight text-center whitespace-normal px-3 py-2" data-condition="cannot_spend_survival"><span class="block">Cannot Spend</span><span class="block">Survival</span></button>
+        </div>
       </div>
-      <div class="kdm-bar-divider"></div>
-      <div id="survivalActions" class="flex flex-wrap gap-3">
+      <div id="survivalActions" class="flex flex-wrap gap-3 pl-2">
         <label class="survivalAction font-spaceGrotesk text-[11px] text-[#c6c6c7] uppercase tracking-wider flex items-center gap-1 cursor-pointer">
           <input type="checkbox" id="survivalDodge"> Dodge
         </label>
@@ -1078,6 +268,23 @@ body.landscape-mode .grid {
           <input type="checkbox" id="survivalDash"> Dash
         </label>
       </div>
+    </div>
+
+    <div id="huntXPBar" class="kdm-stat-bar lantern-glow relative overflow-hidden flex items-center gap-4 flex-wrap">
+      <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-900"></div>
+      <div class="flex items-baseline gap-2 pl-2">
+        <span class="font-spaceGrotesk text-[14px] text-[#c6c6c7] tracking-widest uppercase">Hunt XP</span>
+        <input id="huntXP" type="number" min="0" max="16" value="0" class="kdm-counter-input">
+      </div>
+    </div>
+
+    <div id="huntXPReminder" class="kdm-stat-bar lantern-glow relative overflow-visible flex gap-3 flex-wrap" hidden aria-live="polite" role="status">
+      <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-900"></div>
+      <div class="hunt-xp-reminder-content">
+        <span class="hunt-xp-reminder-label">Hunt XP Reminder</span>
+        <p id="huntXPReminderText"></p>
+      </div>
+      <button id="huntXPReminderClose" type="button" class="hunt-xp-reminder-close" aria-label="Dismiss Hunt XP reminder">Close</button>
     </div>
 
     <div id="fightingArtsBlock" class="selections-block">
@@ -1146,23 +353,6 @@ body.landscape-mode .grid {
   </div>
 </aside>
 
-<!-- HUNT XP + CONDITIONS BAR -->
-<div id="huntXPBar" class="kdm-stat-bar lantern-glow relative overflow-hidden flex items-center gap-4 flex-wrap">
-  <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-900"></div>
-  <div class="flex items-baseline gap-2 pl-2">
-    <span class="font-spaceGrotesk text-[10px] text-[#c6c6c7] tracking-widest uppercase">Hunt XP</span>
-    <input id="huntXP" type="number" min="0" max="16" value="0" class="kdm-counter-input">
-  </div>
-  <div class="kdm-bar-divider"></div>
-  <div id="conditionsBar" class="flex flex-wrap gap-2">
-    <button class="condition-badge" data-condition="blind">Blind</button>
-    <button class="condition-badge" data-condition="deaf">Deaf</button>
-    <button class="condition-badge" data-condition="diseased">Diseased</button>
-    <button class="condition-badge" data-condition="insane">Insane</button>
-    <button class="condition-badge" data-condition="haggard">Haggard</button>
-  </div>
-</div>
-
 <div id="layoutContainer">
 <div id="leftColumn">
 <!-- STATS BLOCK -->
@@ -1186,9 +376,9 @@ body.landscape-mode .grid {
       <tr data-row="base">
         <td>Base</td>
         <td><input type="number" value="5"></td>
-        <td><input type="number" value="1"></td>
-        <td><input type="number" value="2"></td>
-        <td><input type="number" value="2"></td>
+        <td><input type="number" value="0"></td>
+        <td><input type="number" value="0"></td>
+        <td><input type="number" value="0"></td>
         <td><input type="number" value="0"></td>
         <td><input type="number" value="0"></td>
       </tr>
@@ -1372,7 +562,7 @@ body.landscape-mode .grid {
         'rawhide_pants.png',
         'rawhide_vest.png'
       ],
-      description: 'When you perform a survival action roll 1d10. On a result of 6+, gain +1 survival.',
+      description: 'Add 1 armor to all hit locations. When you perform a survival action roll 1d10. On a result of 6+, gain +1 survival.',
       bonus: {
         stats: { move: 0, accuracy: 0, strength: 0, evasion: 0, luck: 0, speed: 0 },
         armor: { brain: 0, head: 1, arms: 1, body: 1, legs: 1, waist: 1 }
@@ -1404,9 +594,9 @@ body.landscape-mode .grid {
         'white_lion_helm.png',
         'white_lion_skirt.png'
       ],
-      description: 'Gain +1 speed and +2 strength when attacking with daggers or katars.',
+      description: 'Add 1 armor to all hit locations. Gain +1 speed and +2 strength when attacking with daggers or katars.',
       bonus: {
-        stats: { move: 0, accuracy: 0, strength: 2, evasion: 0, luck: 0, speed: 0 },
+        stats: { move: 0, accuracy: 0, strength: 0, evasion: 0, luck: 0, speed: 0 },
         armor: { brain: 0, head: 1, arms: 1, body: 1, legs: 1, waist: 1 }
       }
     }  
@@ -1416,7 +606,28 @@ body.landscape-mode .grid {
   let activeAffinityBonuses = [];
   let activeWeaponProficiencyTier = '';
   let activeWeaponProficiencyStats = {};
+  let activeSelectionEffectStats = {};
+  const ATTRIBUTE_STAT_ORDER = ['move', 'accuracy', 'strength', 'evasion', 'luck', 'speed'];
+  const ATTRIBUTE_STAT_ALIASES = {
+    move: 'move',
+    movement: 'move',
+    accuracy: 'accuracy',
+    strength: 'strength',
+    evasion: 'evasion',
+    luck: 'luck',
+    speed: 'speed'
+  };
+  const EFFECT_SELECTION_SOURCES = {
+    fightingArt: { key: 'fightingArts', list: () => FIGHTING_ARTS_LIST },
+    disorder: { key: 'disorders', list: () => DISORDERS_LIST },
+    ability: { key: 'abilities', list: () => ABILITIES_LIST },
+    injury: { key: 'severeInjuries', list: () => SEVERE_INJURIES_LIST },
+    courage: { key: 'courageSelections', list: () => COURAGE_LIST },
+    understanding: { key: 'understandingSelections', list: () => UNDERSTANDING_LIST }
+  };
   const SURVIVAL_BONUS_GEAR = {
+    'rawhide_boots.png': 1,
+    'rawhide_gloves.png': 1,
     'scrap_lantern.png': 1,
     'stone_noses.png': 1,
     'whisker_harp.png': 1
@@ -1571,17 +782,93 @@ function modifyWeaponProficiencyStats(stats = {}, multiplier = 1) {
   if (!baseRow) return;
 
   const statInputs = baseRow.querySelectorAll('input');
-  const statOrder = ['move', 'accuracy', 'strength', 'evasion', 'luck', 'speed'];
 
-  statOrder.forEach((key, i) => {
+  ATTRIBUTE_STAT_ORDER.forEach((key, i) => {
     const delta = (stats[key] || 0) * multiplier;
     if (!delta || !statInputs[i]) return;
-    const current = parseInt(statInputs[i].value || 0, 10);
-    const nextValue = current + delta;
-    statInputs[i].value = nextValue;
+
+    const currentBaseValue = parseInt(characterData.attributesBase?.[i] ?? 0, 10) || 0;
+    const nextBaseValue = currentBaseValue + delta;
+    const selectionDelta = activeSelectionEffectStats[key] || 0;
+
+    statInputs[i].value = nextBaseValue + selectionDelta;
     if (Array.isArray(characterData.attributesBase)) {
-      characterData.attributesBase[i] = nextValue;
+      characterData.attributesBase[i] = nextBaseValue;
     }
+  });
+
+  updateStatTotals();
+}
+
+function normalizeAttributeStatKey(statName = '') {
+  const normalized = String(statName).trim().toLowerCase().replace(/[^a-z]/g, '');
+  return ATTRIBUTE_STAT_ALIASES[normalized] || '';
+}
+
+function parseAttributeModifiersFromEffect(effectText = '') {
+  if (typeof effectText !== 'string') return {};
+
+  const stats = {};
+  const normalizedText = effectText.replace(/\band\b/gi, ',');
+
+  for (const match of normalizedText.matchAll(/([+-]\d+)\s+([a-z][a-z\s-]*)/gi)) {
+    const value = parseInt(match[1], 10);
+    const key = normalizeAttributeStatKey(match[2]);
+
+    if (!key || Number.isNaN(value)) continue;
+    stats[key] = (stats[key] || 0) + value;
+  }
+
+  return stats;
+}
+
+function getSelectionEffectStats(type) {
+  const source = EFFECT_SELECTION_SOURCES[type];
+  if (!source) return {};
+
+  const totals = {};
+  const selectedValues = characterData[source.key] || [];
+  const availableEntries = source.list();
+
+  selectedValues.forEach(selection => {
+    const entry = availableEntries.find(item => item.id === selection.id);
+    if (!entry) return;
+
+    const entryStats = parseAttributeModifiersFromEffect(entry.effect);
+    Object.entries(entryStats).forEach(([key, value]) => {
+      totals[key] = (totals[key] || 0) + value;
+    });
+  });
+
+  return totals;
+}
+
+function getActiveSelectionEffectStats() {
+  const totals = {};
+
+  Object.keys(EFFECT_SELECTION_SOURCES).forEach(type => {
+    const sectionStats = getSelectionEffectStats(type);
+    Object.entries(sectionStats).forEach(([key, value]) => {
+      totals[key] = (totals[key] || 0) + value;
+    });
+  });
+
+  return totals;
+}
+
+function updateSelectionEffectBonusState() {
+  activeSelectionEffectStats = getActiveSelectionEffectStats();
+
+  const baseRow = document.querySelector('tr[data-row="base"]');
+  if (!baseRow) return;
+
+  const statInputs = baseRow.querySelectorAll('input');
+
+  ATTRIBUTE_STAT_ORDER.forEach((key, i) => {
+    if (!statInputs[i]) return;
+    const baseValue = parseInt(characterData.attributesBase?.[i] ?? 0, 10) || 0;
+    const selectionDelta = activeSelectionEffectStats[key] || 0;
+    statInputs[i].value = baseValue + selectionDelta;
   });
 
   updateStatTotals();
@@ -2216,12 +1503,16 @@ document.querySelectorAll('#statsTable input').forEach(input => {
   input.addEventListener('input', () => {
     const row = input.closest('tr').dataset.row;
     const statIndex = Array.from(input.closest('tr').querySelectorAll('input')).indexOf(input);
+    const nextValue = parseInt(input.value || 0, 10) || 0;
+
     if (row === 'base') {
-      characterData.attributesBase[statIndex] = parseInt(input.value) || 0;
+      const statKey = ATTRIBUTE_STAT_ORDER[statIndex];
+      const selectionDelta = activeSelectionEffectStats[statKey] || 0;
+      characterData.attributesBase[statIndex] = nextValue - selectionDelta;
     } else if (row === 'equipped') {
-      characterData.attributesEquipped[statIndex] = parseInt(input.value) || 0;
+      characterData.attributesEquipped[statIndex] = nextValue;
     } else if (row === 'temporary') {
-      characterData.attributesTemporary[statIndex] = parseInt(input.value) || 0;
+      characterData.attributesTemporary[statIndex] = nextValue;
     }
     updateStatTotals();
     saveCharacter();
@@ -2242,35 +1533,43 @@ function parseDescription(text) {
 }
 
 // CHARACTER DATA OBJECT
-let characterData = {
-  survivorName: "",
-  survivorSex: "",
-  layoutMode: 'portrait',
-  bleedState: [0, 0, 0, 0, 0],
-  weaponMastery: { type: '', level: 0 },
-  survivalValue: 0,
-  survivalActions: { dodge: false, encourage: false, surge: false, dash: false },
-  attributesBase: [5, 1, 2, 2, 0, 0],
-  attributesEquipped: [0, 0, 0, 0, 0, 0],
-  attributesTemporary: [0, 0, 0, 0, 0, 0],
-  armor: { insanity: 0, head: 0, arms: 0, body: 0, legs: 0, waist: 0 },
-  armorInjuries: {
-    insanity: { light: false, heavy: false },
-    head: { light: false, heavy: false },
-    arms: { light: false, heavy: false },
-    body: { light: false, heavy: false },
-    legs: { light: false, heavy: false },
-    waist: { light: false, heavy: false }
-  },
-  activeArmorSet: '',
-  fightingArts: [],
-  disorders: [],
-  abilities: [],
-  severeInjuries: [],
-  gridImages: ["", "", "", "", "", "", "", "", ""],
-  huntXP: 0,
-  conditions: [],
-};
+function createDefaultCharacterData() {
+  return {
+    survivorName: "",
+    survivorSex: "",
+    layoutMode: 'portrait',
+    bleedState: [0, 0, 0, 0, 0],
+    weaponMastery: { type: '', level: 0 },
+    survivalValue: 0,
+    courageValue: 0,
+    understandingValue: 0,
+    survivalActions: { dodge: false, encourage: false, surge: false, dash: false },
+    attributesBase: [5, 0, 0, 0, 0, 0],
+    attributesEquipped: [0, 0, 0, 0, 0, 0],
+    attributesTemporary: [0, 0, 0, 0, 0, 0],
+    armor: { insanity: 0, head: 0, arms: 0, body: 0, legs: 0, waist: 0 },
+    armorInjuries: {
+      insanity: { light: false, heavy: false },
+      head: { light: false, heavy: false },
+      arms: { light: false, heavy: false },
+      body: { light: false, heavy: false },
+      legs: { light: false, heavy: false },
+      waist: { light: false, heavy: false }
+    },
+    activeArmorSet: '',
+    fightingArts: [],
+    disorders: [],
+    abilities: [],
+    severeInjuries: [],
+    courageSelections: [],
+    understandingSelections: [],
+    gridImages: ["", "", "", "", "", "", "", "", ""],
+    huntXP: 0,
+    conditions: []
+  };
+}
+
+let characterData = createDefaultCharacterData();
 
 let currentSlot = localStorage.getItem('kdmCurrentSlot') || '1';
 
@@ -2293,7 +1592,7 @@ function loadCharacter(slot = currentSlot) {
       characterData.conditions = [];
     }
     if (!Array.isArray(characterData.attributesBase) || characterData.attributesBase.length !== 6) {
-      characterData.attributesBase = [5, 1, 2, 2, 0, 0];
+      characterData.attributesBase = [5, 0, 0, 0, 0, 0];
     }
     if (!Array.isArray(characterData.attributesEquipped) || characterData.attributesEquipped.length !== 6) {
       characterData.attributesEquipped = [0, 0, 0, 0, 0, 0];
@@ -2311,6 +1610,14 @@ function loadCharacter(slot = currentSlot) {
     if (typeof characterData.huntXP !== 'number' || Number.isNaN(characterData.huntXP)) {
       characterData.huntXP = 0;
     }
+    characterData.courageValue = Math.max(0, Math.min(9, parseInt(characterData.courageValue, 10) || 0));
+    characterData.understandingValue = Math.max(0, Math.min(9, parseInt(characterData.understandingValue, 10) || 0));
+    if (!Array.isArray(characterData.courageSelections)) {
+      characterData.courageSelections = [];
+    }
+    if (!Array.isArray(characterData.understandingSelections)) {
+      characterData.understandingSelections = [];
+    }
     if (!characterData.survivalActions || typeof characterData.survivalActions !== 'object') {
       characterData.survivalActions = { dodge: false, encourage: false, surge: false, dash: false };
     }
@@ -2326,38 +1633,11 @@ function loadCharacter(slot = currentSlot) {
     }
   } else {
     // Reset to defaults if no saved data
-    characterData = {
-      survivorName: "",
-      survivorSex: "",
-      layoutMode: 'portrait',
-      bleedState: [0, 0, 0, 0, 0],
-      weaponMastery: { type: '', level: 0 },
-      survivalValue: 0,
-      attributesBase: [5, 1, 2, 2, 0, 0],
-      attributesEquipped: [0, 0, 0, 0, 0, 0],
-      attributesTemporary: [0, 0, 0, 0, 0, 0],
-      armor: { insanity: 0, head: 0, arms: 0, body: 0, legs: 0, waist: 0 },
-      armorInjuries: {
-        insanity: { light: false, heavy: false },
-        head: { light: false, heavy: false },
-        arms: { light: false, heavy: false },
-        body: { light: false, heavy: false },
-        legs: { light: false, heavy: false },
-        waist: { light: false, heavy: false }
-      },
-      fightingArts: [],
-      disorders: [],
-      abilities: [],
-      severeInjuries: [],
-      gridImages: ["", "", "", "", "", "", "", "", ""],
-      huntXP: 0,
-      conditions: [],
-      survivalActions: { dodge: false, encourage: false, surge: false, dash: false }
-    };
+    characterData = createDefaultCharacterData();
   }
 }
 
-// ─── UI ELEMENT MAP ──────────────────────────────────────────────────────────
+// â”€â”€â”€ UI ELEMENT MAP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Single point of truth for all critical DOM references.
 // Evaluated lazily so it works even if called before full DOM parse.
 const ui = {
@@ -2367,11 +1647,22 @@ const ui = {
   get weaponMasteryLevel() { return document.getElementById('weaponMasteryLevel'); },
   get weaponMasteryInfo() { return document.getElementById('weaponMasteryInfo'); },
   get survivalValue()   { return document.getElementById('survivalValue'); },
+  get courageValue()    { return document.getElementById('courageValue'); },
+  get understandingValue() { return document.getElementById('understandingValue'); },
   get survivalDodge()   { return document.getElementById('survivalDodge'); },
   get survivalEncourage(){ return document.getElementById('survivalEncourage'); },
   get survivalSurge()   { return document.getElementById('survivalSurge'); },
   get survivalDash()    { return document.getElementById('survivalDash'); },
   get huntXP()          { return document.getElementById('huntXP'); },
+  get huntXPReminder()  { return document.getElementById('huntXPReminder'); },
+  get huntXPReminderText() { return document.getElementById('huntXPReminderText'); },
+  get huntXPReminderClose() { return document.getElementById('huntXPReminderClose'); },
+  get courageReminder() { return document.getElementById('courageReminder'); },
+  get courageReminderText() { return document.getElementById('courageReminderText'); },
+  get courageReminderClose() { return document.getElementById('courageReminderClose'); },
+  get understandingReminder() { return document.getElementById('understandingReminder'); },
+  get understandingReminderText() { return document.getElementById('understandingReminderText'); },
+  get understandingReminderClose() { return document.getElementById('understandingReminderClose'); },
   get layoutModeToggle(){ return document.getElementById('layoutModeToggle'); },
   armorTableRows()      { return document.querySelectorAll('#armorTable tbody tr'); },
   gridCells()           { return document.querySelectorAll('.cell'); },
@@ -2381,8 +1672,169 @@ const ui = {
 };
 
 const ARMOR_SLOTS = ['insanity', 'head', 'arms', 'body', 'legs', 'waist'];
+const HUNT_XP_REMINDERS = Object.freeze({
+  2: 'Age &#9632;: Select a Weapon Proficiency',
+  6: 'Age &#9632;&#9632;: Roll for Improved Reflexed Bonus',
+  10: 'Age &#9632;&#9632;&#9632;: Roll for Enhanced Senses Bonus',
+  15: 'Age &#9632;&#9632;&#9632;&#9632;: Roll for Lucky Elder Bonus'
+});
+const AUTO_TOGGLED_CONDITIONS = new Set(['insane', 'retired']);
 
-// ─── APPLY SUB-FUNCTIONS ─────────────────────────────────────────────────────
+let lastHuntXPReminderValue = null;
+let dismissedHuntXPReminderValue = null;
+
+function getHuntXPReminderMessage(huntXP = parseInt(ui.huntXP?.value, 10) || 0) {
+  return HUNT_XP_REMINDERS[huntXP] || '';
+}
+
+function showHuntXPReminder(message) {
+  if (!ui.huntXPReminder || !ui.huntXPReminderText) return;
+  ui.huntXPReminderText.innerHTML = parseDescription(message || '');
+  ui.huntXPReminder.hidden = false;
+}
+
+function hideHuntXPReminder(clearText = false) {
+  if (!ui.huntXPReminder) return;
+  ui.huntXPReminder.hidden = true;
+  if (clearText && ui.huntXPReminderText) {
+    ui.huntXPReminderText.innerHTML = '';
+  }
+}
+
+function dismissHuntXPReminder() {
+  dismissedHuntXPReminderValue = parseInt(ui.huntXP?.value, 10) || 0;
+  hideHuntXPReminder();
+}
+
+function syncHuntXPReminder({ force = false } = {}) {
+  const currentHuntXP = Math.max(0, Math.min(16, parseInt(ui.huntXP?.value, 10) || 0));
+  const reminderMessage = getHuntXPReminderMessage(currentHuntXP);
+  const huntXPChanged = currentHuntXP !== lastHuntXPReminderValue;
+
+  if (force || huntXPChanged) {
+    dismissedHuntXPReminderValue = null;
+  }
+
+  lastHuntXPReminderValue = currentHuntXP;
+
+  if (!reminderMessage) {
+    hideHuntXPReminder(true);
+    return;
+  }
+
+  if (dismissedHuntXPReminderValue === currentHuntXP) {
+    hideHuntXPReminder();
+    return;
+  }
+
+  showHuntXPReminder(reminderMessage);
+}
+
+const TRACKED_MILESTONE_REMINDERS = {
+  courage: {
+    messages: typeof COURAGE_REMINDER_TEXT === 'object' ? COURAGE_REMINDER_TEXT : {
+      3: 'Courage 3 milestone reached. Update this reminder text when ready.',
+      9: 'Courage 9 milestone reached. Update this reminder text when ready.'
+    },
+    panel: () => ui.courageReminder,
+    text: () => ui.courageReminderText
+  },
+  understanding: {
+    messages: typeof UNDERSTANDING_REMINDER_TEXT === 'object' ? UNDERSTANDING_REMINDER_TEXT : {
+      3: 'Understanding 3 milestone reached. Update this reminder text when ready.',
+      9: 'Understanding 9 milestone reached. Update this reminder text when ready.'
+    },
+    panel: () => ui.understandingReminder,
+    text: () => ui.understandingReminderText
+  }
+};
+
+const trackedReminderState = {
+  courage: { lastValue: null, dismissedValue: null },
+  understanding: { lastValue: null, dismissedValue: null }
+};
+
+function getTrackedMilestoneMessage(type, value) {
+  const config = TRACKED_MILESTONE_REMINDERS[type];
+  if (!config) return '';
+  return config.messages?.[value] || '';
+}
+
+function showTrackedMilestoneReminder(type, message) {
+  const config = TRACKED_MILESTONE_REMINDERS[type];
+  const panel = config?.panel?.();
+  const text = config?.text?.();
+  if (!panel || !text) return;
+  text.innerHTML = parseDescription(message || '');
+  panel.hidden = false;
+}
+
+function hideTrackedMilestoneReminder(type, clearText = false) {
+  const config = TRACKED_MILESTONE_REMINDERS[type];
+  const panel = config?.panel?.();
+  const text = config?.text?.();
+  if (!panel) return;
+  panel.hidden = true;
+  if (clearText && text) {
+    text.innerHTML = '';
+  }
+}
+
+function dismissTrackedMilestoneReminder(type) {
+  const currentValue = Math.max(0, Math.min(9, parseInt(characterData[`${type}Value`], 10) || 0));
+  trackedReminderState[type].dismissedValue = currentValue;
+  hideTrackedMilestoneReminder(type);
+}
+
+function syncTrackedMilestoneReminder(type, { force = false } = {}) {
+  const state = trackedReminderState[type];
+  if (!state) return;
+
+  const currentValue = Math.max(0, Math.min(9, parseInt(characterData[`${type}Value`], 10) || 0));
+  const reminderMessage = getTrackedMilestoneMessage(type, currentValue);
+  const valueChanged = currentValue !== state.lastValue;
+
+  if (force || valueChanged) {
+    state.dismissedValue = null;
+  }
+
+  state.lastValue = currentValue;
+
+  if (!reminderMessage) {
+    hideTrackedMilestoneReminder(type, true);
+    return;
+  }
+
+  if (state.dismissedValue === currentValue) {
+    hideTrackedMilestoneReminder(type);
+    return;
+  }
+
+  showTrackedMilestoneReminder(type, reminderMessage);
+}
+
+function setConditionState(condition, isActive) {
+  const activeConditions = new Set(Array.isArray(characterData.conditions) ? characterData.conditions : []);
+
+  if (isActive) {
+    activeConditions.add(condition);
+  } else {
+    activeConditions.delete(condition);
+  }
+
+  characterData.conditions = [...activeConditions];
+}
+
+function syncDerivedConditions() {
+  const insanityValue = Math.max(0, parseInt(characterData.armor?.insanity, 10) || 0);
+  const huntXPValue = Math.max(0, Math.min(16, parseInt(characterData.huntXP, 10) || 0));
+
+  setConditionState('insane', insanityValue >= 3);
+  setConditionState('retired', huntXPValue >= 16);
+  renderConditions();
+}
+
+// â”€â”€â”€ APPLY SUB-FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function applyIdentity() {
   if (ui.survivorName) ui.survivorName.value = characterData.survivorName || '';
@@ -2403,10 +1855,27 @@ function applySurvival() {
   if (ui.survivalEncourage)ui.survivalEncourage.checked = !!sa.encourage;
   if (ui.survivalSurge)    ui.survivalSurge.checked    = !!sa.surge;
   if (ui.survivalDash)     ui.survivalDash.checked     = !!sa.dash;
-  if (ui.huntXP) ui.huntXP.value = characterData.huntXP || 0;
-  renderConditions();
+  const currentHuntXP = Math.max(0, Math.min(16, parseInt(characterData.huntXP, 10) || 0));
+  characterData.huntXP = currentHuntXP;
+  if (ui.huntXP) ui.huntXP.value = currentHuntXP;
+  syncHuntXPReminder({ force: true });
+  syncDerivedConditions();
   bleedState = [...(Array.isArray(characterData.bleedState) ? characterData.bleedState : [0,0,0,0,0])];
   renderBleedState();
+}
+
+function applyMentalStats() {
+  const courageValue = Math.max(0, Math.min(9, parseInt(characterData.courageValue, 10) || 0));
+  const understandingValue = Math.max(0, Math.min(9, parseInt(characterData.understandingValue, 10) || 0));
+
+  characterData.courageValue = courageValue;
+  characterData.understandingValue = understandingValue;
+
+  if (ui.courageValue) ui.courageValue.value = courageValue;
+  if (ui.understandingValue) ui.understandingValue.value = understandingValue;
+
+  syncTrackedMilestoneReminder('courage', { force: true });
+  syncTrackedMilestoneReminder('understanding', { force: true });
 }
 
 function applyAttributes() {
@@ -2416,7 +1885,7 @@ function applyAttributes() {
   characterData.attributesBase.forEach((val, i) => { if (baseInputs[i]) baseInputs[i].value = val; });
   characterData.attributesEquipped.forEach((val, i) => { if (eqInputs[i])   eqInputs[i].value   = val; });
   characterData.attributesTemporary.forEach((val, i) => { if (tempInputs[i]) tempInputs[i].value = val; });
-  updateStatTotals();
+  updateSelectionEffectBonusState();
 }
 
 function applyArmor() {
@@ -2440,7 +1909,7 @@ function applySelections() {
   applySavedSelections();
 }
 
-// ─── MAIN APPLY ORCHESTRATOR ─────────────────────────────────────────────────
+// â”€â”€â”€ MAIN APPLY ORCHESTRATOR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function applyLayoutMode(mode) {
   const safeMode = mode === 'landscape' ? 'landscape' : 'portrait';
@@ -2457,6 +1926,7 @@ function applyCharacterDataToUI() {
   applyLayoutMode(characterData.layoutMode || 'portrait');
   applyIdentity();
   applySurvival();
+  applyMentalStats();
   applyAttributes();
   applyArmor();
   applyGrid();
@@ -2469,7 +1939,9 @@ function initializeSelectionBlock(type, maxCount = 3) {
     fightingArt: FIGHTING_ARTS_LIST,
     disorder: DISORDERS_LIST,
     ability: ABILITIES_LIST,
-    injury: SEVERE_INJURIES_LIST
+    injury: SEVERE_INJURIES_LIST,
+    courage: COURAGE_LIST,
+    understanding: UNDERSTANDING_LIST
   };
 
   const list = collectionMap[type];
@@ -2493,9 +1965,25 @@ function initializeSelectionBlock(type, maxCount = 3) {
     select.addEventListener('change', () => {
       if (!select.value) {
         infoDiv.innerHTML = '';
+        infoDiv.hidden = true;
       } else {
         const value = list.find(item => item.id === select.value);
-        infoDiv.innerHTML = value ? `<p><strong>${value.name}</strong></p><p>${parseDescription(value.description)}</p><p><em>Effect: ${value.effect}</em></p>` : '';
+        if (!value) {
+          infoDiv.innerHTML = '';
+          infoDiv.hidden = true;
+        } else {
+          const rawEffect = value.effect;
+          const normalizedEffect = typeof rawEffect === 'string' ? rawEffect.trim().toLowerCase() : rawEffect;
+          const showEffect = !(
+            rawEffect == null ||
+            normalizedEffect === '' ||
+            normalizedEffect === 'none' ||
+            normalizedEffect === 'null'
+          );
+
+          infoDiv.innerHTML = `<p><strong>${value.name}</strong></p><p>${parseDescription(value.description)}</p>${showEffect ? `<p><em>Effect: ${parseDescription(rawEffect)}</em></p>` : ''}`;
+          infoDiv.hidden = false;
+        }
       }
       updateCharacterSelections(type);
       saveCharacter();
@@ -2504,7 +1992,19 @@ function initializeSelectionBlock(type, maxCount = 3) {
 }
 
 function updateCharacterSelections(type) {
-  const key = type === 'fightingArt' ? 'fightingArts' : type === 'disorder' ? 'disorders' : type === 'ability' ? 'abilities' : type === 'injury' ? 'severeInjuries' : null;
+  const key = type === 'fightingArt'
+    ? 'fightingArts'
+    : type === 'disorder'
+      ? 'disorders'
+      : type === 'ability'
+        ? 'abilities'
+        : type === 'injury'
+          ? 'severeInjuries'
+          : type === 'courage'
+            ? 'courageSelections'
+            : type === 'understanding'
+              ? 'understandingSelections'
+              : null;
   if (!key) return;
 
   const values = [];
@@ -2513,13 +2013,29 @@ function updateCharacterSelections(type) {
     if (select && select.value) values.push({ id: select.value, notes: '' });
   }
   characterData[key] = values;
+
+  if (EFFECT_SELECTION_SOURCES[type]) {
+    updateSelectionEffectBonusState();
+  }
 }
 
 function applySavedSelections() {
-  ['fightingArt', 'disorder', 'ability', 'injury'].forEach(type => {
-    const key = type === 'fightingArt' ? 'fightingArts' : type === 'disorder' ? 'disorders' : type === 'ability' ? 'abilities' : 'severeInjuries';
+  ['fightingArt', 'disorder', 'ability', 'injury', 'courage', 'understanding'].forEach(type => {
+    const key = type === 'fightingArt'
+      ? 'fightingArts'
+      : type === 'disorder'
+        ? 'disorders'
+        : type === 'ability'
+          ? 'abilities'
+          : type === 'injury'
+            ? 'severeInjuries'
+            : type === 'courage'
+              ? 'courageSelections'
+              : 'understandingSelections';
     const list = characterData[key] || [];
-    for (let i = 1; i <= 3; i++) {
+    const maxCount = (type === 'courage' || type === 'understanding') ? 1 : 3;
+
+    for (let i = 1; i <= maxCount; i++) {
       const select = document.getElementById(`${type}${i}`);
       if (!select) continue;
       select.value = (list[i - 1] && list[i - 1].id) || '';
@@ -2620,6 +2136,9 @@ initializeSelectionBlock('fightingArt', 3);
 initializeSelectionBlock('disorder', 3);
 initializeSelectionBlock('ability', 3);
 initializeSelectionBlock('injury', 3);
+initializeSelectionBlock('courage', 1);
+initializeSelectionBlock('understanding', 1);
+applySavedSelections();
 
 // Character selector (legacy select removed; tabs in header handle slot switching)
 document.getElementById('characterSlot')?.addEventListener('change', () => {
@@ -2650,6 +2169,14 @@ document.getElementById('deleteSlot')?.addEventListener('click', () => {
     loadCharacter();
     applyCharacterDataToUI();
   }
+});
+
+document.getElementById('resetSurvivor')?.addEventListener('click', () => {
+  if (!confirm('Reset current survivor to blank values?')) return;
+  characterData = createDefaultCharacterData();
+  equipment = {};
+  applyCharacterDataToUI();
+  saveCharacter();
 });
 
 document.getElementById('layoutModeToggle')?.addEventListener('click', () => {
@@ -2688,13 +2215,38 @@ ui.survivalValue?.addEventListener('input', () => {
   saveCharacter();
 });
 
-ui.huntXP?.addEventListener('input', () => {
-  characterData.huntXP = parseInt(ui.huntXP.value) || 0;
+ui.courageValue?.addEventListener('input', () => {
+  const nextValue = Math.max(0, Math.min(9, parseInt(ui.courageValue.value, 10) || 0));
+  ui.courageValue.value = nextValue;
+  characterData.courageValue = nextValue;
+  syncTrackedMilestoneReminder('courage');
   saveCharacter();
 });
 
+ui.understandingValue?.addEventListener('input', () => {
+  const nextValue = Math.max(0, Math.min(9, parseInt(ui.understandingValue.value, 10) || 0));
+  ui.understandingValue.value = nextValue;
+  characterData.understandingValue = nextValue;
+  syncTrackedMilestoneReminder('understanding');
+  saveCharacter();
+});
+
+ui.huntXP?.addEventListener('input', () => {
+  const nextHuntXP = Math.max(0, Math.min(16, parseInt(ui.huntXP.value, 10) || 0));
+  ui.huntXP.value = nextHuntXP;
+  characterData.huntXP = nextHuntXP;
+  syncHuntXPReminder();
+  syncDerivedConditions();
+  saveCharacter();
+});
+
+ui.huntXPReminderClose?.addEventListener('click', dismissHuntXPReminder);
+ui.courageReminderClose?.addEventListener('click', () => dismissTrackedMilestoneReminder('courage'));
+ui.understandingReminderClose?.addEventListener('click', () => dismissTrackedMilestoneReminder('understanding'));
+
 document.querySelectorAll('.condition-badge').forEach(btn => {
   btn.addEventListener('click', () => {
+    if (AUTO_TOGGLED_CONDITIONS.has(btn.dataset.condition)) return;
     btn.classList.toggle('active');
     characterData.conditions = [...document.querySelectorAll('.condition-badge.active')].map(el => el.dataset.condition);
     saveCharacter();
@@ -2715,7 +2267,11 @@ ui.armorTableRows().forEach((row, i) => {
   const valInput = row.querySelector('td:nth-child(2) input');
   const lightCb  = row.querySelector('td:nth-child(3) label:first-of-type input');
   const heavyCb  = row.querySelector('td:nth-child(3) label:last-of-type input');
-  valInput?.addEventListener('input',  () => { characterData.armor[slot]             = parseInt(valInput.value) || 0; saveCharacter(); });
+  valInput?.addEventListener('input', () => {
+    characterData.armor[slot] = parseInt(valInput.value, 10) || 0;
+    syncDerivedConditions();
+    saveCharacter();
+  });
   lightCb?.addEventListener('change',  () => { characterData.armorInjuries[slot].light = lightCb.checked;              saveCharacter(); });
   heavyCb?.addEventListener('change',  () => { characterData.armorInjuries[slot].heavy = heavyCb.checked;              saveCharacter(); });
 });

@@ -8,6 +8,8 @@ const GLOSSARY = {
   'cursed': 'This gear cannot be removed from the gear grid for any reason. If the survivor dies, archive this gear.',
   'deadly': 'Gain +X luck while attacking with this weapon. This increases the odds of inflicting critical wounds.',
   'deaf': 'An impairment. You won\'t hear it coming. Suffer -1 permanent evasion. This injury is permanent and can be recorded once.',
+  'devastating': 'When a devastating weapon wounds a monster, it will inflict X additional wounds.',
+  'frenzy': 'A survivor who suffers this is Frenzied until the end of the Showdown Phase. Gain +1 strength token, +1 speed token, and 1d5 insanity. Ignore the "slow" special rule on melee weapons. A frenzied survivor may not spend survival or use fighting arts, weapon specialization, or weapon mastery. A survivor may be Frenzied multiple times.',
   'guardless': 'You cannot ignore hits.',
   'heavy': 'This gear has substantial weight.',
   'paired': 'Paired weapons are two identical weapons that can be used as one. Add the speed of the second weapon when attacking with the first. These weapons must have the same name, and both must be in your gear grid.',
@@ -132,7 +134,7 @@ const FIGHTING_ARTS_LIST = [
   { id: 'defender', name: 'Defender', description: 'When a survivor adjacent to you is knocked down, you may spend 1 survival. If you do, they stand and gain +1 survival from your words of encouragement. You cannot use this if you have the shattered jaw severe injury.', effect: 'none' },
   { id: 'double_dash', name: 'Double Dash', description: 'During your act, once per round, you may spend Activation to gain Movement', effect: 'none' },
   { id: 'extra_sense', name: 'Extra Sense', description: 'You may Dodge 1 additional time per round.', effect: 'none' },
-  { id: 'fated_blow', name: 'Fated Blow', description: 'Once per showdown, you may give your next wound attempt +2 strength and Devastating X 1.', effect: 'none' },
+  { id: 'fated_blow', name: 'Fated Blow', description: 'Once per showdown, you may give your next wound attempt +2 strength and [Devastating] X 1.', effect: 'none' },
   { id: 'glass_mask', name: 'Glass Mask', description: 'When you depart, you lightly cut your ears, rub blood all over your face, and wait for it to dry. Gain +3 insanity. If you have Face Painting, you create a seal between your glass mask and your armor. Gain an additional +3 insanity.', effect: 'none' },
   { id: 'harvestman', name: 'Harvestman', description: 'Gain +3 movement. Whenever you are knocked down, gain -1 movement token. If you have the Tiny Arachnophobia disorder, you are too scared of spiders to imitate them and you cannot use this fighting art.', effect: 'none' },
   { id: 'headliner', name: 'Headliner', description: 'When you become [Doomed] or gain the [Priority Target] token, you may choose to gain +1 survival or +1 strength token.', effect: 'none' },
@@ -230,26 +232,26 @@ const ABILITIES_LIST = [
   { id: 'presage', name: 'Presage', description: 'Each time you attack, before drawing hit locations, loudly say a name. You lightly bite the eye in your cheek to see what it sees. If you draw any hit locations with the name, gain +3 insanity and +10 strength when attempting to wound them.', effect: 'none' },
   { id: 'pristine', name: 'Pristine', description: 'When you suffer a dismembered severe injury, ignore it and gain 1 bleeding token instead.', effect: 'none' },
   { id: 'psychovore', name: 'Psychovore', description: 'Once per showdown, you may eat an adjacent survior\'s disorder. If you do, remove the disorder. They gain 1 bleeding token and you gain +1 permanent strength. At the end of the showdown, if you haven\'t eaten a disorder, you die.', effect: 'none' },
-  { id: 'reflection', name: 'Reflection', description: '', effect: 'none' },
-  { id: 'refraction', name: 'Refraction', description: '', effect: 'none' },
-  { id: 'rooted_to_all', name: 'Rooted to All', description: '', effect: 'none' },
-  { id: 'sour_death', name: 'Sour Death', description: '', effect: 'none' },
-  { id: 'stalwart', name: 'Stalwart', description: '', effect: 'none' },
-  { id: 'story_of_the_forsaker', name: 'Story of the Forsaker', description: '', effect: 'none' },
-  { id: 'story_of_the_goblin', name: 'Story of the Goblin', description: '', effect: 'none' },
-  { id: 'story_of_the_young_hero', name: 'Story of the Young Hero', description: '', effect: 'none' },
-  { id: 'super_hair', name: 'Super Hair', description: '', effect: 'none' },
-  { id: 'sweet_battle', name: 'Sweet Battle', description: '', effect: 'none' },
-  { id: 'thundercaller', name: 'Thundercaller', description: '', effect: 'none' },
-  { id: 'tinker', name: 'Tinker', description: '', effect: 'none' },
-  { id: 'twelve_fingers', name: 'Twelve Fingers', description: '', effect: 'none' },
-  { id: 'twilight_succession', name: 'Twilight Succession', description: '', effect: 'none' },
-  { id: 'uninhibited_rage', name: 'Uninhibited Rage', description: '', effect: 'none' },
-  { id: 'way_of_the_rust', name: 'Way of the Rust', description: '', effect: 'none' }
+  { id: 'reflection', name: 'Reflection', description: 'Your complete affinities and incomplete affinity halves count as all colors. You may dodge at any time and as many times as you like each round. When you attack from a blind spot, add +1d10 to all wound attempts for that attack.', effect: 'none' },
+  { id: 'refraction', name: 'Refraction', description: 'Your complete affinities and incomplete affinity halves count as all colors. During the Showdown, after you perform a survival action, gain +1 survival.', effect: 'none' },
+  { id: 'rooted_to_all', name: 'Rooted to All', description: 'If you are standing at the start of your act, reveal the top 2 cards of the AI deck and put them back in any order.', effect: 'none' },
+  { id: 'sour_death', name: 'Sour Death', description: 'When you are knocked down, you may encourage yourself. If you do, gain +1 strength token.', effect: 'none' },
+  { id: 'stalwart', name: 'Stalwart', description: 'Ignore being knocked down by brain trauma and intimidate actions.', effect: 'none' },
+  { id: 'story_of_the_forsaker', name: 'Story of the Forsaker', description: 'You cannot be knocked down during a showdown with a nemesis monster.', effect: 'none' },
+  { id: 'story_of_the_goblin', name: 'Story of the Goblin', description: 'Once per showdown, you may roll 1d10. On a 3+, gain the priority target token and the monster gains +1 damage token.', effect: 'none' },
+  { id: 'story_of_the_young_hero', name: 'Story of the Young Hero', description: 'At the start of each of your acts, you may choose to gain 1 survival and 2 bleeding tokens.', effect: 'none' },
+  { id: 'super_hair', name: 'Super Hair', description: 'You may spend Activation to freely exchange any tokens with adjacent survivors who have Super Hair.', effect: 'none' },
+  { id: 'sweet_battle', name: 'Sweet Battle', description: 'You may surge without spending survival. If you do, they must be used to activate a weapon. You may use Sweet Battle even if your settlement cannot normally Surge. You may also use Sweet Battle when you have no survival and/or cannot spend survival. This does not let you Surge more than once per round.', effect: 'none' },
+  { id: 'thundercaller', name: 'Thundercaller', description: 'Once a lifetime, on a hunt board space after Overwhelming Darkness, in place of rolling a random hunt event, use "100" as your result.', effect: 'none' },
+  { id: 'tinker', name: 'Tinker', description: 'When you are a returning survivor, gain +1 Endeavor to use this settlement phase.', effect: 'none' },
+  { id: 'twelve_fingers', name: 'Twelve Fingers', description: 'You cannot carry two-handed gear. On a [Perfect hit], your right hand pulses. Gain +5 insanity and +1 luck for the attack. However, for each natural 1 rolled when attempting to hit, your left hand shakes. Suffer 5 brain damage and -1 luck for the attack.', effect: 'none' },
+  { id: 'twilight_succession', name: 'Twilight Succession', description: 'If you die during the showdown and you have a Twilight Sword, nominate another survivor on the showdown board to gain the Twilight Sword and this ability.', effect: 'none' },
+  { id: 'uninhibited_rage', name: 'Uninhibited Rage', description: 'Add +1d10 strength to a wound attempt. After a wound attempt is rolled you may roll the Death Die and add the result to the strength of your wound attempt.', effect: 'none' },
+  { id: 'way_of_the_rust', name: 'Way of the Rust', description: 'Your bleeding tokens are also +1 evasion tokens.', effect: 'none' }
 ];
 
 const SEVERE_INJURIES_LIST = [
-  { id: 'blind', name: 'Blind', description: 'Lose an eye. Suffer -1 permanent accuracy. This injury is permanent and can be recorded twice. A survivor with two blind severe injuries suffers -4 permanent accuracy and retires at the end of the next showdown or settlement phase, having lost all sight.', effect: 'none' },
+  { id: 'blind', name: 'Blind', description: 'Lose an eye. Suffer -1 permanent accuracy. This injury is permanent and can be recorded twice. A survivor with two blind severe injuries suffers -4 permanent accuracy and retires at the end of the next showdown or settlement phase, having lost all sight.', effect: '-1 accuracy' },
   { id: 'broken_arm', name: 'Broken Arm', description: 'An ear-shattering crunch. Suffer -1 permanent accuracy and -1 permanent strength. This injury is permanent, and can be recorded twice.', effect: '-1 accuracy, -1 strength' },
   { id: 'broken_hip', name: 'Broken Hip', description: 'Your hip is dislocated. You can no longer dodge. Suffer -1 permanent movement. This injury is permanent and can be recorded once. Gain 1 bleeding token.', effect: '-1 movement' },
   { id: 'broken_rib', name: 'Broken Rib', description: 'It even hurts to breathe. Suffer -1 permanent speed. This injury is permanent, and can be recorded multiple times.', effect: '-1 speed' },
@@ -267,3 +269,179 @@ const SEVERE_INJURIES_LIST = [
   { id: 'shattered_jaw', name: 'Shattered Jaw', description: 'You drink your meat through a straw. You can no longer consume or be affected by events requiring you to consume. You can no longer encourage. This injury is permanent and can be recorded once.', effect: 'none' },
   { id: 'warped_pelvis', name: 'Warped Pelvis', description: 'Your pelvis is disfigured. Suffer -1 permanent luck. This injury is permanent and can be recorded multiple times.', effect: '-1 luck' }
 ];
+
+const COURAGE_LIST = [
+  { id: 'courage_bonus_1', name: 'Stalwart', description: 'Ignore being knocked down by brain trauma and intimidate actions.', effect: 'none' },
+  { id: 'courage_bonus_2', name: 'Prepared', description: 'When rolling to determine a straggler, add your hunt experience to your roll result.', effect: 'none' },
+  { id: 'courage_bonus_3', name: 'Matchmaker', description: 'When you are a returning survivor, once per year you may spend an Endeavor to Story Event Intimacy.', effect: 'none' },
+  { id: 'courage_bonus_4', name: 'Sweet Battle', description: 'Once per round, you may surge without spending survival. If you do, the Activation must be used to activate a weapon.', effect: 'none' },
+  { id: 'courage_bonus_5', name: 'Bitter Frenzy', description: 'Each showdown, the first time you suffer the [frenzy] brain trauma, gain d10 survival. You may spend survival while Frenzied.', effect: 'none' },
+  { id: 'courage_bonus_6', name: 'Sour Death', description: 'When you are knocked down, you may encourage yourself (even if you\'re deaf). If you do, gain +1 strength token.', effect: 'none' }
+];
+
+const UNDERSTANDING_LIST = [
+  { id: 'understanding_bonus_1', name: 'Analyze', description: 'At the start of the survivors\' turn, if you are adjacent to the monster, reveal the top AI card, then place it back on top of the deck.', effect: 'none' },
+  { id: 'understanding_bonus_2', name: 'Explore', description: 'When you roll on an investigate table, add +2 to your roll result.', effect: 'none' },
+  { id: 'understanding_bonus_3', name: 'Tinker', description: 'When you are a returning survivor, gain +1 Endeavor to use this settlement phase.', effect: 'none' },
+  { id: 'understanding_bonus_4', name: 'Ageless', description: 'You may hunt if you are retired. When you gain Hunt XP, you may decide not to gain it. Saviors age unnaturally and cannot use Ageless.', effect: 'none' },
+  { id: 'understanding_bonus_5', name: 'Peerless', description: 'When you gain insanity, you may gain an equal amount of survival.', effect: 'none' },
+  { id: 'understanding_bonus_6', name: 'Leyline Walker', description: 'While there is no armor or accessory gear in your gear grid, gain +3 evasion.', effect: 'none' }
+];
+
+const COURAGE_REMINDER_TEXT = Object.freeze({
+  3: 'Courage milestone reached. Complete <strong>Bold</strong> story event.',
+  9: 'Courage milestone reached. Complete <strong>See the Truth</strong> story event.'
+});
+
+const UNDERSTANDING_REMINDER_TEXT = Object.freeze({
+  3: 'Understanding milestone reached. Complete <strong>Insight</strong> story event',
+  9: 'Understanding milestone reached. Complete <strong>White Secret</strong> story event.'
+});
+
+// Bestiary / Monster page scaffolding (Phase 3)
+const BESTIARY_MONSTER_ORDER = Object.freeze([
+  'white_lion',
+  'butcher',
+  'screaming_antelope',
+  'kings_man',
+  'the_hand',
+  'phoenix',
+  'watcher',
+  'gold_smoke_knight'
+]);
+
+const WHITE_LION_HUNT_SETUP = Object.freeze({
+  title: 'White Lion Hunt Setup',
+  notes: [
+    'Use this section to present level-based hunt setup details.',
+    'List required hunt event deck adjustments for the chosen White Lion level.',
+    'Include any campaign-era or expansion condition overrides here.'
+  ],
+  terrainDeck: [
+    'Tall Grass',
+    'Stone Face',
+    'Acid Palms',
+    'Spidicules Spore',
+    'Random Basic Terrain x4'
+  ]
+});
+
+const WHITE_LION_SHOWDOWN_SETUP = Object.freeze({
+  title: 'White Lion Showdown Setup',
+  notes: [
+    'Place the White Lion according to the board setup coordinates.',
+    'Place all survivors according to the board setup survivor positions.',
+    'Apply level-specific setup rules before the first survivor turn.'
+  ]
+});
+
+const WHITE_LION_AI_CARDS = Object.freeze([
+  { name: 'Claw', type: 'Basic Action', description: 'A straightforward attack action used as a baseline behavior card.' },
+  { name: 'Maul', type: 'Basic Action', description: 'Heavy forward pressure attack that punishes survivors in close range.' },
+  { name: 'Cunning', type: 'Trait / Reaction', description: 'Manipulates targeting and can force awkward survivor positioning.' },
+  { name: 'Stalker', type: 'Advanced Action', description: 'Repositions and isolates targets before delivering focused attacks.' },
+  { name: 'Terrifying Roar', type: 'Mood / Trigger', description: 'Adds intimidation pressure and can disrupt survivor turn planning.' }
+]);
+
+const WHITE_LION_BOARD_SETUP = Object.freeze({
+  board: { cols: 16, rows: 22 },
+  monster: {
+    id: 'white_lion',
+    label: 'White Lion',
+    color: 'red',
+    col: 7,
+    row: 8,
+    spanCols: 2,
+    spanRows: 2
+  },
+  survivors: [
+    { id: 'survivor_1', label: 'Survivor 1', color: 'blue', col: 6, row: 19, spanCols: 1, spanRows: 1 },
+    { id: 'survivor_2', label: 'Survivor 2', color: 'blue', col: 7, row: 19, spanCols: 1, spanRows: 1 },
+    { id: 'survivor_3', label: 'Survivor 3', color: 'blue', col: 8, row: 19, spanCols: 1, spanRows: 1 },
+    { id: 'survivor_4', label: 'Survivor 4', color: 'blue', col: 9, row: 19, spanCols: 1, spanRows: 1 }
+  ],
+  terrain: []
+});
+
+const BUTCHER_BOARD_SETUP = Object.freeze({ board: { cols: 16, rows: 22 }, monster: null, survivors: [], terrain: [] });
+const SCREAMING_ANTELOPE_BOARD_SETUP = Object.freeze({ board: { cols: 16, rows: 22 }, monster: null, survivors: [], terrain: [] });
+const KINGS_MAN_BOARD_SETUP = Object.freeze({ board: { cols: 16, rows: 22 }, monster: null, survivors: [], terrain: [] });
+const THE_HAND_BOARD_SETUP = Object.freeze({ board: { cols: 16, rows: 22 }, monster: null, survivors: [], terrain: [] });
+const PHOENIX_BOARD_SETUP = Object.freeze({ board: { cols: 16, rows: 22 }, monster: null, survivors: [], terrain: [] });
+const WATCHER_BOARD_SETUP = Object.freeze({ board: { cols: 16, rows: 22 }, monster: null, survivors: [], terrain: [] });
+const GOLD_SMOKE_KNIGHT_BOARD_SETUP = Object.freeze({ board: { cols: 16, rows: 22 }, monster: null, survivors: [], terrain: [] });
+
+const MONSTER_DATA = Object.freeze({
+  white_lion: {
+    id: 'white_lion',
+    name: 'White Lion',
+    type: 'quarry',
+    huntSetup: WHITE_LION_HUNT_SETUP,
+    showdownSetup: WHITE_LION_SHOWDOWN_SETUP,
+    aiCards: WHITE_LION_AI_CARDS,
+    boardSetup: WHITE_LION_BOARD_SETUP
+  },
+  butcher: {
+    id: 'butcher',
+    name: 'Butcher',
+    type: 'nemesis',
+    huntSetup: { title: 'Butcher Hunt Setup', notes: ['TODO'] },
+    showdownSetup: { title: 'Butcher Showdown Setup', notes: ['TODO'] },
+    aiCards: [],
+    boardSetup: BUTCHER_BOARD_SETUP
+  },
+  screaming_antelope: {
+    id: 'screaming_antelope',
+    name: 'Screaming Antelope',
+    type: 'quarry',
+    huntSetup: { title: 'Screaming Antelope Hunt Setup', notes: ['TODO'] },
+    showdownSetup: { title: 'Screaming Antelope Showdown Setup', notes: ['TODO'] },
+    aiCards: [],
+    boardSetup: SCREAMING_ANTELOPE_BOARD_SETUP
+  },
+  kings_man: {
+    id: 'kings_man',
+    name: 'Kings Man',
+    type: 'nemesis',
+    huntSetup: { title: 'Kings Man Hunt Setup', notes: ['TODO'] },
+    showdownSetup: { title: 'Kings Man Showdown Setup', notes: ['TODO'] },
+    aiCards: [],
+    boardSetup: KINGS_MAN_BOARD_SETUP
+  },
+  the_hand: {
+    id: 'the_hand',
+    name: 'The Hand',
+    type: 'nemesis',
+    huntSetup: { title: 'The Hand Hunt Setup', notes: ['TODO'] },
+    showdownSetup: { title: 'The Hand Showdown Setup', notes: ['TODO'] },
+    aiCards: [],
+    boardSetup: THE_HAND_BOARD_SETUP
+  },
+  phoenix: {
+    id: 'phoenix',
+    name: 'Phoenix',
+    type: 'quarry',
+    huntSetup: { title: 'Phoenix Hunt Setup', notes: ['TODO'] },
+    showdownSetup: { title: 'Phoenix Showdown Setup', notes: ['TODO'] },
+    aiCards: [],
+    boardSetup: PHOENIX_BOARD_SETUP
+  },
+  watcher: {
+    id: 'watcher',
+    name: 'Watcher',
+    type: 'nemesis',
+    huntSetup: { title: 'Watcher Hunt Setup', notes: ['TODO'] },
+    showdownSetup: { title: 'Watcher Showdown Setup', notes: ['TODO'] },
+    aiCards: [],
+    boardSetup: WATCHER_BOARD_SETUP
+  },
+  gold_smoke_knight: {
+    id: 'gold_smoke_knight',
+    name: 'Gold Smoke Knight',
+    type: 'finale',
+    huntSetup: { title: 'Gold Smoke Knight Hunt Setup', notes: ['TODO'] },
+    showdownSetup: { title: 'Gold Smoke Knight Showdown Setup', notes: ['TODO'] },
+    aiCards: [],
+    boardSetup: GOLD_SMOKE_KNIGHT_BOARD_SETUP
+  }
+});
