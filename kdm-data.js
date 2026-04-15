@@ -8,11 +8,11 @@ const GLOSSARY = {
   'cursed': 'This gear cannot be removed from the gear grid for any reason. If the survivor dies, archive this gear.',
   'deadly': 'Gain +X luck while attacking with this weapon. This increases the odds of inflicting critical wounds.',
   'deaf': 'An impairment. You won\'t hear it coming. Suffer -1 permanent evasion. This injury is permanent and can be recorded once.',
+  'deflect': 'When you Deflect X, gain (or lose) deflect tokens until you have X of them. When you are hit, if you have any deflect tokens, you ignore that hit and lose a deflect token. When you Deflect X, you lose the benefits of Block.',
   'devastating': 'When a devastating weapon wounds a monster, it will inflict X additional wounds.',
   'frenzy': 'A survivor who suffers this is Frenzied until the end of the Showdown Phase. Gain +1 strength token, +1 speed token, and 1d5 insanity. Ignore the "slow" special rule on melee weapons. A frenzied survivor may not spend survival or use fighting arts, weapon specialization, or weapon mastery. A survivor may be Frenzied multiple times.',
   'guardless': 'You cannot ignore hits.',
   'heavy': 'This gear has substantial weight.',
-  'paired': 'Paired weapons are two identical weapons that can be used as one. Add the speed of the second weapon when attacking with the first. These weapons must have the same name, and both must be in your gear grid.',
   'two-handed': 'This weapon requires two hands to use. Some gear and rules do not work with two-handed weapons.',
   'encourage': 'A survival action. A standing survivor may spend 1 survival at any time to encourage a knocked down survivor, letting them stand. Deaf survivors may not be encouraged. Each survivor may only Encourage once per round, and only if the settlement has the Language innovation.',
   'endeavors': 'Actions taken during the settlement phase to improve your survivor or settlement.',
@@ -20,7 +20,7 @@ const GLOSSARY = {
   'insanity': 'A measure of psychological stress. Too much insanity can cause disorders.',
   'evasion': 'Your ability to avoid incoming attacks.',
   'momentum': 'When you travel 4 or more spaces from movement or knockback without passing over the same space twice, gain +1 momentum token. When you successfully Tumble, gain +1 momentum token. When you are knocked down, lose all your momentum tokens.',
-  'noisy': 'This gear  This gear is hard to keep quiet.',
+  'noisy': 'This gear is hard to keep quiet.',
   'paired': 'Paired weapons are two identical weapons that can be used as one. Add the speed of the second weapon when attacking with the first. These weapons must have the same name, and both must be in your gear grid.',
   'perfect hit': 'An attack dice roll result of a Lantern 10. This always results in a hit. When there are multiple Perfect Hits in a single attack, trigger any rules applying to Perfect Hits that many times. Perfect Hits are modified by the Perfection special rule.',
   'provoke': 'When you wound with this weapon, gain the priority target token.',
@@ -52,6 +52,11 @@ const WEAPON_PROFICIENCY_DATA = {
     name: 'Dagger',
     specialist: { title: 'Dagger Specialist', description: 'When attacking with a Dagger, if a wound attempt fails, after performing any reactions, you may discard another drawn hit location card to attempt to wound the failed hit location again. Limit once per attack.', effect: 'none', stats: {} },
     master: { title: 'Dagger Mastery', description: 'After a wounded hit location is discarded, a Dagger Master who is adjacent to the attacker and the wounded monster may spend 1 survival to re-draw the wounded hit location and attempt to wound with a dagger. Treat monster reactions on the re-drawn hit location card normally. All survivors gain Dagger Specialization in addition to their other weapon proficiencies.', effect: 'none', stats: {} }
+  },
+  fan: {
+    name: 'Fan',
+    specialist: { title: 'Fan Specialist', description: 'At the start of your act, you may lose all deflect tokens. At the end of your act, if you are standing and have a fan in your gear grid, you may [Deflect] 1 for free.', effect: 'none', stats: {} },
+    master: { title: 'Fan Mastery', description: 'While you have no deflect tokens, fans in your gear grid gain [Sharp] and [Devastating] 1. While you have any deflect tokens, increase the range of your [Perfect hits] with fans by 2. All survivors gain Fan Specialization in addition to their other weapon proficiencies.', effect: 'none', stats: {} }
   },
   'fist-tooth': {
     name: 'Fist & Tooth',
@@ -187,7 +192,7 @@ const DISORDERS_LIST = [
   { id: 'seizures', name: 'Seizures', description: 'During the showdown, whenever you suffer damage to your head location, you are knocked down.', effect: 'none' },
   { id: 'squeamish', name: 'Squeamish', description: 'You cannot depart with any stinky gear in your gear grid. If a status or effect would cause you to become [stinky], lose all your survival.', effect: 'none' },
   { id: 'traumatized', name: 'Traumatized', description: 'Whenever you end your act adjacent to a monster, you are knocked down.', effect: 'none' },
-  { id: 'vermin_obsession', name: 'Vermin Obesession', description: 'While there is a Bug Patch terrain tile on the showdown board, you are so overwhelmed that you cannont spend survival.', effect: 'none' },
+  { id: 'vermin_obsession', name: 'Vermin Obsession', description: 'While there is a Bug Patch terrain tile on the showdown board, you are so overwhelmed that you cannot spend survival.', effect: 'none' },
   { id: 'vestiphobia', name: 'Vestiphobia', description: 'You cannot wear armor at the body location. If you are wearing armor at the body location when you gain this disorder, archive it as you tear it off your person!', effect: 'none' },
   { id: 'weak_spot', name: 'Weak Spot', description: 'When you gain this disorder, roll a random hit location and record it. You cannot depart unless you have armor at this hit location.', effect: 'none' }
 ];
@@ -196,8 +201,8 @@ const ABILITIES_LIST = [
   { id: 'acceleration', name: 'Acceleration', description: 'Add +1d10 movement to a move action. Before moving, you may roll the Death Die and add the result to your movement for one move action this round.', effect: 'none' },
   { id: 'acid_palms', name: 'Acid Palms', description: 'Add 1d10 strength to wound attempts when attacking with Fist & Tooth.', effect: 'none' },
   { id: 'ageless', name: 'Ageless', description: 'You may hunt if you are retired. When you gain Hunt XP, you may decide not to gain it. Saviors age unnaturally and cannot use Ageless, though they are able to gain Ageless.', effect: 'none' },
-  { id: 'aggression_overload', name: 'Aggression Overload', description: '', effect: 'none' },
-  { id: 'analyze', name: 'Analyze', description: ' At the start of the survivors\' turn, if you are adjacent to the monster, reveal the top AI card, then place it back on top of the deck.', effect: 'none' },
+  { id: 'aggression_overload', name: 'Aggression Overload', description: 'Add an attack roll to an attack. During your attack, after making your attack rolls but before drawing hit locations, you may roll the Death Die as an additional attack roll.', effect: 'none' },
+  { id: 'analyze', name: 'Analyze', description: 'At the start of the survivors\' turn, if you are adjacent to the monster, reveal the top AI card, then place it back on top of the deck.', effect: 'none' },
   { id: 'astute', name: 'Astute', description: 'On Arrival, if possible, add an acanthus plant terrain card to the showdown.', effect: 'none' },
   { id: 'bitter_frenzy', name: 'Bitter Frenzy', description: 'Each showdown, the first time you suffer the frenzy brain trauma, gain 1d10 survival. You may spend survival while Frenzied.', effect: 'none' },
   { id: 'burnt_nerves', name: 'Burnt Nerves', description: 'You are immune to [bash].', effect: 'none' },
@@ -231,7 +236,7 @@ const ABILITIES_LIST = [
   { id: 'prepared', name: 'Prepared', description: 'When rolling to determine a straggler, add your hunt experience to your roll result.', effect: 'none' },
   { id: 'presage', name: 'Presage', description: 'Each time you attack, before drawing hit locations, loudly say a name. You lightly bite the eye in your cheek to see what it sees. If you draw any hit locations with the name, gain +3 insanity and +10 strength when attempting to wound them.', effect: 'none' },
   { id: 'pristine', name: 'Pristine', description: 'When you suffer a dismembered severe injury, ignore it and gain 1 bleeding token instead.', effect: 'none' },
-  { id: 'psychovore', name: 'Psychovore', description: 'Once per showdown, you may eat an adjacent survior\'s disorder. If you do, remove the disorder. They gain 1 bleeding token and you gain +1 permanent strength. At the end of the showdown, if you haven\'t eaten a disorder, you die.', effect: 'none' },
+  { id: 'psychovore', name: 'Psychovore', description: 'Once per showdown, you may eat an adjacent survivor\'s disorder. If you do, remove the disorder. They gain 1 bleeding token and you gain +1 permanent strength. At the end of the showdown, if you haven\'t eaten a disorder, you die.', effect: 'none' },
   { id: 'reflection', name: 'Reflection', description: 'Your complete affinities and incomplete affinity halves count as all colors. You may dodge at any time and as many times as you like each round. When you attack from a blind spot, add +1d10 to all wound attempts for that attack.', effect: 'none' },
   { id: 'refraction', name: 'Refraction', description: 'Your complete affinities and incomplete affinity halves count as all colors. During the Showdown, after you perform a survival action, gain +1 survival.', effect: 'none' },
   { id: 'rooted_to_all', name: 'Rooted to All', description: 'If you are standing at the start of your act, reveal the top 2 cards of the AI deck and put them back in any order.', effect: 'none' },
@@ -343,6 +348,44 @@ const WHITE_LION_AI_CARDS = Object.freeze([
   { name: 'Terrifying Roar', type: 'Mood / Trigger', description: 'Adds intimidation pressure and can disrupt survivor turn planning.' }
 ]);
 
+const WHITE_LION_SHOWDOWN_SURVIVOR_STARTS = Object.freeze([
+  { col: 1, row: 10 },
+  { col: 1, row: 11 },
+  { col: 2, row: 9 },
+  { col: 3, row: 8 },
+  { col: 4, row: 7 },
+  { col: 5, row: 6 },
+  { col: 6, row: 5 },
+  { col: 7, row: 4 },
+  { col: 8, row: 4 },
+  { col: 9, row: 5 },
+  { col: 10, row: 6 },
+  { col: 11, row: 7 },
+  { col: 12, row: 8 },
+  { col: 13, row: 9 },
+  { col: 14, row: 10 },
+  { col: 14, row: 11 },
+  { col: 13, row: 12 },
+  { col: 12, row: 13 },
+  { col: 11, row: 14 },
+  { col: 10, row: 15 },
+  { col: 9, row: 16 },
+  { col: 8, row: 17 },
+  { col: 7, row: 17 },
+  { col: 6, row: 16 },
+  { col: 5, row: 15 },
+  { col: 4, row: 14 },
+  { col: 3, row: 13 },
+  { col: 2, row: 12 }
+].map((position, index) => Object.freeze({
+  id: 'survivor_start_' + (index + 1),
+  label: 'S',
+  color: 'blue',
+  spanCols: 1,
+  spanRows: 1,
+  ...position
+})));
+
 const WHITE_LION_BOARD_SETUP = Object.freeze({
   board: { cols: 16, rows: 22 },
   monster: {
@@ -350,16 +393,11 @@ const WHITE_LION_BOARD_SETUP = Object.freeze({
     label: 'White Lion',
     color: 'red',
     col: 7,
-    row: 8,
+    row: 10,
     spanCols: 2,
     spanRows: 2
   },
-  survivors: [
-    { id: 'survivor_1', label: 'Survivor 1', color: 'blue', col: 6, row: 19, spanCols: 1, spanRows: 1 },
-    { id: 'survivor_2', label: 'Survivor 2', color: 'blue', col: 7, row: 19, spanCols: 1, spanRows: 1 },
-    { id: 'survivor_3', label: 'Survivor 3', color: 'blue', col: 8, row: 19, spanCols: 1, spanRows: 1 },
-    { id: 'survivor_4', label: 'Survivor 4', color: 'blue', col: 9, row: 19, spanCols: 1, spanRows: 1 }
-  ],
+  survivors: WHITE_LION_SHOWDOWN_SURVIVOR_STARTS,
   terrain: []
 });
 
@@ -375,7 +413,7 @@ const MONSTER_DATA = Object.freeze({
   white_lion: {
     id: 'white_lion',
     name: 'White Lion',
-    type: 'quarry',
+    type: 'node quarry 1',
     huntSetup: WHITE_LION_HUNT_SETUP,
     showdownSetup: WHITE_LION_SHOWDOWN_SETUP,
     aiCards: WHITE_LION_AI_CARDS,

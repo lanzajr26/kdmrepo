@@ -267,6 +267,9 @@
         <label class="survivalAction font-spaceGrotesk text-[11px] text-[#c6c6c7] uppercase tracking-wider flex items-center gap-1 cursor-pointer">
           <input type="checkbox" id="survivalDash"> Dash
         </label>
+        <label class="survivalAction font-spaceGrotesk text-[11px] text-[#c6c6c7] uppercase tracking-wider flex items-center gap-1 cursor-pointer">
+          <input type="checkbox" id="survivalEndure"> Endure
+        </label>
       </div>
     </div>
 
@@ -1543,7 +1546,7 @@ function createDefaultCharacterData() {
     survivalValue: 0,
     courageValue: 0,
     understandingValue: 0,
-    survivalActions: { dodge: false, encourage: false, surge: false, dash: false },
+    survivalActions: { dodge: false, encourage: false, surge: false, dash: false, endure: false },
     attributesBase: [5, 0, 0, 0, 0, 0],
     attributesEquipped: [0, 0, 0, 0, 0, 0],
     attributesTemporary: [0, 0, 0, 0, 0, 0],
@@ -1619,8 +1622,15 @@ function loadCharacter(slot = currentSlot) {
       characterData.understandingSelections = [];
     }
     if (!characterData.survivalActions || typeof characterData.survivalActions !== 'object') {
-      characterData.survivalActions = { dodge: false, encourage: false, surge: false, dash: false };
+      characterData.survivalActions = { dodge: false, encourage: false, surge: false, dash: false, endure: false };
     }
+    characterData.survivalActions = {
+      dodge: !!characterData.survivalActions.dodge,
+      encourage: !!characterData.survivalActions.encourage,
+      surge: !!characterData.survivalActions.surge,
+      dash: !!characterData.survivalActions.dash,
+      endure: !!characterData.survivalActions.endure
+    };
     if (!characterData.armor || typeof characterData.armor !== 'object') {
       characterData.armor = { insanity: 0, head: 0, arms: 0, body: 0, legs: 0, waist: 0 };
     }
@@ -1653,6 +1663,7 @@ const ui = {
   get survivalEncourage(){ return document.getElementById('survivalEncourage'); },
   get survivalSurge()   { return document.getElementById('survivalSurge'); },
   get survivalDash()    { return document.getElementById('survivalDash'); },
+  get survivalEndure()  { return document.getElementById('survivalEndure'); },
   get huntXP()          { return document.getElementById('huntXP'); },
   get huntXPReminder()  { return document.getElementById('huntXPReminder'); },
   get huntXPReminderText() { return document.getElementById('huntXPReminderText'); },
@@ -1855,6 +1866,7 @@ function applySurvival() {
   if (ui.survivalEncourage)ui.survivalEncourage.checked = !!sa.encourage;
   if (ui.survivalSurge)    ui.survivalSurge.checked    = !!sa.surge;
   if (ui.survivalDash)     ui.survivalDash.checked     = !!sa.dash;
+  if (ui.survivalEndure)   ui.survivalEndure.checked   = !!sa.endure;
   const currentHuntXP = Math.max(0, Math.min(16, parseInt(characterData.huntXP, 10) || 0));
   characterData.huntXP = currentHuntXP;
   if (ui.huntXP) ui.huntXP.value = currentHuntXP;
@@ -2254,7 +2266,7 @@ document.querySelectorAll('.condition-badge').forEach(btn => {
 });
 
 // Survival action checkboxes
-['Dodge', 'Encourage', 'Surge', 'Dash'].forEach(action => {
+['Dodge', 'Encourage', 'Surge', 'Dash', 'Endure'].forEach(action => {
   ui[`survival${action}`]?.addEventListener('change', e => {
     characterData.survivalActions[action.toLowerCase()] = e.target.checked;
     saveCharacter();
