@@ -256,19 +256,19 @@
       </div>
       <div id="survivalActions" class="flex flex-wrap gap-3 pl-2">
         <label class="survivalAction font-spaceGrotesk text-[11px] text-[#c6c6c7] uppercase tracking-wider flex items-center gap-1 cursor-pointer">
-          <input type="checkbox" id="survivalDodge"> Dodge
+          <input type="checkbox" id="survivalDodge"> <span data-survival-action="dodge">Dodge</span>
         </label>
         <label class="survivalAction font-spaceGrotesk text-[11px] text-[#c6c6c7] uppercase tracking-wider flex items-center gap-1 cursor-pointer">
-          <input type="checkbox" id="survivalEncourage"> Encourage
+          <input type="checkbox" id="survivalEncourage"> <span data-survival-action="encourage">Encourage</span>
         </label>
         <label class="survivalAction font-spaceGrotesk text-[11px] text-[#c6c6c7] uppercase tracking-wider flex items-center gap-1 cursor-pointer">
-          <input type="checkbox" id="survivalSurge"> Surge
+          <input type="checkbox" id="survivalSurge"> <span data-survival-action="surge">Surge</span>
         </label>
         <label class="survivalAction font-spaceGrotesk text-[11px] text-[#c6c6c7] uppercase tracking-wider flex items-center gap-1 cursor-pointer">
-          <input type="checkbox" id="survivalDash"> Dash
+          <input type="checkbox" id="survivalDash"> <span data-survival-action="dash">Dash</span>
         </label>
         <label class="survivalAction font-spaceGrotesk text-[11px] text-[#c6c6c7] uppercase tracking-wider flex items-center gap-1 cursor-pointer">
-          <input type="checkbox" id="survivalEndure"> Endure
+          <input type="checkbox" id="survivalEndure"> <span data-survival-action="endure">Endure</span>
         </label>
       </div>
     </div>
@@ -1535,6 +1535,16 @@ function parseDescription(text) {
   });
 }
 
+function initializeSurvivalActionTooltips() {
+  document.querySelectorAll('#survivalActions [data-survival-action]').forEach(el => {
+    const term = String(el.dataset.survivalAction || '').toLowerCase();
+    const definition = GLOSSARY[term];
+    if (!definition) return;
+    el.classList.add('glossary-term');
+    el.title = definition;
+  });
+}
+
 // CHARACTER DATA OBJECT
 function createDefaultCharacterData() {
   return {
@@ -2143,6 +2153,7 @@ function removeGearAttributes(filename) {
 
 loadCharacter();
 initializeWeaponProficiencyOptions();
+initializeSurvivalActionTooltips();
 applyCharacterDataToUI();
 initializeSelectionBlock('fightingArt', 3);
 initializeSelectionBlock('disorder', 3);

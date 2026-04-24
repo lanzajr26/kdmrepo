@@ -229,12 +229,12 @@
 }
 
 #rightSidebar #survivalActions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   width: 100%;
+  grid-template-columns: repeat(3, max-content);
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 8px 16px;
 }
 
 #rightSidebar .survivalAction {

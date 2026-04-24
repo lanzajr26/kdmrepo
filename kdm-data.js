@@ -7,9 +7,12 @@ const GLOSSARY = {
   'collision': 'When a survivor suffers collision, they are knocked down.',
   'cursed': 'This gear cannot be removed from the gear grid for any reason. If the survivor dies, archive this gear.',
   'deadly': 'Gain +X luck while attacking with this weapon. This increases the odds of inflicting critical wounds.',
+  'dash': 'When opportunity permits, a survivor may spend 1 survival to dash. They gain +1 movement which must be spent immediately. Each survivor may only Dash once per round, and only after the settlement has innovated the Paint innovation.',
   'deaf': 'An impairment. You won\'t hear it coming. Suffer -1 permanent evasion. This injury is permanent and can be recorded once.',
   'deflect': 'When you Deflect X, gain (or lose) deflect tokens until you have X of them. When you are hit, if you have any deflect tokens, you ignore that hit and lose a deflect token. When you Deflect X, you lose the benefits of Block.',
   'devastating': 'When a devastating weapon wounds a monster, it will inflict X additional wounds.',
+  'dodge': 'When a survivor is hit, after rolling hit location dice but before damage, they may spend 1 survival to dodge, canceling one hit. The dodged hit becomes a failed attack roll and does not cause damage. Any additional un-dodged hits resolve normally. Dodge is the only survival action that knocked down survivors can perform. Each survivor may only Dodge once per round.',
+  'endure': 'You may spend 7 survival minus your Luck to ignore a severe injury before you roll a result. Your Luck is determined by the sum of your permanent luck attribute, any luck modifiers, and any other gear or abilities affecting your luck at the time you endure. If you endure, you do not roll on the severe injury table and you do not gain any of the effects of the injury. You can only endure once per severe injury.',
   'frenzy': 'A survivor who suffers this is Frenzied until the end of the Showdown Phase. Gain +1 strength token, +1 speed token, and 1d5 insanity. Ignore the "slow" special rule on melee weapons. A frenzied survivor may not spend survival or use fighting arts, weapon specialization, or weapon mastery. A survivor may be Frenzied multiple times.',
   'guardless': 'You cannot ignore hits.',
   'heavy': 'This gear has substantial weight.',
@@ -57,16 +60,6 @@ const WEAPON_PROFICIENCY_DATA = {
     name: 'Fan',
     specialist: { title: 'Fan Specialist', description: 'At the start of your act, you may lose all deflect tokens. At the end of your act, if you are standing and have a fan in your gear grid, you may [Deflect] 1 for free.', effect: 'none', stats: {} },
     master: { title: 'Fan Mastery', description: 'While you have no deflect tokens, fans in your gear grid gain [Sharp] and [Devastating] 1. While you have any deflect tokens, increase the range of your [Perfect hits] with fans by 2. All survivors gain Fan Specialization in addition to their other weapon proficiencies.', effect: 'none', stats: {} }
-  },
-  'fist-tooth': {
-    name: 'Fist & Tooth',
-    specialist: { title: 'Fist & Tooth Specialist', description: 'You may stand (if knocked down) at the start of the monster\'s turn or the survivor\'s turn. Limit, once per round.', effect: 'none', stats: {} },
-    master: {
-      title: 'Fist & Tooth Mastery',
-      description: 'While a survivor is a Fist & Tooth Master, they gain +2 permanent accuracy and +2 permanent strength (they receive this bonus even when not attacking with Fist & Tooth). All survivors gain Fist & Tooth Specialization in addition to their other weapon proficiencies.',
-      effect: '+2 accuracy, +2 strength',
-      stats: { accuracy: 2, strength: 2 }
-    }
   },
   grand: {
     name: 'Grand Weapon',
@@ -317,22 +310,48 @@ const BESTIARY_MONSTER_ORDER = Object.freeze([
 
 const WHITE_LION_HUNT_SETUP = Object.freeze({
   title: 'White Lion Hunt Setup',
-  notes: [
-    'Use this section to present level-based hunt setup details.',
-    'List required hunt event deck adjustments for the chosen White Lion level.',
-    'Include any campaign-era or expansion condition overrides here.'
+  cards: [
+    {
+      name: null,
+      type: 'Terrain & Deployment',
+      description: '1 Tall Grass Terrain Card (2 Tall Grass Tiles)\n2 random terrain cards, set up normally.\nPlace the White Lion in the center of the board.\nPlace survivors in the blue zone.'
+    },
+   {
+  name: null,
+  type: 'Monster Levels',
+  content: [
+    { table: {
+      headers: ['Lvl', 'B', 'A', 'L', 'M', 'T', 'S', 'D'],
+      rows: [
+        ['1', '7', '3', '-', '6', '8', '-', '-']
+      ]
+    }},
+    { table: {
+      headers: ['Lvl', 'B', 'A', 'L', 'M', 'T', 'S', 'D'],
+      rows: [
+        ['2', '10', '5', '-', '7', '10', '+1', '+1']
+      ]
+    }},
+    { text: 'S: Cunning' },
+    { table: {
+      headers: ['Lvl', 'B', 'A', 'L', 'M', 'T', 'S', 'D'],
+      rows: [
+        ['3', '10', '9', '2', '8', '14', '+2', '+2']
+      ]
+    }},
+    { text: 'S: Cunning, S: Merciless' },
+    { text: 'Tokens: +2 accuracy, +1 luck' },
+  ]
+}
   ],
   terrainDeck: [
     'Tall Grass',
-    'Stone Face',
-    'Acid Palms',
-    'Spidicules Spore',
-    'Random Basic Terrain x4'
+    'Random Basic Terrain X2'
   ]
 });
 
 const WHITE_LION_SHOWDOWN_SETUP = Object.freeze({
-  title: 'White Lion Showdown Setup',
+  title: 'Monster Characteristics',
   notes: [
     'Place the White Lion according to the board setup coordinates.',
     'Place all survivors according to the board setup survivor positions.',
@@ -341,11 +360,44 @@ const WHITE_LION_SHOWDOWN_SETUP = Object.freeze({
 });
 
 const WHITE_LION_AI_CARDS = Object.freeze([
-  { name: 'Claw', type: 'Basic Action', description: 'A straightforward attack action used as a baseline behavior card.' },
-  { name: 'Maul', type: 'Basic Action', description: 'Heavy forward pressure attack that punishes survivors in close range.' },
-  { name: 'Cunning', type: 'Trait / Reaction', description: 'Manipulates targeting and can force awkward survivor positioning.' },
-  { name: 'Stalker', type: 'Advanced Action', description: 'Repositions and isolates targets before delivering focused attacks.' },
-  { name: 'Terrifying Roar', type: 'Mood / Trigger', description: 'Adds intimidation pressure and can disrupt survivor turn planning.' }
+  { name: 'Sniff', type: 'Instinct', description: 'The White Lion sniffs the air and ends its turn. Until the end of the next round, all survivors are now threats, even if they are knocked down or used an effect that a says otherwise. When a level 3+ White Lion performs Sniff it gains +1 accuracy token.' },
+  { name: 'Pick Target', type: 'Basic Action', description: 'Closest survivor, in field of view\n No target: Sniff' },
+  { name: 'Move & Attack Target', type: 'Basic Action', description: null,
+        table: {
+      headers: ['Speed', 'Accuracy', 'Damage', 'Trigger'],
+      rows: [
+        ['2', '2+', '1', 'None'],
+      ]
+    }
+   },
+//  { name: 'Cunning', type: 'Trait / Reaction', description: 'Manipulates targeting and can force awkward survivor positioning.' },
+//  { name: 'Terrifying Roar', type: 'Mood / Trigger', description: 'Adds intimidation pressure and can disrupt survivor turn planning.' }
+]);
+
+const WHITE_LION_REWARD_CARDS = Object.freeze([
+  {
+    name: null,
+    type: 'rewards',
+    description: 'The first time the White Lion is defeated, add Catarium to the settlement locations. The group gains the following rewards:',
+    table: {
+      headers: ['Level', 'Reward'],
+      rows: [
+        ['1', '4 basic, 4 white lion resources'],
+        ['2', '4 basic, 6 white lion resources'],
+        ['3', '4 basic, 8 white lion resources, 1 Elder Cat Teeth strange resource']
+      ]
+    }
+  },
+  {
+    name: 'Victory',
+    type: 'aftermath',
+    description: '+ 1 Hunt XP\n+ 1 Weapon Proficiency (if eligible)\n+ Rewards',
+  },
+  {
+    name: 'Defeat',
+    type: 'aftermath',
+    description: 'The White Lion greedily consumes the bodies and takes a small shiny prize. Roll 1d10. On a 6+, archive a jewelry gear of your choice. If the survivors don\'t have any jewelry, nothing happens.',
+  }    
 ]);
 
 const WHITE_LION_SHOWDOWN_SURVIVOR_STARTS = Object.freeze([
@@ -413,10 +465,11 @@ const MONSTER_DATA = Object.freeze({
   white_lion: {
     id: 'white_lion',
     name: 'White Lion',
-    type: 'node quarry 1',
+    type: 'node 1 quarry ',
     huntSetup: WHITE_LION_HUNT_SETUP,
     showdownSetup: WHITE_LION_SHOWDOWN_SETUP,
     aiCards: WHITE_LION_AI_CARDS,
+    rewardsCards: WHITE_LION_REWARD_CARDS,
     boardSetup: WHITE_LION_BOARD_SETUP
   },
   butcher: {

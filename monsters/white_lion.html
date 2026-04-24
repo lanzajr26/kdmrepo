@@ -124,6 +124,46 @@
       padding: 0.7rem;
     }
 
+    .ai-card-copy {
+      color: #c6c6c7;
+      font-size: 0.875rem;
+      line-height: 1.625;
+      margin-top: 0.8rem;
+    }
+
+    .ai-card-copy:first-child {
+      margin-top: 0;
+    }
+
+    .ai-card-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    .ai-card-table th,
+    .ai-card-table td {
+      border: 1px solid rgba(91, 64, 60, 0.35);
+      padding: 0.45rem 0.55rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .ai-card-table th {
+      background: rgba(32, 31, 31, 0.9);
+      color: #e9c349;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .ai-card-table td {
+      color: #c6c6c7;
+      line-height: 1.45;
+    }
+
     .ai-type {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 10px;
@@ -331,6 +371,143 @@
       border-color: rgba(255, 180, 168, 0.65);
       background: rgba(153, 0, 0, 0.24);
     }
+
+    .hunt-board-panel {
+      padding-bottom: 1.2rem;
+    }
+
+    .hunt-board-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.65rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .hunt-board-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #e5e2e1;
+      margin: 0;
+    }
+
+    .hunt-board-caption {
+      color: #ab8983;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      margin: 0;
+    }
+
+    .hunt-board-shell {
+      border: 1px solid rgba(91, 64, 60, 0.4);
+      background: linear-gradient(180deg, rgba(20, 20, 20, 0.98) 0%, rgba(16, 16, 16, 0.98) 100%);
+      padding: 0.85rem;
+      box-shadow: inset 0 0 0 1px rgba(233, 195, 73, 0.05);
+    }
+
+    .hunt-board-scroll {
+      overflow-x: auto;
+      padding-bottom: 0.2rem;
+    }
+
+    .hunt-board {
+      min-width: 930px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: rgba(91, 64, 60, 0.5);
+      border: 1px solid rgba(91, 64, 60, 0.45);
+    }
+
+    .hunt-board-row {
+      display: grid;
+      grid-template-columns: minmax(94px, 1.4fr) repeat(6, minmax(52px, 0.72fr)) minmax(180px, 1.9fr) repeat(5, minmax(52px, 0.72fr)) minmax(96px, 1.15fr);
+      gap: 1px;
+      background: rgba(91, 64, 60, 0.5);
+    }
+
+    .hunt-board-cell {
+      min-height: 58px;
+      padding: 0.5rem 0.3rem;
+      background: #1c1b1b;
+      color: #e5e2e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .hunt-board-row--path .hunt-board-cell {
+      min-height: 70px;
+      font-size: 0.86rem;
+      letter-spacing: 0.12em;
+      background: linear-gradient(180deg, rgba(29, 29, 29, 0.98) 0%, rgba(24, 24, 24, 0.98) 100%);
+    }
+
+    .hunt-board-row--events .hunt-board-cell,
+    .hunt-board-row--monster .hunt-board-cell {
+      color: #c6c6c7;
+      font-size: 0.7rem;
+    }
+
+    .hunt-board-cell--label {
+      color: #e9c349;
+    }
+
+    .hunt-board-cell--special {
+      background: linear-gradient(180deg, rgba(34, 21, 21, 0.98) 0%, rgba(27, 17, 17, 0.98) 100%);
+      color: #ffb4a8;
+      text-shadow: 0 0 10px rgba(255, 180, 168, 0.12);
+    }
+
+    .hunt-board-cell--milestone {
+      color: #e9c349;
+      font-size: 0.76rem;
+    }
+
+    .hunt-board-cell--empty {
+      background: #181717;
+      color: rgba(198, 198, 199, 0.28);
+    }
+
+    .hunt-board-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.7rem;
+    }
+
+    .hunt-board-legend span {
+      border: 1px solid rgba(91, 64, 60, 0.42);
+      background: rgba(32, 31, 31, 0.86);
+      color: #c6c6c7;
+      padding: 0.22rem 0.45rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      .hunt-board-shell {
+        padding: 0.7rem;
+      }
+
+      .hunt-board-cell {
+        min-height: 52px;
+      }
+
+      .hunt-board-row--path .hunt-board-cell {
+        min-height: 64px;
+      }
+    }
   </style>
 </head>
 <body class="bg-background text-on-background font-inter min-h-screen">
@@ -341,28 +518,96 @@
       <p class="monster-type-pill" id="monsterType">Quarry</p>
       <h1 id="monsterName" class="font-notoSerif text-4xl text-[#e5e2e1] mt-3">White Lion</h1>
       <p class="text-[#b4b5b5] max-w-3xl leading-relaxed mt-2">
-        Hunt setup, showdown setup, and AI interaction quick-reference with a dedicated showdown board shell ready for Phase 5 interactivity.
+        There once was a beast that wanted to feel how soft its fur was. Since it could not reach its own back, it killed many other creatures and spent time rubbing its paws over them. They say that when the monster finally killed a human, it fell in love with their soft hair and its paws grew into a pair of fine human hands.
       </p>
+    </section>
+
+    <section class="monster-hero hunt-board-panel" aria-labelledby="huntBoardTitle">
+      <div class="hunt-board-header">
+        <p class="monster-type-pill" id="huntBoardTitle">Hunt Setup</p>
+        <p class="hunt-board-caption">Select an encounter level and set up the hunt board.</p>
+      </div>
+
+      <div class="hunt-board-shell">
+        <div class="hunt-board-scroll">
+          <div class="hunt-board" role="img" aria-label="White Lion hunt setup track with hunt events, basic hunt results, and monster level milestones.">
+            <div class="hunt-board-row hunt-board-row--path">
+              <div class="hunt-board-cell hunt-board-cell--label">Start</div>
+              <div class="hunt-board-cell">1</div>
+              <div class="hunt-board-cell">2</div>
+              <div class="hunt-board-cell">3</div>
+              <div class="hunt-board-cell">4</div>
+              <div class="hunt-board-cell">5</div>
+              <div class="hunt-board-cell">6</div>
+              <div class="hunt-board-cell hunt-board-cell--special">Overwhelming Darkness</div>
+              <div class="hunt-board-cell">7</div>
+              <div class="hunt-board-cell">8</div>
+              <div class="hunt-board-cell">9</div>
+              <div class="hunt-board-cell">10</div>
+              <div class="hunt-board-cell">11</div>
+              <div class="hunt-board-cell hunt-board-cell--special">Starvation</div>
+            </div>
+
+            <div class="hunt-board-row hunt-board-row--events">
+              <div class="hunt-board-cell hunt-board-cell--label">Hunt Event</div>
+              <div class="hunt-board-cell">BH</div>
+              <div class="hunt-board-cell">MH</div>
+              <div class="hunt-board-cell">MH</div>
+              <div class="hunt-board-cell">BH</div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell">MH</div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell">MH</div>
+              <div class="hunt-board-cell">MH</div>
+              <div class="hunt-board-cell">BH</div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+            </div>
+
+            <div class="hunt-board-row hunt-board-row--monster">
+              <div class="hunt-board-cell hunt-board-cell--label">Monster</div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell hunt-board-cell--milestone">LVL 1</div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell hunt-board-cell--milestone">LVL 2</div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+              <div class="hunt-board-cell hunt-board-cell--milestone">LVL 3</div>
+              <div class="hunt-board-cell hunt-board-cell--empty"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hunt-board-legend" aria-hidden="true">
+          <span>MH: Monster Hunt</span>
+          <span>BH: Basic Hunt</span>
+        </div>
+      </div>
     </section>
 
     <section class="grid gap-3 xl:grid-cols-3">
       <details class="monster-section" open>
-        <summary id="huntSetupTitle">Hunt Setup</summary>
+        <summary id="huntNotesTitle">Showdown Setup</summary>
         <div class="monster-section-content">
-          <ul class="monster-note-list" id="huntSetupNotes"></ul>
-          <div class="terrain-list" id="huntTerrainList"></div>
+          <div class="ai-grid" id="showdownSetupCardGrid"></div>
         </div>
       </details>
 
       <details class="monster-section" open>
-        <summary id="showdownSetupTitle">Showdown Setup</summary>
+        <summary id="showdownSetupTitle">Monster Characteristics</summary>
         <div class="monster-section-content">
-          <ul class="monster-note-list" id="showdownSetupNotes"></ul>
+          <div class="ai-grid" id="monsterCharacteristicsCardGrid"></div>
         </div>
       </details>
 
       <details class="monster-section" open>
-        <summary>AI Card Interactions</summary>
+        <summary>Rewards &amp; Aftermath</summary>
         <div class="monster-section-content">
           <div class="ai-grid" id="aiCardGrid"></div>
         </div>
@@ -414,15 +659,22 @@
       type: 'quarry',
       huntSetup: {
         title: 'Hunt Setup',
-        notes: [
-          'Prepare the White Lion hunt encounter components.',
-          'Resolve hunt event instructions as normal.',
-          'Use this quick reference when shared data is unavailable.'
+        cards: [
+          {
+            name: 'Terrain & Deployment',
+            type: 'Showdown Setup',
+            description: '1 Tall Grass Terrain Card (2 Tall Grass Tiles)\n2 random terrain cards, set up normally.\nPlace the White Lion in the center of the board.\nPlace survivors in the blue zone.'
+          },
+          {
+            name: 'Monster Levels',
+            type: 'Showdown Setup',
+            description: 'Use this card to record level-specific White Lion setup changes.'
+          }
         ],
-        terrainDeck: ['Basic Terrain']
+        terrainDeck: ['Tall Grass', 'Random Basic Terrain X2']
       },
       showdownSetup: {
-        title: 'Showdown Setup',
+        title: 'Monster Characteristics',
         notes: [
           'Set up the showdown board and place the White Lion.',
           'Place 4 survivors at their starting spaces.',
@@ -430,9 +682,16 @@
         ]
       },
       aiCards: [
-        { name: 'Claw', type: 'Basic Action', description: 'Baseline attack action.' },
+        { name: 'Sniff', type: 'Instinct', description: 'Baseline attack action.' },
         { name: 'Maul', type: 'Basic Action', description: 'Heavy pressure attack.' },
         { name: 'Cunning', type: 'Trait / Reaction', description: 'Target manipulation and positioning pressure.' }
+      ],
+      rewardsCards: [
+        {
+          name: 'Reward Entry',
+          type: 'Reward / Aftermath',
+          description: 'Replace this placeholder with the rewards obtained when defeating the White Lion.'
+        }
       ],
       boardSetup: {
         board: { cols: 16, rows: 22 },
@@ -454,11 +713,27 @@
     let ghostToken = null;
     let terrainCounter = 0;
 
+    function formatNoteText(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    }
+
+    function formatCardText(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\r?\n/g, '<br>');
+    }
+
     function renderList(target, items) {
       target.innerHTML = '';
       (items || []).forEach(item => {
         const li = document.createElement('li');
-        li.textContent = item;
+        li.innerHTML = formatNoteText(item);
         target.appendChild(li);
       });
     }
@@ -473,15 +748,78 @@
       });
     }
 
+    function renderCardTable(table) {
+      if (!table || !Array.isArray(table.headers) || !Array.isArray(table.rows)) {
+        return '';
+      }
+
+      const headers = table.headers.map(header => '<th>' + String(header || '') + '</th>').join('');
+      const rows = table.rows.map(row => {
+        const cells = (Array.isArray(row) ? row : []).map(cell => '<td>' + String(cell || '') + '</td>').join('');
+        return '<tr>' + cells + '</tr>';
+      }).join('');
+
+      return [
+        '<table class="ai-card-table">',
+        '<thead><tr>' + headers + '</tr></thead>',
+        '<tbody>' + rows + '</tbody>',
+        '</table>'
+      ].join('');
+    }
+
+    function renderCardTables(tables) {
+      return (tables || []).map(renderCardTable).join('');
+    }
+
+    function renderCardBody(card) {
+      if (Array.isArray(card.content) && card.content.length) {
+        return card.content.map(item => {
+          if (item == null) {
+            return '';
+          }
+
+          if (typeof item === 'string') {
+            return '<p class="ai-card-copy">' + formatCardText(item) + '</p>';
+          }
+
+          if (Array.isArray(item.headers) && Array.isArray(item.rows)) {
+            return renderCardTable(item);
+          }
+
+          if (typeof item === 'object') {
+            if (typeof item.text === 'string') {
+              return '<p class="ai-card-copy">' + formatCardText(item.text) + '</p>';
+            }
+
+            if (item.table) {
+              return renderCardTable(item.table);
+            }
+          }
+
+          return '';
+        }).join('');
+      }
+
+      const cardTables = Array.isArray(card.tables)
+        ? card.tables
+        : (card.table ? [card.table] : []);
+
+      return [
+        card.description ? ('<p class="ai-card-copy">' + formatCardText(card.description) + '</p>') : '',
+        renderCardTables(cardTables)
+      ].join('');
+    }
+
     function renderAICards(target, cards) {
       target.innerHTML = '';
       (cards || []).forEach(card => {
         const article = document.createElement('article');
         article.className = 'ai-card';
+        const cardName = String(card.name ?? '').trim();
         article.innerHTML = [
           '<p class="ai-type">' + (card.type || 'AI Card') + '</p>',
-          '<h3 class="font-notoSerif text-lg text-[#e5e2e1] mb-2">' + (card.name || 'Unnamed Card') + '</h3>',
-          '<p class="text-[#c6c6c7] text-sm leading-relaxed">' + (card.description || '') + '</p>'
+          cardName ? ('<h3 class="font-notoSerif text-lg text-[#e5e2e1] mb-2">' + cardName + '</h3>') : '',
+          renderCardBody(card)
         ].join('');
         target.appendChild(article);
       });
@@ -934,14 +1272,12 @@
       document.getElementById('monsterName').textContent = monster.name || 'Monster';
       document.getElementById('monsterType').textContent = titleCase(monster.type || 'Unknown');
 
-      document.getElementById('huntSetupTitle').textContent = monster.huntSetup?.title || 'Hunt Setup';
-      renderList(document.getElementById('huntSetupNotes'), monster.huntSetup?.notes || []);
-      renderTerrain(document.getElementById('huntTerrainList'), monster.huntSetup?.terrainDeck || []);
+      renderAICards(document.getElementById('showdownSetupCardGrid'), monster.huntSetup?.cards || []);
 
-      document.getElementById('showdownSetupTitle').textContent = monster.showdownSetup?.title || 'Showdown Setup';
-      renderList(document.getElementById('showdownSetupNotes'), monster.showdownSetup?.notes || []);
+      document.getElementById('showdownSetupTitle').textContent = monster.showdownSetup?.title || 'Monster Characteristics';
 
-      renderAICards(document.getElementById('aiCardGrid'), monster.aiCards || []);
+      renderAICards(document.getElementById('monsterCharacteristicsCardGrid'), monster.aiCards || []);
+      renderAICards(document.getElementById('aiCardGrid'), monster.rewardsCards || []);
 
       boardSetup = sanitizeBoardSetup(monster.boardSetup);
       renderBoardMeta(document.getElementById('boardMeta'), boardSetup);
