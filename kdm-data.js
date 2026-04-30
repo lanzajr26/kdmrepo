@@ -378,20 +378,32 @@ const WHITE_LION_REWARD_CARDS = Object.freeze([
   {
     name: null,
     type: 'rewards',
-    description: 'The first time the White Lion is defeated, add Catarium to the settlement locations. The group gains the following rewards:',
-    table: {
-      headers: ['Level', 'Reward'],
-      rows: [
-        ['1', '4 basic, 4 white lion resources'],
-        ['2', '4 basic, 6 white lion resources'],
-        ['3', '4 basic, 8 white lion resources, 1 Elder Cat Teeth strange resource']
-      ]
-    }
+    content: [
+      { text: 'The first time the White Lion is defeated, add Catarium to the settlement locations. The group gains the following rewards:' },
+      {
+        table: {
+          headers: ['Level', 'Reward'],
+          rows: [
+            ['1', '4 basic resources<br>4 White Lion resources'],
+            ['2', '4 basic resources<br>6 White Lion resources'],
+            ['3', '4 basic resources<br>8 White Lion resources<br>1 Elder Cat Teeth strange resource']
+          ]
+        }
+      },
+      { text: 'If the settlement has Saga when they defeat a level 3+ White Lion they create and peform a stirring tale! Gain +2 endeavors next settlement phase.\nThe first time the settlement performs this stirring tale, the survivor that dealt the killing blow gains +1 permanent accuracy and strength.' }
+    ]
   },
   {
     name: 'Victory',
     type: 'aftermath',
-    description: '+ 1 Hunt XP\n+ 1 Weapon Proficiency (if eligible)\n+ Rewards',
+    description: null,
+        table: {
+      headers: ['Level', 'Reward'],
+      rows: [
+        ['1', '+ 1 Hunt XP<br>+ 1 Weapon Proficiency<br>+ Rewards'],
+        ['2+', '+2 Hunt XP<br>+1 Weapon Proficiency<br>+Rewards']
+      ]
+    }
   },
   {
     name: 'Defeat',
@@ -453,8 +465,207 @@ const WHITE_LION_BOARD_SETUP = Object.freeze({
   terrain: []
 });
 
+function replaceWhiteLionReferences(value) {
+  if (typeof value === 'string') {
+    return value
+      .replace(/White Lion/g, 'Screaming Antelope')
+      .replace(/white lion/g, 'screaming antelope');
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(replaceWhiteLionReferences);
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.keys(value).reduce((result, key) => {
+      result[key] = replaceWhiteLionReferences(value[key]);
+      return result;
+    }, {});
+  }
+
+  return value;
+}
+
+function showdownCoordinateToPosition(coordinate) {
+  const value = String(coordinate || '').trim().toUpperCase();
+  const match = value.match(/^([A-Z]+)(\d+)$/);
+  if (!match) {
+    return null;
+  }
+
+  const letters = match[1];
+  const rowNumber = Number(match[2]);
+  let col = 0;
+  for (let index = 0; index < letters.length; index += 1) {
+    col = (col * 26) + (letters.charCodeAt(index) - 64);
+  }
+
+  return {
+    col: col - 1,
+    row: rowNumber - 1
+  };
+}
+
+const SCREAMING_ANTELOPE_SHOWDOWN_SURVIVOR_STARTS = Object.freeze(
+  [
+    ...Array.from({ length: 16 }, (_, index) => ({ col: index, row: 0 })),
+    ...Array.from({ length: 16 }, (_, index) => ({ col: index, row: 21 }))
+  ].map((position, index) => Object.freeze({
+    id: 'survivor_start_' + (index + 1),
+    label: 'S',
+    color: 'blue',
+    spanCols: 1,
+    spanRows: 1,
+    ...position
+  }))
+);
+
+const SCREAMING_ANTELOPE_TERRAIN_STARTS = Object.freeze(
+  [
+    'D11', 'D12', 'E10', 'E11', 'E12', 'E13', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14',
+    'G8', 'G9', 'G10', 'G11', 'G12', 'G13', 'G14', 'G15', 'H7', 'H8', 'H9', 'H10', 'H13', 'H14',
+    'H15', 'H16', 'I7', 'I8', 'I9', 'I10', 'I13', 'I14', 'I15', 'I16', 'J8', 'J9', 'J10',
+    'J11', 'J12', 'J13', 'J14', 'J15', 'K9', 'K10', 'K11', 'K12', 'K13', 'K14', 'L10',
+    'L11', 'L12', 'L13', 'M11', 'M12'
+  ].map((coordinate, index) => {
+    const position = showdownCoordinateToPosition(coordinate);
+    return Object.freeze({
+      id: 'terrain_seed_' + (index + 1),
+      label: 'T',
+      color: 'green',
+      type: 'terrain',
+      spanCols: 1,
+      spanRows: 1,
+      ...position
+    });
+  })
+);
+
+const SCREAMING_ANTELOPE_BUG_PATCH_START = (() => {
+  const position = showdownCoordinateToPosition('N12');
+  return Object.freeze({
+    id: 'bug_patch_1',
+    label: 'B',
+    color: 'gold',
+    type: 'bug_patch',
+    spanCols: 1,
+    spanRows: 1,
+    ...position
+  });
+})();
+
+const SCREAMING_ANTELOPE_HUNT_SETUP = Object.freeze({
+  title: 'Screaming Antelope Hunt Setup',
+  cards: [
+    {
+      name: null,
+      type: 'Terrain & Deployment',
+      description: '3 Acanthus Plant terrain cards (6 cards in total) set up in the green area.\n1 Bug Patch card set up in the gold area.\n2 random terrain cards set up normally.\nPlace the monster in the center of the board.\nPlace survivors along either short board edge.'
+    },
+   {
+  name: null,
+  type: 'Monster Levels',
+  content: [
+    { table: {
+      headers: ['Lvl', 'B', 'A', 'L', 'M', 'T', 'S', 'D'],
+      rows: [
+        ['1', '7', '3', '-', '6', '8', '-', '-']
+      ]
+    }},
+    { text: 'S: Trample' },
+    { table: {
+      headers: ['Lvl', 'B', 'A', 'L', 'M', 'T', 'S', 'D'],
+      rows: [
+        ['2', '10', '5', '-', '8', '10', '+1', '+1']
+      ]
+    }},
+    { text: 'S: Trample, S: Diabolical' },
+    { table: {
+      headers: ['Lvl', 'B', 'A', 'L', 'M', 'T', 'S', 'D'],
+      rows: [
+        ['3', '12', '8', '2', '8', '12', '+2', '+2']
+      ]
+    }},
+    { text: 'S: Diabolical, S: Hypermetabolism, L: Legendary Horns' },
+    { text: 'S: Trample, S: Indomitable' },
+    { text: 'Tokens: +1 evasion' },
+  ]
+}
+  ],
+});
+
+const SCREAMING_ANTELOPE_SHOWDOWN_SETUP = Object.freeze(replaceWhiteLionReferences(WHITE_LION_SHOWDOWN_SETUP));
+
+const SCREAMING_ANTELOPE_AI_CARDS = Object.freeze([
+  { name: 'Graze', type: 'Instinct', description: 'The monster full moves to the closest Acanthus Plant and ends its turn. If the monster is on or adjacent to an Acanthus Plant archive the terrain and heal 1 wound. If there are no Acanthus Plants on the showdown board, instead full move forward in a straight line.\nHeal 1: Move the top 1 card from the wound stack to the bottom of the Al deck without looking at it.' },
+  { name: 'Pick Target', type: 'Basic Action', description: 'Closest knocked down survivor in range\nNo target: Graze' },
+  { name: 'Move & Attack Target', type: 'Basic Action', description: null,
+        table: {
+      headers: ['Speed', 'Accuracy', 'Damage', 'Trigger'],
+      rows: [
+        ['2', '2+', '1', 'None'],
+      ]
+    }
+   },
+]);
+
+const SCREAMING_ANTELOPE_REWARD_CARDS = Object.freeze([
+  {
+    name: null,
+    type: 'rewards',
+    content: [
+      { text: 'The first time the Screaming Antelope is defeated, gain the Stone Circle settlement location.\nWhen the monster is defeated, any non-deaf survivors with 20+ insanity are driven mad by its screaming death wail. They vanish into the darkness, never to be seen again.\nThe group gains the following rewards:' },
+      {
+        table: {
+          headers: ['Level', 'Reward'],
+          rows: [
+            ['1', '4 basic resources<br>4 Screaming Antelope resources'],
+            ['2', '4 basic resources<br>6 Screaming Antelope resources'],
+            ['3', '5 basic resources<br>7 Screaming Antelope resources<br>1 Black Lichen strange resource']
+          ]
+        }
+      },
+      { text: 'If the settlement has Pottery when they defeat a level 3+ Screaming Antelope, the survivors may preserve the stench of half-digested acanthus from the Antelope\'s organs. A random survivor gains the Astute ability.' }
+    ]
+  },
+  {
+    name: 'Victory',
+    type: 'aftermath',
+    description: null,
+        table: {
+      headers: ['Level', 'Reward'],
+      rows: [
+        ['1', '+ 1 Hunt XP<br>+ 1 Weapon Proficiency<br>+ Rewards'],
+        ['2+', '+2 Hunt XP<br>+1 Weapon Proficiency<br>+Rewards']
+      ]
+    }
+  },
+  {
+    name: 'Defeat',
+    type: 'aftermath',
+    description: 'When the hunters fail to return, nonimate a non-deaf survivor in the settlement. They rabidly beat their head in grief, suffering the deaf severe head injury.',
+  }    
+]);
+
+const SCREAMING_ANTELOPE_BOARD_SETUP = Object.freeze({
+  board: { cols: 16, rows: 22 },
+  monster: {
+    id: 'screaming_antelope',
+    label: 'Screaming Antelope',
+    color: 'red',
+    col: 7,
+    row: 10,
+    spanCols: 2,
+    spanRows: 2
+  },
+  survivors: SCREAMING_ANTELOPE_SHOWDOWN_SURVIVOR_STARTS,
+  terrain: [
+    ...SCREAMING_ANTELOPE_TERRAIN_STARTS,
+    SCREAMING_ANTELOPE_BUG_PATCH_START
+  ]
+});
+
 const BUTCHER_BOARD_SETUP = Object.freeze({ board: { cols: 16, rows: 22 }, monster: null, survivors: [], terrain: [] });
-const SCREAMING_ANTELOPE_BOARD_SETUP = Object.freeze({ board: { cols: 16, rows: 22 }, monster: null, survivors: [], terrain: [] });
 const KINGS_MAN_BOARD_SETUP = Object.freeze({ board: { cols: 16, rows: 22 }, monster: null, survivors: [], terrain: [] });
 const THE_HAND_BOARD_SETUP = Object.freeze({ board: { cols: 16, rows: 22 }, monster: null, survivors: [], terrain: [] });
 const PHOENIX_BOARD_SETUP = Object.freeze({ board: { cols: 16, rows: 22 }, monster: null, survivors: [], terrain: [] });
@@ -484,10 +695,11 @@ const MONSTER_DATA = Object.freeze({
   screaming_antelope: {
     id: 'screaming_antelope',
     name: 'Screaming Antelope',
-    type: 'quarry',
-    huntSetup: { title: 'Screaming Antelope Hunt Setup', notes: ['TODO'] },
-    showdownSetup: { title: 'Screaming Antelope Showdown Setup', notes: ['TODO'] },
-    aiCards: [],
+    type: 'node 2 quarry',
+    huntSetup: SCREAMING_ANTELOPE_HUNT_SETUP,
+    showdownSetup: SCREAMING_ANTELOPE_SHOWDOWN_SETUP,
+    aiCards: SCREAMING_ANTELOPE_AI_CARDS,
+    rewardsCards: SCREAMING_ANTELOPE_REWARD_CARDS,
     boardSetup: SCREAMING_ANTELOPE_BOARD_SETUP
   },
   kings_man: {
