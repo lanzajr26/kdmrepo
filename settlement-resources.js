@@ -46,9 +46,13 @@ const SETTLEMENT_RESOURCE_GROUPS = Object.freeze([
     resources: Object.freeze(makeSettlementResources('basic_resources', [
       'Broken Lantern [S]',
       'Love Juice [C,O]',
+      'Lump of Atnas [B,H,O]',
       'Monster Bone [B]',
       'Monster Hide [H]',
       'Monster Organ [C,O]',
+      'Perfect Bone [B]',
+      'Perfect Hide [H]',
+      'Perfect Organ [O]',
       'Scrap [S]',
       'Skull [B]',
       '??? [B,H,O,S]'
@@ -120,13 +124,14 @@ const SETTLEMENT_RESOURCE_GROUPS = Object.freeze([
     description: 'Quarry rewards from the White Lion resource deck.',
     resources: Object.freeze(makeSettlementResources('white_lion', [
       'Curious Hand [H]',
-      'Eye of the Cat [C,O]',
+      'Eye of Cat [C,O]',
       'Golden Whiskers [O]',
       'Great Cat Bones [B]',
       'Lion Claw [B]',
       'Lion Tail [H]',
       'Lion Testes [C,O]',
       'Shimmering Mane [H]',
+      'Sinew [O]',
       'White Fur [H]'
     ]))
   },

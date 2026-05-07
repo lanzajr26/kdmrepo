@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>KDM: The Crafting Table</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="kdm-styles.css" rel="stylesheet">
+  <style>
+    body.crafting-page {
+      min-height: 100vh;
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(153, 0, 0, 0.18), transparent 24%),
+        radial-gradient(circle at right center, rgba(233, 195, 73, 0.08), transparent 22%),
+        linear-gradient(180deg, rgba(17, 17, 17, 0.98), rgba(19, 19, 19, 1));
+      color: #e5e2e1;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .crafting-header {
+      border-bottom: 1px solid rgba(91, 64, 60, 0.35);
+      background: rgba(14, 14, 14, 0.94);
+    }
+
+    .crafting-shell {
+      max-width: 1780px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .crafting-header-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      padding: 1.25rem 0;
+    }
+
+    .crafting-kicker,
+    .pane-kicker,
+    .filter-kicker {
+      margin: 0 0 0.4rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #ab8983;
+    }
+
+    .crafting-title {
+      margin: 0;
+      font-family: 'Noto Serif', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.05;
+      color: #f5f0eb;
+    }
+
+    .crafting-section-title {
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+    }
+
+    .crafting-lede,
+    .crafting-subnote,
+    .pane-note,
+    .result-summary,
+    .location-meta,
+    .ingredient-stock,
+    .ingredient-source,
+    .recipe-coverage-note,
+    .empty-state-text {
+      margin: 0;
+      color: #b4b5b5;
+      line-height: 1.5;
+    }
+
+    .crafting-header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    .crafting-link-button,
+    .location-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(255, 180, 168, 0.35);
+      background: rgba(153, 0, 0, 0.15);
+      color: #ffdad4;
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+      cursor: pointer;
+    }
+
+    .crafting-link-button:hover,
+    .location-action:hover {
+      background: rgba(153, 0, 0, 0.28);
+      border-color: rgba(255, 180, 168, 0.65);
+      transform: translateY(-1px);
+    }
+
+    .crafting-overview {
+      display: grid;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2.8fr);
+      align-items: start;
+    }
+
+    .crafting-pane,
+    .crafting-results-panel,
+    .crafting-hero {
+      position: relative;
+      border: 1px solid rgba(91, 64, 60, 0.35);
+      background: linear-gradient(155deg, rgba(28, 27, 27, 0.97) 0%, rgba(18, 18, 18, 0.99) 100%);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+    }
+
+    .crafting-results-panel,
+    .crafting-hero {
+      overflow: hidden;
+    }
+
+    .crafting-pane::before,
+    .crafting-results-panel::before,
+    .crafting-hero::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, #990000 0%, #e9c349 100%);
+      opacity: 0.9;
+    }
+
+    .crafting-hero {
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .crafting-hero-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .crafting-stat {
+      padding: 0.9rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(171, 137, 131, 0.18);
+    }
+
+    .crafting-stat-label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #ab8983;
+    }
+
+    .crafting-stat-value {
+      font-family: 'Noto Serif', serif;
+      font-size: 1.6rem;
+      color: #f5f0eb;
+    }
+
+    .pane-header,
+    .results-header {
+      padding: 1.2rem 1.25rem 1rem;
+      border-bottom: 1px solid rgba(91, 64, 60, 0.24);
+    }
+
+    .pane-title,
+    .results-title {
+      margin: 0;
+      font-family: 'Noto Serif', serif;
+      font-size: 1.35rem;
+      color: #f0ece8;
+    }
+
+    .pane-body,
+    .results-body {
+      padding: 1rem 1.25rem 1.25rem;
+    }
+
+    .resource-list,
+    .location-list,
+    .results-grid,
+    .recipe-list,
+    .filter-stack {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .resource-list,
+    .location-list,
+    .filter-stack {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .resource-row,
+    .location-row {
+      display: grid;
+      gap: 0.35rem;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(171, 137, 131, 0.18);
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .resource-row-top,
+    .location-row-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      align-items: baseline;
+    }
+
+    .resource-name,
+    .location-name,
+    .recipe-name {
+      font-family: 'Noto Serif', serif;
+      color: #f2efed;
+    }
+
+    .resource-count,
+    .location-count {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      color: #e9c349;
+      white-space: nowrap;
+      margin-left: auto;
+    }
+
+    .resource-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .resource-group-chip,
+    .recipe-location-chip,
+    .recipe-slot-chip,
+    .empty-state-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.5rem;
+      border: 1px solid rgba(233, 195, 73, 0.25);
+      background: rgba(233, 195, 73, 0.08);
+      color: #f0d784;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .location-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .location-action {
+      padding: 0.55rem 0.85rem;
+      font-size: 10px;
+    }
+
+    .location-check {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.8rem;
+      align-items: start;
+      cursor: pointer;
+    }
+
+    .location-check input {
+      margin-top: 0.2rem;
+      accent-color: #990000;
+    }
+
+    .results-toolbar {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 0.6fr);
+      margin-bottom: 1.2rem;
+      align-items: start;
+    }
+
+    .filter-group {
+      display: grid;
+      gap: 0.65rem;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(171, 137, 131, 0.18);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .filter-option-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .filter-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: #d5d0cb;
+      font-size: 0.92rem;
+    }
+
+    .filter-option input,
+    .filter-group select {
+      accent-color: #990000;
+    }
+
+    .filter-group select {
+      width: 100%;
+      border: 1px solid rgba(171, 137, 131, 0.28);
+      background: #151414;
+      color: #f5f0eb;
+      padding: 0.7rem 0.85rem;
+    }
+
+    .results-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .recipe-card {
+      display: grid;
+      gap: 1.4rem;
+      grid-template-columns: minmax(0, 236px) minmax(0, 1fr);
+      padding: 1rem;
+      border: 1px solid rgba(171, 137, 131, 0.18);
+      background: rgba(255, 255, 255, 0.03);
+      align-items: start;
+      overflow: hidden;
+    }
+
+    .recipe-image {
+      width: min(100%, 228px);
+      height: auto;
+      object-fit: contain;
+      object-position: center;
+      justify-self: start;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(171, 137, 131, 0.14);
+      padding: 0.35rem;
+      box-sizing: border-box;
+    }
+
+    .recipe-card > div {
+      min-width: 0;
+    }
+
+    .recipe-card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      align-items: start;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+
+    .recipe-card-meta {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      margin-top: 0.45rem;
+    }
+
+    .recipe-list {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .recipe-ingredient {
+      display: grid;
+      gap: 0.2rem;
+      padding: 0.7rem 0.8rem;
+      border-left: 2px solid rgba(233, 195, 73, 0.45);
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .ingredient-primary {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: baseline;
+    }
+
+    .ingredient-quantity {
+      color: #e9c349;
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.76rem;
+    }
+
+    .ingredient-name {
+      color: #f0ece8;
+    }
+
+    .ingredient-stock {
+      font-size: 0.84rem;
+    }
+
+    .ingredient-source {
+      font-size: 0.82rem;
+      color: #ab8983;
+    }
+
+    .empty-state {
+      display: grid;
+      gap: 0.8rem;
+      padding: 2rem;
+      border: 1px dashed rgba(171, 137, 131, 0.28);
+      background: rgba(255, 255, 255, 0.02);
+      text-align: center;
+    }
+
+    .empty-state-title {
+      margin: 0;
+      font-family: 'Noto Serif', serif;
+      color: #f0ece8;
+      font-size: 1.3rem;
+    }
+
+    @media (max-width: 1500px) {
+      .recipe-card {
+        grid-template-columns: 1fr;
+      }
+
+      .recipe-image {
+        width: min(100%, 280px);
+      }
+    }
+
+    @media (max-width: 1240px) {
+      .crafting-overview {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+
+      .results-toolbar {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .crafting-shell {
+        padding: 1rem;
+      }
+
+      .crafting-header-row,
+      .resource-row-top,
+      .location-row-top,
+      .recipe-card-header {
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .crafting-hero-grid,
+      .crafting-overview {
+        grid-template-columns: 1fr;
+      }
+
+      .recipe-card {
+        grid-template-columns: 1fr;
+      }
+
+      .recipe-image {
+        max-width: 180px;
+      }
+    }
+  </style>
+</head>
+<body class="crafting-page">
+  <header class="crafting-header">
+    <div class="crafting-shell">
+      <div class="crafting-header-row">
+        <div>
+          <p class="crafting-kicker">Settlement Planning</p>
+          <h1 class="crafting-title">The Crafting Table</h1>
+          <p class="crafting-lede">Displays all craftable gear and items based on current settlement resources.</p>
+        </div>
+        <div class="crafting-header-actions">
+          <a class="crafting-link-button" href="index.html">
+            <span class="material-symbols-outlined">shield</span>
+            Survivor
+          </a>
+          <a class="crafting-link-button" href="settlement_storage.html">
+            <span class="material-symbols-outlined">inventory_2</span>
+            Settlement Storage
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="crafting-shell">
+    <section class="crafting-hero lantern-glow" aria-labelledby="craftingHeroTitle">
+      <div>
+        <p class="crafting-kicker">Current Scope</p>
+        <h2 id="craftingHeroTitle" class="crafting-title crafting-section-title">Craftable Gear</h2>
+        <p id="craftingCoverageNote" class="recipe-coverage-note">Loading recipe coverage...</p>
+      </div>
+      <div class="crafting-hero-grid">
+        <div class="crafting-stat">
+          <span class="crafting-stat-label">Settlement</span>
+          <span id="craftingSettlementName" class="crafting-stat-value">Unnamed</span>
+        </div>
+        <div class="crafting-stat">
+          <span class="crafting-stat-label">Tracked Resources</span>
+          <span id="craftingTrackedResourceCount" class="crafting-stat-value">0</span>
+        </div>
+        <div class="crafting-stat">
+          <span class="crafting-stat-label">Craftable Results</span>
+          <span id="craftingCraftableCount" class="crafting-stat-value">0</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="crafting-overview">
+      <aside class="crafting-pane lantern-glow" aria-labelledby="locationFiltersTitle">
+        <div class="pane-header">
+          <h2 id="locationFiltersTitle" class="pane-title">Settlement Locations</h2>
+          <p class="pane-note">Use these toggles to limit results to the locations your settlement currently has unlocked.</p>
+        </div>
+        <div class="pane-body">
+          <div class="location-actions">
+            <button id="selectAllLocations" class="location-action" type="button">Select all</button>
+            <button id="clearAllLocations" class="location-action" type="button">Clear all</button>
+          </div>
+          <ul id="craftingLocationList" class="location-list"></ul>
+        </div>
+      </aside>
+
+      <section class="crafting-results-panel lantern-glow" aria-labelledby="craftingResultsTitle">
+        <div class="results-header">
+          <h2 id="craftingResultsTitle" class="results-title">Craftable Gear</h2>
+          <p id="craftingResultsSummary" class="result-summary">Loading craftable results...</p>
+        </div>
+        <div class="results-body">
+          <div class="results-toolbar">
+            <div class="filter-group">
+              <p class="filter-kicker">Affinity Color</p>
+              <div class="filter-option-row">
+                <label class="filter-option"><input class="crafting-affinity-color" type="checkbox" value="blue">Blue</label>
+                <label class="filter-option"><input class="crafting-affinity-color" type="checkbox" value="red">Red</label>
+                <label class="filter-option"><input class="crafting-affinity-color" type="checkbox" value="green">Green</label>
+              </div>
+            </div>
+            <div class="filter-group">
+              <p class="filter-kicker">Affinity Position</p>
+              <div class="filter-option-row">
+                <label class="filter-option"><input class="crafting-affinity-side" type="checkbox" value="top">Top</label>
+                <label class="filter-option"><input class="crafting-affinity-side" type="checkbox" value="right">Right</label>
+                <label class="filter-option"><input class="crafting-affinity-side" type="checkbox" value="bottom">Bottom</label>
+                <label class="filter-option"><input class="crafting-affinity-side" type="checkbox" value="left">Left</label>
+              </div>
+            </div>
+            <div class="filter-group">
+              <label for="craftingSlotFilter" class="filter-kicker">Slot</label>
+              <select id="craftingSlotFilter">
+                <option value="">Any slot</option>
+              </select>
+            </div>
+          </div>
+          <div id="craftingResultsRoot" class="results-grid"></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="settlement-resources.js"></script>
+  <script src="images/gear/images.js"></script>
+  <script src="gear-recipes.js"></script>
+  <script src="crafting.js"></script>
+</body>
+</html>
